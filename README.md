@@ -1,6 +1,4 @@
-## Project Name & Pitch
-
-#### Example:
+## 
 
 IPL 
 
