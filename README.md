@@ -2,13 +2,7 @@
 
 An application used to filter data form Twitter based on user preference, built with React, Redux, JavaScript, and CSS.
 
-##
-
 ## Project Status
-In Progress
-
-#### Example:
-
 This project is currently in development.
 
 ## Project Screen Shot(s)
