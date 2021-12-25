@@ -1,52 +1,117 @@
-@import '../../global.scss';
+@import "../../global.scss";
 
-.topbar{
+.topbar {
   width: 100%;
   height: 70px;
-  background-color: $mainColor;
+  background-color: #551a8b;
   color: white;
   position: fixed;
   top: 0;
   z-index: 3;
   transition: all 1s ease;
+  box-shadow: 0 1px 1px solid #4b0082;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
 
-  .wrapper{
-    padding: 10px 30px;
+  .wrapper {
+    padding: 0 30px;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    .left{
+    .left {
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      width: 60%;
 
-      .logo{
-        font-size: 40px;
-        font-weight: 700;
-        text-decoration: none;
-        color: inherit;
-        margin-right: 40px;
+      .left_inner_left {
+        cursor: pointer;
+        overflow: hidden;
+
+        h3 {
+          overflow: hidden;
+          padding: 0 10px;
+        }
+        h3.selected {
+          color: #0f0f0f;
+          background-color: #fff;
+          pointer-events: none;
+          opacity: 1;
+          font: normal 1.3vw;
+          border-radius: 50%;
+          border-bottom: 3px solid rgb(194, 70, 70);
+          border-top: 3px solid rgb(198, 238, 21);
+          border-right: 3px solid rgb(21, 79, 238);
+          border-left: 3px solid rgb(12, 190, 42);
+          animation: customanimation 1s infinite;
+        }
       }
-
-      .itemContainer{
+      .left_inner_right {
         display: flex;
-        align-items: center;
-        margin-left: 30px;
-      }
+        justify-content: space-around;
+        width: 70%;
 
-      .icon{
-        font-size: 18px;
-        margin-right: 5px;
-      }
+        span {
+          font-size: 1.2vw;
+          padding: 0 10px;
+          cursor: pointer;
+          position: relative;
 
-      span{
-        font-size: 15px;
-        font-weight: 500;
+          &::after{
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right:0;
+            height: 2px;
+            transform: scaleX(0);
+            background: white;
+            transition: 0.7s transform cubic-bezier(0.06, 0.9, 0.28, 1);
+          }
+
+          &:hover::after{
+            font-size: 1.3vw;
+            opacity: 1;
+            transform: scaleX(1);
+          }
+        }
+
+        span.selected {
+          color: #0f0f0f;
+          background-color: #fff;
+          pointer-events: none;
+          opacity: 1;
+          font: normal 1.3vw;
+          border-radius: 50%;
+          border-bottom: 3px solid rgb(194, 70, 70);
+          border-top: 3px solid rgb(198, 238, 21);
+          border-right: 3px solid rgb(21, 79, 238);
+          border-left: 3px solid rgb(12, 190, 42);
+          animation: customanimation 1s infinite;
+        }
+
+        @keyframes customanimation {
+          0% {
+            filter: hue-rotate(0deg);
+          }
+          50%{
+            filter: hue-rotate(170deg);
+          }
+          100% {
+            filter: hue-rotate(360deg);
+          }
+        }
+
+        @include mobile {
+          display: none;
+        }
       }
     }
-    .right{
-
-      .hamburger{
+    .right {
+      .hamburger {
         width: 32px;
         height: 25px;
         display: flex;
@@ -55,7 +120,7 @@
         cursor: pointer;
         overflow: hidden;
 
-        span{
+        span {
           width: 100%;
           height: 3px;
           background-color: white;
@@ -66,21 +131,21 @@
     }
   }
 
-  &.active{
-    background-color: white;
-    color: $mainColor;
+  &.active {
+    background-color: $mainColor;
+    color: white;
 
-    .hamburger{
-      span{
-        &:first-child{
-          background-color: $mainColor;
+    .hamburger {
+      span {
+        &:first-child {
+          background-color: white;
           transform: rotate(45deg);
         }
-        &:nth-child(2){
+        &:nth-child(2) {
           opacity: 0;
         }
-        &:last-child{
-          background-color: $mainColor;
+        &:last-child {
+          background-color: white;
           transform: rotate(-45deg);
         }
       }
