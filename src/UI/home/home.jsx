@@ -1,8 +1,7 @@
 import React from 'react';
 import Header from '../header/header';
 import Menu from '../header/menu/menu';
-import MatchList from '../match-list/match-list';
-import UserProfile from '../user-profile/user-profile';
+import CarouselContainer from './components/CarouselContainer';
 import './home.scss';
 
 const Home = (props) => {
@@ -19,8 +18,7 @@ const Home = (props) => {
         <Menu menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
         <div className='sections'>
-          <MatchList />
-          <UserProfile />
+          <CarouselContainer />
         </div>
 
       </div>

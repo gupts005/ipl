@@ -5,7 +5,7 @@ const Menu = (props) => {
   return (
     <div className={"menu " + (props.menuOpen && "active")}>
       {HeaderData.map((item) => (
-        <ul>
+        <ul key={item.id}>
           <li onClick={() => props.setMenuOpen(false)}>
             <a href="#intro"> {item.title} </a>
           </li>

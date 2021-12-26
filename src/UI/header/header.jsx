@@ -37,6 +37,7 @@ const Header = (props) => {
           <div className='left_inner_right'>
             {HeaderData.map((item) => (
               <span 
+                key={item.id}
                 onClick={()=>setSelected(item.id)}
                 className={state.clicked === true && state.selectedIndex === item.id ? 'selected' : ''}> 
 

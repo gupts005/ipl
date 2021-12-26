@@ -1,4 +1,4 @@
-import './user-profile.scss';
+import './UserProfile.scss';
 
 import React from 'react'
 
