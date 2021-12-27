@@ -1,60 +1,35 @@
 {
   "name": "ipl2022",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@mui/material": "^5.2.5",
-    "@reduxjs/toolkit": "^1.7.1",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "bootstrap": "^5.1.3",
-    "react": "^17.0.2",
-    "react-bootstrap": "^2.0.4",
-    "react-bootstrap-carousel": "^4.1.1",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.6",
-    "react-router": "^6.2.1",
-    "react-scripts": "5.0.0",
-    "react-slick": "^0.28.1",
-    "redux": "^4.1.2",
-    "sass": "^1.45.1",
-    "web-vitals": "^0.2.4",
-    "workbox-background-sync": "^5.1.4",
-    "workbox-broadcast-update": "^5.1.4",
-    "workbox-cacheable-response": "^5.1.4",
-    "workbox-core": "^5.1.4",
-    "workbox-expiration": "^5.1.4",
-    "workbox-google-analytics": "^5.1.4",
-    "workbox-navigation-preload": "^5.1.4",
-    "workbox-precaching": "^5.1.4",
-    "workbox-range-requests": "^5.1.4",
-    "workbox-routing": "^5.1.4",
-    "workbox-strategies": "^5.1.4",
-    "workbox-streams": "^5.1.4"
-  },
+  "version": "1.0.0",
+  "description": "nodejs server for ipl website",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "nodemon server/index.js",
+    "build": "cd ipl2022 && npm install && npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ironman9033/ipl.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "keywords": [
+    "IPL",
+    "cricket",
+    "fantasy",
+    "betting"
+  ],
+  "author": "suraj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ironman9033/ipl/issues"
+  },
+  "homepage": "https://github.com/ironman9033/ipl#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.4.0"
+  },
+  "engines": {
+    "node": "14.15.5"
   }
 }

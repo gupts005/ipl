@@ -1,0 +1,96 @@
+$error-bg-color: #fddddd;
+$error-border-color: 1px solid #b40e0e;
+$width: 100%;
+$height: 100%;
+$padding-left: 10px;
+
+@mixin error($bg-color: true) {
+  @if $bg-color {
+    width: $width;
+    height: $height;
+    padding-left: $padding-left;
+    background-color: $error-bg-color;
+    border: $error-border-color;
+  } @else {
+    width: $width;
+    height: $height;
+    padding-left: $padding-left;
+    background-color: '';
+    border: '';
+  }
+}
+
+.parent {
+  height: 100vh;
+
+  .child {
+    width: 100%;
+    height: calc(100vh - 70px);
+    top: 70px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    .left {
+      border: 3px solid yellowgreen;
+      width: 20%;
+      height: 100%;
+      position: absolute;
+    }
+
+    .right {
+      border: 3px solid red;
+      width: 80%;
+      height: 100%;
+      position: absolute;
+      left: 20%;
+      display: flex;
+      flex-direction: column;
+
+      .upper {
+        width: 100%;
+        height: 90%;
+        border: 3px solid skyblue;
+      }
+
+      .lower {
+        width: 100%;
+        height: 10%;
+        border: 3px solid green;
+        display: flex;
+        flex-direction: column;
+
+        form {
+          height: 100%;
+          width: 100%;
+          display: flex;
+
+          .input_msg {
+            width: 90%;
+            height: 100%;
+            border: 3px solid orange;
+            overflow: hidden;
+
+            .msg {
+              @include error($bg-color: false);
+            }
+            .msg_invalid {
+              @include error($bg-color: true);
+            }
+          }
+
+          .submit_btn {
+            width: 10%;
+            height: 100%;
+            border: 3px solid pink;
+
+            button {
+              width: 100%;
+              height: 94%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
