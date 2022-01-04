@@ -1,12 +1,178 @@
 import React from 'react';
-import './login.scss';
+import classes from './login.module.scss';
+import { useState, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AuthContext from '../store/auth-context';
+import MiniCarousel from '../MiniCarousel/MiniCrousel';
+import { init } from "ityped";
+import Particles from 'react-tsparticles';
 
 const Login = () => {
+  const particlesInit = (main) => {
+    console.log(main);
+
+    // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
+  };
+
+  const particlesLoaded = (container) => {
+    console.log(container);
+  };
+
+  const textRef = React.useRef();
+  const textRef2 = React.useRef();
+
+  React.useEffect(() => {
+    init(textRef.current, {
+      showCursor: true,
+      backDelay: 1500,
+      backSpeed: 60,
+      strings: ['Sign in to start Winning Big'],
+    });
+
+    init(textRef2.current, {
+      showCursor: true,
+      backDelay: 1500,
+      backSpeed: 60,
+      strings: ['Wanna start placing bets?'],
+    });
+  }, []);
+
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <React.Fragment>
+
+      <div className={classes.parent}>
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        loaded={particlesLoaded}
+        options={{
+          background: {
+            color: {
+              // value: "#343148",
+            },
+          },
+          fpsLimit: 30,
+          interactivity: {
+            events: {
+              onClick: {
+                enable: true,
+                mode: "push",
+              },
+              onHover: {
+                enable: true,
+                mode: "repulse",
+              },
+              resize: true,
+            },
+            modes: {
+              bubble: {
+                distance: 400,
+                duration: 2,
+                opacity: 0.8,
+                size: 40,
+              },
+              push: {
+                quantity: 4,
+              },
+              repulse: {
+                distance: 200,
+                duration: 0.4,
+              },
+            },
+          },
+          particles: {
+            color: {
+              value: "#ffffff",
+            },
+            links: {
+              color: "#ffffff",
+              distance: 150,
+              enable: true,
+              opacity: 0.5,
+              width: 1,
+            },
+            collisions: {
+              enable: true,
+            },
+            move: {
+              direction: "none",
+              enable: true,
+              outMode: "bounce",
+              random: false,
+              speed: 3,
+              straight: false,
+            },
+            number: {
+              density: {
+                enable: true,
+                area: 800,
+              },
+              value: 80,
+            },
+            opacity: {
+              value: 0.5,
+            },
+            shape: {
+              type: "circle",
+            },
+            size: {
+              random: true,
+              value: 5,
+            },
+          },
+          detectRetina: true,
+        }}
+      />
+
+        <div className={classes.child}>
+
+          <div className={classes.child_left}>
+            <MiniCarousel />
+          </div>
+          <div className={classes.child_right}>
+            <div className={classes.child_right_inner}>
+              <div className={classes.child_right_1}>
+                <p>
+                  Welcome &nbsp; <i className="fas fa-strikethrough"></i>
+                  <i>portsGeek, <span ref={textRef}></span> </i>
+                </p>
+              </div>
+              <div className={classes.child_right_2}>
+                <form action="#">
+                  <div className={classes.input_field}>
+                    <input type="text" placeholder='U S E R N A M E' />
+                  </div>
+                  <div className={classes.input_field}>
+                    <input type="password" placeholder='P A S S W O R D' />
+                  </div>
+                  <div className={classes.login_btn}>
+                    <button type='button'>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      Login
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <div className={classes.child_right_3}>
+                <div className={classes.child_right_3_left}>
+                  <a>Forgot Password?</a>
+                </div>
+                <div className={classes.child_right_3_right}>
+                  <span ref={textRef2}> </span>
+                  <br /> <i className="fas fa-sign-in-alt"></i>Hit me to register
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </React.Fragment>
+  );
+};
 
 export default Login;

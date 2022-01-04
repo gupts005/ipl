@@ -2,7 +2,7 @@ import React from "react";
 import RBCarousel from "react-bootstrap-carousel";
 import { Row, Col } from "./bootstrap-component.jsx";
 import "react-bootstrap-carousel/dist/react-bootstrap-carousel.css";
-import './carousel.scss';
+import classes from './MiniCarousel.module.scss';
 
 const MiniCarousel = (props) => {
 
@@ -13,13 +13,13 @@ const MiniCarousel = (props) => {
         <Row>
           <Col span={12}>
             <RBCarousel className="carousel-fade" version={4}>
-              <div style={{ width: '100%', height: 500, backgroundColor: "darkcyan" }}>
+              <div style={{ width: '100%', height: '80vh', backgroundColor: "darkcyan" }}>
                 <div className="carousel-center">
                   This carsouel transition is fade
                 </div>
                 <div className="carousel-caption">Text</div>
               </div>
-              <div style={{ width: '100%', height: 500, backgroundColor: "yellowgreen" }}>
+              <div style={{ width: '100%', height: '80vh', backgroundColor: "yellowgreen" }}>
                 <span className="carousel-center">
                   This carsouel transition is fade
                 </span>

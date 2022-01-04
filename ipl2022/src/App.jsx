@@ -1,25 +1,24 @@
 import React from 'react';
-import Home from './UI/home/home';
 import './App.scss';
-import { AuthContextProvider } from './UI/store/auth-context';
-import HeaderLayout from './UI/header/HeaderLayout';
-import { Routes, Route } from 'react-router-dom';
-import MatchList from './UI/match-list/MatchList';
-import Chat from './UI/chat/chat';
+import AuthContext from './UI/store/auth-context';
+import Login from './UI/login/login';
+import Layout from './UI/layout/layout';
 
 function App() {
+
+  const authCtx = React.useContext(AuthContext);
+  console.log(authCtx);
+
   return (
-    <HeaderLayout className='header'>
-      <Routes>
+    <React.Fragment>
+      {authCtx.isLoggedIn && (
+        <Layout />
+      )}
 
-        <Route exact path='/' element={<Home />} />
-          
-        <Route exact path='/match-list' element={<MatchList />} />
-        
-        <Route exact path='/chat' element={<Chat />} />
-
-      </Routes>
-    </HeaderLayout>
+      {!authCtx.isLoggedIn && (
+        <Login />
+      )}
+    </React.Fragment>
   );
 }
 
