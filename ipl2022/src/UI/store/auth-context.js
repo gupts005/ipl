@@ -1,43 +1,60 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 
 // let logoutTimer;
 
 const AuthContext = React.createContext({
   token: '',
   isLoggedIn: false,
-  login: (token) => {},
+  login: (data) => {},
   logout: () => {},
 });
 
 const retrieveStoredToken = () => {
-  const storedState = localStorage.getItem('loginState');
-  return storedState;  
+  const storedState = localStorage.getItem("loginState");
+  return JSON.parse(storedState);
 };
 
 export const AuthContextProvider = (props) => {
   const tokenData = retrieveStoredToken();
-  
+
   let initialToken;
   if (tokenData) {
-    initialToken = tokenData;
+    initialToken = tokenData.username;
+    console.log(initialToken,' lllllllllllllllllll');
   }
 
-  const [token, setToken] = useState({...initialToken});
+  const [state, setState] = useState({
+    userId: null,
+    username: null,
+    status: null,
+    role: null,
+    token: null
+  });
 
-  const userIsLoggedIn = !!token.username;
+  const [LoggedIn, setLoggedIn] = useState(initialToken);
+
+  const userIsLoggedIn = !!LoggedIn;
 
   const logoutHandler = useCallback(() => {
-    setToken(null);
-    localStorage.removeItem('loginState');
+    setState(null);
+    setLoggedIn(null);
+    localStorage.removeItem("loginState");
   }, []);
 
-  const loginHandler = (token) => {
-    setToken({token});
-    localStorage.setItem('token', token);
+  const loginHandler = (data) => {
+    setLoggedIn(data);
+    setState({
+      userId: data.userId,
+      username: data.username,
+      status: data.status,
+      role: data.role,
+      token: data.token
+    });
+    localStorage.setItem("loginState", JSON.stringify(data));
   };
 
   const contextValue = {
-    token: token,
+    userData: state,
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,
     logout: logoutHandler,

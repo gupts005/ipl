@@ -1,7 +1,7 @@
 import React from 'react';
 import './chat.scss';
 import socketIOClient from "socket.io-client";
-import { EndPoint } from '../common/constants';
+import { EndPoint } from '../common/constants/data';
 
 const Chat = () => {
 

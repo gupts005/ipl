@@ -1,5 +1,5 @@
 import React from 'react';
-import { BackGroundImage } from '../common/constants';
+import { BackGroundImage } from '../common/constants/data';
 import './MatchList.scss';
 
 const MatchList = (props) => {

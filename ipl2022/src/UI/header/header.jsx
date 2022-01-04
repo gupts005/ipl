@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeaderData } from '../common/constants';
+import { HeaderData } from '../common/constants/data';
 import './header.scss';
 
 const Header = (props) => {
