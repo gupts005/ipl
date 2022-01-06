@@ -1,0 +1,1 @@
+export const NO_RESP = `Action is completed but Server didn't sent any response`;
