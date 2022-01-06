@@ -72,8 +72,8 @@ export const borderTop = {
   t2: "silver", //
 };
 
-const userData = JSON.parse(localStorage.getItem("loginState"));
+const userData = JSON.parse(localStorage.getItem('loginState'));
 export const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` },
+  headers: { Authorization: `Bearer ${userData?.token}` }
 };
 
