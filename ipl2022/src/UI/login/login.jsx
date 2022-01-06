@@ -80,7 +80,7 @@ const Login = () => {
           return res.json().then((data) => {
             let errorMessage = 'Authentication failed!';
             if (data) {
-              errorMessage = data;
+              errorMessage = data.message;
             }
             throw new Error(errorMessage);
           });
@@ -90,7 +90,7 @@ const Login = () => {
         authCtx.login(data);
         history('/');
       }).catch((err) => {
-        alert(err.message);
+        alert(err.message, ' catch block');
       })
   };
 

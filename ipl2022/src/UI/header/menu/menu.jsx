@@ -1,18 +1,20 @@
 import { useContext } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { HeaderData } from '../../common/constants/data';
 import AuthContext from '../../store/auth-context';
 import classes from "./menu.module.scss";
 
 const Menu = (props) => {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
 
-  const isLoggedIn = authCtx.isLoggedIn;
+  const navigationHandler = (item) => {
+    navigate(`${item.url}`);
+  };
 
   const logoutHandler = () => {
     authCtx.logout();
-    history('/');
+    navigate('/');
   };
 
   return (
@@ -20,7 +22,7 @@ const Menu = (props) => {
       {HeaderData.map((item) => (
         <ul key={item.id}>
           <li onClick={() => props.setMenuOpen(false)}>
-            <a href="#intro"> {item.title} </a>
+            <a onClick={()=>navigationHandler(item)}> {item.title} </a>
           </li>
         </ul>
       ))}

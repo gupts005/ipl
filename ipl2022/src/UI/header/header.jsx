@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { HeaderData } from '../common/constants/data';
 import './header.scss';
 
@@ -9,18 +10,22 @@ const Header = (props) => {
     clicked: false
   });
 
-  const setSelected = (id) => {
+  const navigate = useNavigate();
+
+  const setSelected = (item) => {
+    setState({
+      selectedIndex: item.id,
+      clicked: true
+    });
+    navigate(`${item.url}`);
+  };
+  
+  const setHomeSelected = (id) => {
     setState({
       selectedIndex: id,
       clicked: true
     });
-  };
-  
-  const setHomeSelected = () => {
-    setState({
-      selectedIndex: null,
-      clicked: false
-    });
+    navigate('/home');
   };
 
   return (
@@ -29,8 +34,8 @@ const Header = (props) => {
         <div className="left">
           <div className='left_inner_left'>
             <h3 
-              onClick={()=>setHomeSelected()}
-              className={state.clicked === false? 'selected' : ''}>
+              onClick={()=>setHomeSelected('99')}
+              className={state.clicked === true && state.selectedIndex === '99' ? 'selected' : ''}>
               Home
             </h3>
           </div>
@@ -38,10 +43,9 @@ const Header = (props) => {
             {HeaderData.map((item) => (
               <span 
                 key={item.id}
-                onClick={()=>setSelected(item.id)}
-                className={state.clicked === true && state.selectedIndex === item.id ? 'selected' : ''}> 
-
-                  {item.title} 
+                onClick={()=>setSelected(item)}
+                className={state.clicked === true && state.selectedIndex === item.id ? 'selected' : ''}>                 
+                  {item.title}
               </span>
             ))}
           </div>

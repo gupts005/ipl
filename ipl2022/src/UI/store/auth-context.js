@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 
 // let logoutTimer;
 
 const AuthContext = React.createContext({
-  token: '',
+  userData: '',
   isLoggedIn: false,
   login: (data) => {},
   logout: () => {},
@@ -20,7 +20,6 @@ export const AuthContextProvider = (props) => {
   let initialToken;
   if (tokenData) {
     initialToken = tokenData.username;
-    console.log(initialToken,' lllllllllllllllllll');
   }
 
   const [state, setState] = useState({
