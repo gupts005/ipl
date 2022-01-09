@@ -1,0 +1,234 @@
+@import "../../global.scss";
+
+.parent {
+  min-height: 100vh;
+  height: auto;
+  width: 100%;
+
+  .child {
+    height: auto;
+    min-height: calc(100vh - 70px);
+    top: 70px;
+    border: 3px solid red;
+    position: relative;
+
+    .child_1 {
+      margin: 0;
+      padding: 0;
+      .container1 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 20px;
+        align-content: stretch;
+        background: #353535;
+        height: 300px;
+        width: auto;
+      }
+
+      .innerr1 {
+        position: relative;
+        height: 100%;
+        align-self: center;
+        vertical-align: middle;
+        margin-top: 10%;
+        text-align: center;
+      }
+
+      .innerr2 {
+        height: 100%;
+        text-align: center;
+        margin-top: 10%;
+      }
+
+      .innerr3 {
+        height: 100%;
+        text-align: center;
+        margin-top: 10%;
+      }
+
+      .item1 {
+        display: flex;
+        flex-direction: column;
+        order: 1;
+        background: linear-gradient(to right, #ffd700, #ffd910, #ffe700);
+        color: rgb(2, 2, 2);
+        font-weight: bolder;
+        border-radius: 10px 10px 0px 0px;
+        width: 20%;
+        animation: rotate 1.5s linear infinite;
+
+        @include mobile {
+          width: 27%;
+        }
+      }
+
+      .png-over {
+        height: 10%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .card-image {
+        height: 20%;
+        border-radius: 50%;
+        margin-bottom: 20px;
+      }
+
+      .card-image2 {
+        height: 20%;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+
+      .card-image3 {
+        height: 20%;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+
+      .pp3 {
+        height: 25%;
+      }
+
+      .pp2 {
+        height: 23%;
+      }
+
+      .item2 {
+        background: linear-gradient(to right, yellow, green);
+        margin-top: 40px;
+        border-radius: 10px 10px 0px 0px;
+        width: 20%;
+        font-weight: bolder;
+        animation: rotate 1.5s linear infinite;
+        overflow: hidden;
+        @include mobile {
+          width: 27%;
+        }
+      }
+
+      .item3 {
+        order: 1;
+        background: linear-gradient(to left, #cd7f32, #cd7f99);
+        margin-top: 80px;
+        border-radius: 10px 10px 0px 0px;
+        width: 20%;
+        font-weight: bolder;
+        animation: rotate 1.5s linear infinite;
+        overflow: hidden;
+        @include mobile {
+          width: 27%;
+        }
+      }
+      .line {
+        height: 6px;
+        border-radius: 4px;
+        background: red;
+        /* For browsers that do not support gradients */
+        background: -webkit-linear-gradient(
+          left,
+          orange,
+          yellow,
+          green,
+          cyan,
+          blue,
+          violet
+        );
+        /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(
+          right,
+          orange,
+          yellow,
+          green,
+          cyan,
+          blue,
+          violet
+        );
+        /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(
+          right,
+          orange,
+          yellow,
+          green,
+          cyan,
+          blue,
+          violet
+        );
+        /* For Firefox 3.6 to 15 */
+        background: linear-gradient(
+          to right,
+          orange,
+          yellow,
+          green,
+          cyan,
+          blue,
+          violet
+        );
+        /* Standard syntax (must be last) */
+        animation: rotate 1.5s linear infinite;
+      }
+
+      .txtbg {
+        /* background: linear-gradient(to right, orange, yellow, green, cyan, blue, violet); */
+        background: #16191c;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .vl {
+        border-radius: 4px;
+        width: 6px;
+        height: 300px;
+        left: 0%;
+        position: absolute;
+        background: linear-gradient(
+          to bottom,
+          orange,
+          yellow,
+          green,
+          cyan,
+          blue,
+          violet
+        );
+        animation: rotate 1.5s linear infinite;
+      }
+
+      .vl1 {
+        border-radius: 4px;
+        width: 6px;
+        min-height: 305px;
+        height: auto;
+        position: absolute;
+        right: 0%;
+        top: 2px;
+        background: linear-gradient(
+          to bottom,
+          orange,
+          yellow,
+          green,
+          cyan,
+          blue,
+          violet
+        );
+        animation: rotate 1.5s linear infinite;
+      }
+
+      @keyframes rotate {
+        0% {
+          filter: hue-rotate(0deg);
+        }
+        100% {
+          filter: hue-rotate(360deg);
+        }
+      }
+    }
+    
+    .child_2{
+      border: 3px solid green;
+      height: 100px;
+      background:#16191c;
+    }
+  }
+}

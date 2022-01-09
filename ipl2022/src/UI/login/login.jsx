@@ -6,10 +6,11 @@ import MiniCarousel from '../MiniCarousel/MiniCrousel';
 import { init } from "ityped";
 import Particles from 'react-tsparticles';
 import { authBaseURL } from '../common/constants/http-urls';
+import AnimatedButton from '../common/components/AnimatedButton/AnimatedButton';
 
 const Login = () => {
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const [state, setState] = useState({
     isLoading: false
@@ -88,10 +89,14 @@ const Login = () => {
       })
       .then((data) => {
         authCtx.login(data);
-        history('/');
+        navigate('/');
       }).catch((err) => {
         alert(err.message, ' catch block');
       })
+  };
+
+  const gotoRegistration = () => {
+    navigate('/registration');
   };
 
   return (
@@ -202,13 +207,7 @@ const Login = () => {
                   </div>
                   <div className={classes.login_btn}>
                     {!state.isLoading && (
-                      <button>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        Login
-                      </button>
+                      <AnimatedButton />
                     )}
                     {state.isLoading && <p>Sending request...</p>}
                   </div>
@@ -219,8 +218,12 @@ const Login = () => {
                   <a>Forgot Password?</a>
                 </div>
                 <div className={classes.child_right_3_right}>
-                  <span ref={textRef2}> </span>
-                  <br /> <i className="fas fa-sign-in-alt"></i>Hit me to register
+                  <span className={classes.span1} ref={textRef2}> </span>
+                  <br /> 
+                  <span className={classes.span2} onClick={gotoRegistration}>
+                  <i className="fas fa-sign-in-alt"></i>Hit me to register
+
+                  </span>
                 </div>
 
               </div>

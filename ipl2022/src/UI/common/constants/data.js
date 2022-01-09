@@ -30,7 +30,7 @@ export const HeaderData = [
   },
 ];
 
-export const teamColor = {
+export const TeamColor = {
   1: "#ff0", //csk
   2: "#2561ae", //dc
   3: "#7300ab", //kkr
@@ -44,7 +44,7 @@ export const teamColor = {
   t2: "silver", //
 };
 
-export const teamFontColor = {
+export const TeamFontColor = {
   1: "black", //csk
   2: "#fff", //dc
   3: "#fff", //kkr
@@ -58,7 +58,7 @@ export const teamFontColor = {
   t2: "black", //
 };
 
-export const borderTop = {
+export const BorderTop = {
   1: "5px solid #ef9b0f", //csk
   2: "5px solid #4B9CD3", //dc
   3: "5px solid #430064", //kkr
@@ -77,3 +77,68 @@ export const Token = {
   headers: { Authorization: `Bearer ${userData?.token}` }
 };
 
+export const Matches = [
+  {
+    matchId: 7878,
+    tournamentId: 1,
+    name: "ffghfh",
+    venueId: 1,
+    venue: "chennai",
+    team1: "Delhi Capitals",
+    team1Id: 2,
+    team2Id: 5,
+    team1Short: "DC",
+    team2: "Punjab Kings",
+    team2Short: "PBKS",
+    team1Logo:
+      "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/2fd0a3a7-e51b-459c-b5d6-2efc9200d80f.png?alt=media",
+    team2Logo:
+      "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/b1c46baa-8ccd-4aea-9d92-8f390c59c8a6.jpeg?alt=media",
+    winnerTeamId: 0,
+    resultStatus: 0,
+    minimumPoints: 10,
+    startDatetime: "2021-09-19T11:05:36.000+00:00",
+  },
+  {
+    matchId: 85666,
+    tournamentId: 1,
+    name: "nmnmjk",
+    venueId: 2,
+    venue: "mumbai",
+    team1: "Kolkata Knight Riders",
+    team1Id: 3,
+    team2Id: 6,
+    team1Short: "KKR",
+    team2: "Rajasthan Royals",
+    team2Short: "RR",
+    team1Logo:
+      "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/46c719d9-0282-446d-bd79-d2e4c5f05450.png?alt=media",
+    team2Logo:
+      "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/0e9cdfda-a829-44c5-864c-c164d8df3bcc.png?alt=media",
+    winnerTeamId: 0,
+    resultStatus: 0,
+    minimumPoints: 10,
+    startDatetime: "2021-09-20T11:05:55.000+00:00",
+  },
+  {
+    matchId: 8566,
+    tournamentId: 1,
+    name: "nmnmjk",
+    venueId: 2,
+    venue: "mumbai",
+    team1: "Kolkata Knight Riders",
+    team1Id: 3,
+    team2Id: 6,
+    team1Short: "KKR",
+    team2: "Rajasthan Royals",
+    team2Short: "RR",
+    team1Logo:
+      "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/46c719d9-0282-446d-bd79-d2e4c5f05450.png?alt=media",
+    team2Logo:
+      "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/0e9cdfda-a829-44c5-864c-c164d8df3bcc.png?alt=media",
+    winnerTeamId: 0,
+    resultStatus: 0,
+    minimumPoints: 10,
+    startDatetime: "2021-09-20T11:05:55.000+00:00",
+  }
+];

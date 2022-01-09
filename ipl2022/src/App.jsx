@@ -9,6 +9,8 @@ import Chat from './UI/chat/chat';
 import HeaderLayout from './UI/header/HeaderLayout';
 import LeaderBoard from './UI/leader-board/LeaderBoard';
 import MyMatches from './UI/my-matches/MyMatches';
+import UserProfile from './UI/user-profile/UserProfile';
+import SignUp from './UI/registration/SignUp';
 
 function App() {
 
@@ -31,7 +33,7 @@ function App() {
             
             <Route path='/my-matches' element={<MyMatches />} />
             
-            <Route path='/profile' element={<MyMatches />} />
+            <Route path='/profile' element={<UserProfile />} />
           </Routes>
         </HeaderLayout>
       )}
@@ -41,6 +43,8 @@ function App() {
           <Route path="/" element={<Navigate to='/login' />} />
           
           <Route path="/login" element={<Login />} />
+          
+          <Route path="/registration" element={<SignUp />} />
         </Routes>
 
       )}

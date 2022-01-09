@@ -1,0 +1,188 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+}
+.parent {
+  min-height: 100vh;
+  height: auto;
+  width: 100%;
+
+  .child {
+    height: auto;
+    min-height: calc(100vh - 70px);
+    top: 70px;
+    position: relative;
+    background-image: url("https://wallpaperaccess.com/full/1170820.jpg");
+
+    .wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 650px;
+      /* min-width: 650px; */
+      display: flex;
+      box-shadow: 0 1px 20px 0 rgba(69, 90, 100, 0.08);
+
+      .left {
+        width: 35%;
+        background: linear-gradient(to right, #01a9ac, #01dbdf);
+        padding: 30px 25px;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        text-align: center;
+        color: #fff;
+        img {
+          margin-bottom: 10px;
+          border-radius: 5px;
+        }
+        h4 {
+          margin-bottom: 10px;
+        }
+        p {
+          font-size: 12px;
+        }
+      }
+      .right {
+        width: 35%;
+        background: #fff;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        padding: 30px 25px;
+
+        .info {
+          margin-bottom: 25px;
+
+          h3 {
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #353c4e;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-size: 1rem;
+          }
+
+          .info_data {
+            display: flex;
+            justify-content: space-between;
+
+            .data {
+              width: 45%;
+           
+              p {
+                font-size: 13px;
+                margin-bottom: 10px;
+                color: #919aa3;
+              }
+            }
+          }
+        }
+
+        .projects {
+          margin-bottom: 25px;
+
+          h3 {
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e0e0e0;
+            color: #353c4e;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-size: 1rem;
+          }
+
+          .projects_data {
+            display: flex;
+            justify-content: space-between;
+
+
+            .data {
+              width: 45%;
+
+              h4 {
+                color: #353c4e;
+                margin-bottom: 5px;
+                font-size: 15px;
+              }
+            }
+          }
+        }
+
+        .social_media {
+          
+          .btn{
+            margin: 10px;
+            // background: linear-gradient(to right, #01a9ac, #01dbdf);
+          }
+        }
+      }
+    }
+
+    .wrapper .left p {
+      font-size: 12px;
+    }
+
+    .wrapper .right {
+      width: 65%;
+    }
+
+    .wrapper .social_media ul {
+      display: flex;
+    }
+
+    .wrapper .social_media ul li {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(to right, #01a9ac, #01dbdf);
+      margin-right: 10px;
+      border-radius: 5px;
+      line-height: 45px;
+      text-align: center;
+    }
+
+    .wrapper .social_media ul li a {
+      color: #fff;
+      display: block;
+      font-size: 18px;
+    }
+
+    .emicon {
+      background: linear-gradient(to right, #01a9ac, #01dbdf);
+    }
+
+    .blue {
+      color: #1954a1;
+      font-weight: 500;
+    }
+
+    .green {
+      color: green;
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 0;
+    }
+
+    .red {
+      color: red;
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 0;
+    }
+
+    .p_lower {
+      margin-top: 0;
+      padding-top: 0;
+      font-size: 0.8rem;
+    }
+
+    .remove {
+      color: red;
+      cursor: pointer;
+    }
+  }
+}
