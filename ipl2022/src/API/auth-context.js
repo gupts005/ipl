@@ -7,6 +7,7 @@ const AuthContext = React.createContext({
   isLoggedIn: false,
   login: (data) => {},
   logout: () => {},
+  screenSize: null
 });
 
 const retrieveStoredToken = () => {
@@ -15,6 +16,26 @@ const retrieveStoredToken = () => {
 };
 
 export const AuthContextProvider = (props) => {
+  const [screenSize, getDimension] = React.useState({
+    dynamicWidth: window.innerWidth,
+    dynamicHeight: window.innerHeight
+  });
+
+  const setDimension = () => {
+    getDimension({
+      dynamicWidth: window.innerWidth,
+      dynamicHeight: window.innerHeight
+    });
+  }
+
+  React.useEffect(() => {
+    window.addEventListener('resize', setDimension);
+
+    return (() => {
+      window.removeEventListener('resize', setDimension);
+    })
+  }, [screenSize]);
+
   const tokenData = retrieveStoredToken();
 
   let initialToken;
@@ -57,6 +78,7 @@ export const AuthContextProvider = (props) => {
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
+    screenSize: screenSize
   };
 
   return (

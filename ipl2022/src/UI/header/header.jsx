@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import CustomizedMenus from '../common/components/CustomMenu';
 import { HeaderData } from '../common/constants/data';
 import classes from './header.module.scss';
 
@@ -19,7 +20,7 @@ const Header = (props) => {
     });
     navigate(`${item.url}`);
   };
-  
+
   const setHomeSelected = (id) => {
     setState({
       selectedIndex: id,
@@ -28,30 +29,36 @@ const Header = (props) => {
     navigate('/home');
   };
 
+  const userData = JSON.parse(localStorage.getItem('loginState'));
+  const role = userData.role;
+
   return (
-    <div className={classes.topbar+' ' + (props.menuOpen && classes.active)}>
+    <div className={classes.topbar + ' ' + (props.menuOpen && classes.active)}>
       <div className={classes.wrapper}>
         <div className={classes.left}>
           <div className={classes.left_inner_left}>
-            <h3 
-              onClick={()=>setHomeSelected('99')}
+            <h3
+              onClick={() => setHomeSelected('99')}
               className={state.clicked === true && state.selectedIndex === '99' ? classes.selected : ''}>
               Home
             </h3>
           </div>
           <div className={classes.left_inner_right}>
             {HeaderData.map((item) => (
-              <span 
+              <span
                 key={item.id}
-                onClick={()=>setSelected(item)}
-                className={state.clicked === true && state.selectedIndex === item.id ? classes.selected : ''}>                 
-                  {item.title}
+                onClick={() => setSelected(item)}
+                className={state.clicked === true && state.selectedIndex === item.id ? classes.selected : ''}>
+                {item.title}
               </span>
             ))}
           </div>
           <div></div>
         </div>
         <div className={classes.right}>
+          <div className={classes.dropdown}>
+            {role==='Admin' && <CustomizedMenus />}
+          </div>
           <div className={classes.hamburger} onClick={() => { props.setMenuOpen(!props.menuOpen) }}>
             <span className={classes.line1}></span>
             <span className={classes.line2}></span>

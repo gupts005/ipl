@@ -6,13 +6,17 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter } from "react-router-dom";
-import { AuthContextProvider } from "./UI/store/auth-context";
+import { AuthContextProvider } from "./API/auth-context";
+import { Provider } from "react-redux";
+import store from './API';
 
 ReactDOM.render(
   <AuthContextProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
   </AuthContextProvider>,
   document.getElementById("root")
 );

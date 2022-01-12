@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { HeaderData } from '../../common/constants/data';
-import AuthContext from '../../store/auth-context';
+import AuthContext from '../../../API/auth-context';
 import classes from "./menu.module.scss";
 
 const Menu = (props) => {

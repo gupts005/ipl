@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import classes from './login.module.scss';
 import { useNavigate } from 'react-router-dom';
-import AuthContext from '../store/auth-context';
+import AuthContext from '../../API/auth-context';
 import MiniCarousel from '../MiniCarousel/MiniCrousel';
 import { init } from "ityped";
 import Particles from 'react-tsparticles';
-import { authBaseURL } from '../common/constants/http-urls';
+import { authBaseURL } from '../../common/http-urls.js';
 import AnimatedButton from '../common/components/AnimatedButton/AnimatedButton';
 
 const Login = () => {

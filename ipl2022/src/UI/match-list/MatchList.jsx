@@ -1,17 +1,28 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { BackGroundImage, Matches, TeamFontColor, BorderTop, Token,TeamColor } from '../common/constants/data';
-import { matchBaseURL } from '../common/constants/http-urls';
+import { matchBaseURL } from '../../common/http-urls';
 import classes from './MatchList.module.scss';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const MatchList = (props) => {
+
+  const navigate = useNavigate();
+  
+  const matchData = useSelector((state) => state.matches.items);
+  console.log(matchData, ' main file');
+
+  const gotoBettingPage = (item) => {
+    navigate(`/match-list/${item.matchId}`,{state:item});
+  };
 
   return (
     <div className={classes.parent}>
 
       <div className={classes.match_list} style={{ backgroundImage: `url(${BackGroundImage})` }}>
-        {Matches.map((item) => (
-          <div className={classes.card} key={item.matchId}>
+        {matchData.map((item) => (
+          <div className={classes.card} onClick={()=>gotoBettingPage(item)} key={item.matchId}>
             <div
               className={classes.left}
               style={{ background: item.team1Id ? TeamColor[item.team1Id] : TeamColor.t1,

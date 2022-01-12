@@ -111,6 +111,13 @@
       }
     }
     .right {
+      display: flex;
+      flex-direction: row;
+
+      .dropdown{
+        margin-right: 10px;
+      }
+
       .hamburger {
         width: 32px;
         height: 25px;
