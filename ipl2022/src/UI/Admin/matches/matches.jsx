@@ -42,6 +42,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
 import MatchesCrud from './components/Matches_Crud';
+import ConfirmDeleteModal from '../../common/components/ConfirmDeleteModal';
 
 
 const headCells = [
@@ -151,7 +152,9 @@ const Matches = (props) => {
   const [dense, setDense] = React.useState(false);
   // const [open, setOpen] = React.useState(false);
   const [openCrudModal, setCrudModal] = useState(false);
+  const [openDeleteModal, setDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState([]);
+  const [selectedRowDelete, setSelectedRowDelete] = useState([]);
 
   // const openForm = () => {
   //   setCrudModal(true);
@@ -297,7 +300,7 @@ const Matches = (props) => {
                             </Fab>
                           </TableCell>
                           <TableCell style={{ width: 160 }} align="center">
-                            <Fab size={authCtx.screenSize.dynamicWidth > 600 ? '' : "small"} color='secondary'>
+                            <Fab onClick={() => { setSelectedRowDelete(item); setDeleteModal(true); }} size={authCtx.screenSize.dynamicWidth > 600 ? '' : "small"} color='secondary'>
                               <Delete fontSize={authCtx.screenSize.dynamicWidth > 600 ? 'medium' : 'small'} />
                             </Fab>
                           </TableCell>
@@ -331,7 +334,7 @@ const Matches = (props) => {
           {/* <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" /> */}
         </Box>
         <MatchesCrud update={selectedRow} open={openCrudModal} handleClose={() => setCrudModal(false)} />
-
+        <ConfirmDeleteModal delete={selectedRowDelete} open={openDeleteModal} handleClose={() => setDeleteModal(false)} />
       </div>
     </div >
 

@@ -1,10 +1,6 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -14,7 +10,6 @@ import Slide from '@mui/material/Slide';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
-import Stack from '@mui/material/Stack';
 import { MenuItem } from '@mui/material';
 import DateAdapter from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -35,25 +30,37 @@ const ParentDiv = styled.div`
 
 export default function MatchesCrud(props) {
 
-  console.log(props);
   const tournamentData = useSelector((state) => state.tournament.items);
   const venueData = useSelector((state) => state.venue.items);
   const teamData = useSelector((state) => state.team.teamItems);
 
-  const [tempData, setTempData] = React.useState();
-  React.useEffect(() => {
-    setTempData([props.update]);
-  }, []);
-
   const [selected, setSelected] = React.useState({
-    tournament: '',
-    venue: '',
+    matchId: '',
+    minimumPoints: '',
+    name: '',
+    resultStatus: '',
+    startDatetime: '',
     team1: '',
-    team2: ''
+    team1Id: '',
+    team1Logo: '',
+    team1Short: '',
+    team2: '',
+    team2Id: '',
+    team2Logo: '',
+    team2Short: '',
+    tournamentId: '',
+    venue: '',
+    venueId: '',
+    winnerTeamId: ''
   });
+
+  React.useEffect(() => {
+    setSelected(props.update);
+  }, [props]);
 
   return (
     <React.Fragment >
+
       <Dialog
         keepMounted
         onClose={props.handleClose}
@@ -89,11 +96,15 @@ export default function MatchesCrud(props) {
           <ParentDiv>
 
             <TextField
-              value={props.update.matchId || ''}
+              value={selected.matchId || ''}
               disabled={props.update ? false : true}
               id="outlined-disabled"
               focused={props.update ? true : false}
               label='Match ID'
+              InputProps={{
+                readOnly: false,
+              }}
+              onChange={(e) => { setSelected(prevState => ({ ...prevState, matchId: e.target.value })); console.log(e.target.value); }}
             />
 
             <TextField
@@ -101,9 +112,9 @@ export default function MatchesCrud(props) {
               id="outlined-select-currency"
               select
               label="Tournament"
-              value={props.update.tournamentId || selected.tournament}
-              onChange={(e) => setSelected(prevState => ({ ...prevState, tournament: e.target.value }))}
               helperText="Please select a tournament"
+              value={selected.tournamentId || ''}
+              onChange={(e) => setSelected(prevState => ({ ...prevState, tournamentId: e.target.value }))}
             >
               {tournamentData.map((option) => (
                 <MenuItem
@@ -116,15 +127,17 @@ export default function MatchesCrud(props) {
             </TextField>
 
             <TextField
-              value={props.update.name || ''}
               focused={props.update ? true : false}
               id="outlined-basic"
               label="Name"
-              variant="outlined" />
+              variant="outlined"
+              value={selected.name || ''}
+              onChange={(e) => { setSelected(prevState => ({ ...prevState, name: e.target.value })); console.log(e.target.value); }}
+            />
 
             <LocalizationProvider dateAdapter={DateAdapter}>
               <MobileDateTimePicker
-                value={props.update.startDatetime || ''}
+                value={selected.startDatetime || ''}
                 label='Start Date Time'
                 onChange={(newValue) => {
                   // setValue(newValue);
@@ -134,12 +147,12 @@ export default function MatchesCrud(props) {
             </LocalizationProvider>
 
             <TextField
-              value={props.update.venueId || ''}
               id="outlined-select-currency"
               select
               label="Venue"
-              onChange={(e) => setSelected(prevState => ({ ...prevState, venue: e.target.value }))}
               helperText="Please select a Venue"
+              value={selected.venueId || ''}
+              onChange={(e) => setSelected(prevState => ({ ...prevState, venueId: e.target.value }))}
             >
               {venueData.map((option) => (
                 <MenuItem
@@ -152,12 +165,12 @@ export default function MatchesCrud(props) {
             </TextField>
 
             <TextField
-              value={props.update.team1Id || ''}
               id="outlined-select-currency"
               select
               label="Team 1"
-              onChange={(e) => setSelected(prevState => ({ ...prevState, team1: e.target.value }))}
               helperText="Please select a Team"
+              value={selected.team1Id || ''}
+              onChange={(e) => setSelected(prevState => ({ ...prevState, team1Id: e.target.value }))}
             >
               {teamData.map((option) => (
                 <MenuItem
@@ -173,9 +186,9 @@ export default function MatchesCrud(props) {
               id="outlined-select-currency"
               select
               label="Team 2"
-              value={props.update.team2Id || ''}
-              onChange={(e) => setSelected(prevState => ({ ...prevState, team2: e.target.value }))}
               helperText="Please select a team"
+              value={selected.team2Id || ''}
+              onChange={(e) => setSelected(prevState => ({ ...prevState, team2Id: e.target.value }))}
             >
               {teamData.map((option) => (
                 <MenuItem
@@ -189,14 +202,16 @@ export default function MatchesCrud(props) {
 
             <TextField
               focused={props.update ? true : false}
-              value={props.update.minimumPoints || ''}
+              value={selected.minimumPoints || ''}
               id="outlined-basic" label="Minimum Points"
               variant="outlined"
+              onChange={(e) => { setSelected(prevState => ({ ...prevState, minimumPoints: e.target.value })); console.log(e.target.value); }}
             />
 
           </ParentDiv>
         </Box>
       </Dialog>
+
     </React.Fragment>
   );
 }
