@@ -1,10 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthContext from '../../API/auth-context';
 import CustomizedMenus from '../common/components/CustomMenu';
 import { HeaderData } from '../common/constants/data';
 import classes from './header.module.scss';
 
 const Header = (props) => {
+
+  const authCtx = React.useContext(AuthContext);
+  const role = authCtx.userData?.role;
 
   const [state, setState] = React.useState({
     selectedIndex: null,
@@ -28,9 +32,6 @@ const Header = (props) => {
     });
     navigate('/home');
   };
-
-  const userData = JSON.parse(localStorage.getItem('loginState'));
-  const role = userData.role;
 
   return (
     <div className={classes.topbar + ' ' + (props.menuOpen && classes.active)}>

@@ -25,22 +25,8 @@ import { fetchVenueData } from './API/venue/venue-actions';
 
 function App() {
 
-  const dispatch = useDispatch();
-  // const showCart = useSelector((state) => state.ui.cartIsVisible);
-  // const cart = useSelector((state) => state.cart);
-  // const notification = useSelector((state) => state.ui.notification);
-
-  useEffect(() => {
-    dispatch(fetchMatchData());
-    dispatch(fetchTeamData());
-    dispatch(fetchTournamentData());
-    dispatch(fetchVenueData());
-  }, [dispatch]);
-
-  const userData = JSON.parse(localStorage.getItem('loginState'));
-  const role = userData.role;
-  
   const authCtx = React.useContext(AuthContext);
+  const role = authCtx.userData?.role;
 
   return (
     <React.Fragment>

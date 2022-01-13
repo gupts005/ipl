@@ -5,6 +5,10 @@ import { Token } from '../../UI/common/constants/data';
 import { tournamentActions } from './tournament-slice';
 
 export const fetchTournamentData = () => {
+  const userData = JSON.parse(localStorage.getItem('loginState'));
+const Token = {
+  headers: { Authorization: `Bearer ${userData?.token}` }
+};
   return async (dispatch) => {
     const fetchData = async () => {
       const response = await axios.get(tournamentBaseURL,Token);

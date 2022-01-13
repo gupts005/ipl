@@ -72,11 +72,6 @@ export const BorderTop = {
   t2: "silver", //
 };
 
-const userData = JSON.parse(localStorage.getItem('loginState'));
-export const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
-
 export const Matches = [
   {
     matchId: 7878,

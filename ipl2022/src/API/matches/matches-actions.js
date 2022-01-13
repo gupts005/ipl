@@ -6,6 +6,12 @@ import { matchActions } from './matches-slice';
 
 
 export const fetchMatchData = () => {
+  
+const userData = JSON.parse(localStorage.getItem('loginState'));
+const Token = {
+  headers: { Authorization: `Bearer ${userData?.token}` }
+};
+
   return async (dispatch) => {
     const fetchData = async () => {
       const response = await axios.get(matchBaseURL,Token);
