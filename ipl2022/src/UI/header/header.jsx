@@ -7,8 +7,8 @@ import classes from './header.module.scss';
 
 const Header = (props) => {
 
-  const authCtx = React.useContext(AuthContext);
-  const role = authCtx.userData?.role;
+  const userData = JSON.parse(localStorage.getItem('loginState'));
+  const role = userData?.role;
 
   const [state, setState] = React.useState({
     selectedIndex: null,

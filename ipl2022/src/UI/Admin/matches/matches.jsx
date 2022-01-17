@@ -23,7 +23,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import moment from 'moment';
 import React, { useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import classes from './matches.module.scss';
 import { Delete, Edit, SportsCricket, ArrowDropUp, ArrowDropDown } from '@mui/icons-material';
 import { Fab, TextField } from '@mui/material';
@@ -42,8 +42,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import Button from '@mui/material/Button';
 import MatchesCrud from './components/Matches_Crud';
-import ConfirmDeleteModal from '../../common/components/ConfirmDeleteModal';
+import { deleteMatchData, sendMatchData, sendUpdatedMatchData } from '../../../API/matches/matches-actions';
 
+let isInitial = true;
 
 const headCells = [
   { id: 'matchId', numeric: true, label: 'ID', disablePadding: true },
@@ -141,6 +142,8 @@ TablePaginationActions.propTypes = {
 
 const Matches = (props) => {
 
+  const dispatch = useDispatch();
+
   const authCtx = useContext(AuthContext);
   const matchData = useSelector((state) => state.matches.items);
 
@@ -150,18 +153,66 @@ const Matches = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [dense, setDense] = React.useState(false);
-  // const [open, setOpen] = React.useState(false);
   const [openCrudModal, setCrudModal] = useState(false);
-  const [openDeleteModal, setDeleteModal] = useState(false);
+  // const [openDeleteModal, setDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState([]);
   const [selectedRowDelete, setSelectedRowDelete] = useState([]);
+  const [selected, setSelected] = React.useState({
+    matchId: '',
+    minimumPoints: '',
+    name: '',
+    resultStatus: '',
+    startDatetime: new Date(),
+    team1: '',
+    team1Id: '',
+    team1Logo: '',
+    team1Short: '',
+    team2: '',
+    team2Id: '',
+    team2Logo: '',
+    team2Short: '',
+    tournamentId: '',
+    venue: '',
+    venueId: '',
+    winnerTeamId: ''
+  });
 
-  // const openForm = () => {
-  //   setCrudModal(true);
-  // };
-  // const handleClose = () => {
-  //   setCrudModal(false);
-  // };
+  const setIncomingData = (data) => {
+    setSelected(data);
+  }
+
+  useEffect(() => {
+    if (isInitial) {
+      isInitial = false;
+      return;
+    }
+    const z = matchData.find((y) => y.matchId === selected.matchId)
+    if (!z) {
+      dispatch(sendMatchData({
+        matchId: selected.matchId,
+        minimumPoints: selected.minimumPoints,
+        name: selected.name,
+        startDatetime: selected.startDatetime.toString(),
+        team1: selected.team1Id,
+        team2: selected.team2Id,
+        tournamentId: selected.tournamentId,
+        venueId: selected.venueId
+      }));
+    }
+    if (z) {
+      dispatch(sendUpdatedMatchData({
+        matchId: selected.matchId,
+        minimumPoints: selected.minimumPoints,
+        name: selected.name,
+        startDatetime: selected.startDatetime.toString(),
+        team1: selected.team1Id,
+        team2: selected.team2Id,
+        tournamentId: selected.tournamentId,
+        venueId: selected.venueId
+      }));
+    }
+  }, [selected, dispatch]);
+
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -202,7 +253,7 @@ const Matches = (props) => {
               </Typography>
 
               <TextField label="Search" color='secondary' sx={{ marginRight: '10px' }} onKeyUp={(e) => setSearchTerm(e.target.value)} variant="outlined" />
-              <Fab onClick={() => setCrudModal(true)} color='secondary'><SportsCricket /></Fab>
+              <Fab onClick={() => { setSelectedRow(''); setSelectedRowDelete(false); setCrudModal(true) }} color='secondary'><SportsCricket /></Fab>
             </Toolbar>
             <TableContainer>
               <Table
@@ -295,12 +346,12 @@ const Matches = (props) => {
                             {moment(item.startDatetime).format('MMM Do, h:mm')}
                           </TableCell>
                           <TableCell style={{ width: 160 }} align="center">
-                            <Fab onClick={() => { setSelectedRow(item); setCrudModal(true); }} size={authCtx.screenSize.dynamicWidth > 600 ? '' : 'small'} color='secondary'>
+                            <Fab onClick={() => { setSelectedRow(item); setSelectedRowDelete(false); setCrudModal(true); }} size={authCtx.screenSize.dynamicWidth > 600 ? '' : 'small'} color='secondary'>
                               <Edit fontSize={authCtx.screenSize.dynamicWidth > 600 ? 'medium' : 'small'} />
                             </Fab>
                           </TableCell>
                           <TableCell style={{ width: 160 }} align="center">
-                            <Fab onClick={() => { setSelectedRowDelete(item); setDeleteModal(true); }} size={authCtx.screenSize.dynamicWidth > 600 ? '' : "small"} color='secondary'>
+                            <Fab onClick={() => { setSelectedRow(false); setSelectedRowDelete(item); setCrudModal(true); }} size={authCtx.screenSize.dynamicWidth > 600 ? '' : "small"} color='secondary'>
                               <Delete fontSize={authCtx.screenSize.dynamicWidth > 600 ? 'medium' : 'small'} />
                             </Fab>
                           </TableCell>
@@ -333,8 +384,7 @@ const Matches = (props) => {
           </Paper>
           {/* <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" /> */}
         </Box>
-        <MatchesCrud update={selectedRow} open={openCrudModal} handleClose={() => setCrudModal(false)} />
-        <ConfirmDeleteModal delete={selectedRowDelete} open={openDeleteModal} handleClose={() => setDeleteModal(false)} />
+        <MatchesCrud onClick={setIncomingData} update={selectedRow} delete={selectedRowDelete} open={openCrudModal} handleClose={() => setCrudModal(false)} />
       </div>
     </div >
 

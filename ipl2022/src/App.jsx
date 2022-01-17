@@ -22,16 +22,19 @@ import Teams from './UI/Admin/teams/teams';
 import { fetchTeamData } from './API/team/team-actions';
 import { fetchTournamentData } from './API/tournament/tournament-actions';
 import { fetchVenueData } from './API/venue/venue-actions';
+import FetchingApi from './UI/common/components/FetchingApi';
 
 function App() {
 
   const authCtx = React.useContext(AuthContext);
-  const role = authCtx.userData?.role;
+  const userData = JSON.parse(localStorage.getItem('loginState'));
+  const role = userData?.role;
 
   return (
     <React.Fragment>
       {authCtx.isLoggedIn && (
         <HeaderLayout>
+          <FetchingApi />
           <Routes>
             <Route path='/' element={<Navigate to='/home' />} />
 

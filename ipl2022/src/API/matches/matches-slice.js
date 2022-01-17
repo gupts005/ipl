@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const matchSlice = createSlice({
-  name: 'matches',
+  name: "matches",
   initialState: {
     items: [],
     changed: false,
@@ -11,36 +11,65 @@ const matchSlice = createSlice({
       state.totalQuantity = action.payload.totalQuantity;
       state.items = action.payload.items;
     },
-    // addItemToCart(state, action) {
-    //   const newItem = action.payload;
-    //   const existingItem = state.items.find((item) => item.id === newItem.id);
-    //   state.totalQuantity++;
-    //   state.changed = true;
-    //   if (!existingItem) {
-    //     state.items.push({
-    //       id: newItem.id,
-    //       price: newItem.price,
-    //       quantity: 1,
-    //       totalPrice: newItem.price,
-    //       name: newItem.title,
-    //     });
-    //   } else {
-    //     existingItem.quantity++;
-    //     existingItem.totalPrice = existingItem.totalPrice + newItem.price;
-    //   }
-    // },
-    // removeItemFromCart(state, action) {
-    //   const id = action.payload;
-    //   const existingItem = state.items.find((item) => item.id === id);
-    //   state.totalQuantity--;
-    //   state.changed = true;
-    //   if (existingItem.quantity === 1) {
-    //     state.items = state.items.filter((item) => item.id !== id);
-    //   } else {
-    //     existingItem.quantity--;
-    //     existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
-    //   }
-    // },
+    addMatches(state, action) {
+      const newItem = action.payload;
+      console.log(newItem, " newItem");
+      const existingItem = state.items.find(
+        (item) => item.matchId === newItem.matchId
+      );
+      console.log(existingItem, " existing item");
+      // state.changed = true;
+      if (!existingItem) {
+        state.changed = true;
+        state.items.push({
+          matchId: newItem.matchId,
+          minimumPoints: newItem.minimumPoints,
+          name: newItem.name,
+          startDatetime: newItem.startDatetime,
+          team1: newItem.team1,
+          team2: newItem.team2,
+          tournamentId: newItem.tournamentId,
+          venueId: newItem.venueId,
+        });
+      }
+    },
+    updateMatch(state, action) {
+      const newItem = action.payload;
+      console.log(newItem, " updateItem");
+      const existingItem = state.items.find(
+        (item) => item.matchId === newItem.matchId
+      );
+      console.log(existingItem, " existing item");
+      // state.changed = true;
+      if (existingItem) {
+        state.changed = true;
+        let a = state.items.map((item) =>
+          item.matchId == newItem.matchId
+            ? {
+                ...item,
+                minimumPoints: newItem.minimumPoints,
+                name: newItem.name,
+                startDatetime: newItem.startDatetime,
+                team1: newItem.team1,
+                team2: newItem.team2,
+                tournamentId: newItem.tournamentId,
+                venueId: newItem.venueId,
+              }
+            : item
+        );
+        state.items = a;
+      }
+    },
+    deleteMatch(state, action) {
+      const id = action.payload;
+      console.log(id);
+      const existingItem = state.items.find((item) => item.matchId === id);
+      console.log(existingItem,' deleting existing item');
+      if (existingItem) {
+        state.changed = true;
+        state.items = state.items.filter((item) => item.matchId !== id);
+      }
+    },
   },
 });
 
