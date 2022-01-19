@@ -17,7 +17,9 @@ import MobileDateTimePicker from '@mui/lab/MobileDateTimePicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { matchActions } from '../../../../API/matches/matches-slice';
 import moment from 'moment';
-import { deleteMatchData } from '../../../../API/matches/matches-actions';
+import { deleteMatchData, sendMatchData, sendUpdatedMatchData } from '../../../../API/matches/matches-actions';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -30,6 +32,17 @@ const ParentDiv = styled.div`
   flex-wrap: wrap;
   align-content: center;
 `;
+
+const validationSchema = yup.object({
+  matchId: yup.number().min(1, 'atleast 1 number is required').required('MatchId is required'),
+  minimumPoints: yup.number().min(3, 'minimum 3 digits').required('minimum points is required'),
+  name: yup.string().min(2, 'name should be of minimum 2 characters length').max(20, 'max 10 chars').required('name is required'),
+  startDatetime: yup.date(),
+  team1Id: yup.number().required(),
+  team2Id: yup.number().required(),
+  tournamentId: yup.number().required(),
+  venueId: yup.number().required(),
+});
 
 export default function MatchesCrud(props) {
 
@@ -63,38 +76,77 @@ export default function MatchesCrud(props) {
     setSelected(props.update);
   }, [props]);
 
-  const addMatchesHandler = () => {
-    // e.preventDefault();
-    console.log(selected, ' inserted data');
-    dispatch(
-      matchActions.addMatches({
-        matchId: selected.matchId,
-        minimumPoints: selected.minimumPoints,
-        name: selected.name,
-        startDatetime: selected.startDatetime.toString(),
-        team1: selected.team1,
-        team2: selected.team2,
-        tournamentId: selected.tournamentId,
-        venueId: selected.venueId
-      })
-    );
-    props.onClick(selected);
-    props.handleClose();
-  };
+  const formik = useFormik({
+    initialValues: {
+      matchId: selected.matchId,
+      minimumPoints: selected.minimumPoints,
+      name: selected.name,
+      startDatetime: selected.startDatetime,
+      team1Id: selected.team1Id,
+      team2Id: selected.team2Id,
+      tournamentId: selected.tournamentId,
+      venueId: selected.venueId,
+    },
+    enableReinitialize: true,
+    validationSchema: validationSchema,
+    onSubmit: (selected, { resetForm }) => {
+      if (props.update === '') {
+        dispatch(
+          matchActions.addMatches({
+            matchId: selected.matchId,
+            minimumPoints: selected.minimumPoints,
+            name: selected.name,
+            startDatetime: selected.startDatetime,
+            team1: selected.team1Id,
+            team2: selected.team2Id,
+            tournamentId: selected.tournamentId,
+            venueId: selected.venueId
+          })
+        );
+        dispatch(sendMatchData({
+          matchId: selected.matchId,
+          minimumPoints: selected.minimumPoints,
+          name: selected.name,
+          startDatetime: selected.startDatetime,
+          team1: selected.team1Id,
+          team2: selected.team2Id,
+          tournamentId: selected.tournamentId,
+          venueId: selected.venueId
+        }));
+        resetForm();
+        props.handleClose();
+      }
+      if (props.update !== '') {
+        dispatch(
+          matchActions.updateMatch({
+            matchId: selected.matchId,
+            minimumPoints: selected.minimumPoints,
+            name: selected.name,
+            startDatetime: selected.startDatetime,
+            team1: selected.team1,
+            team2: selected.team2,
+            tournamentId: selected.tournamentId,
+            venueId: selected.venueId
+          })
+        );
+        dispatch(sendUpdatedMatchData({
+          matchId: selected.matchId,
+          minimumPoints: selected.minimumPoints,
+          name: selected.name,
+          startDatetime: selected.startDatetime,
+          team1: selected.team1Id,
+          team2: selected.team2Id,
+          tournamentId: selected.tournamentId,
+          venueId: selected.venueId
+        }));
+        resetForm();
+        props.handleClose();
+      }
+    },
+  });
 
   const updateMatchesHandler = () => {
-    dispatch(
-      matchActions.updateMatch({
-        matchId: selected.matchId,
-        minimumPoints: selected.minimumPoints,
-        name: selected.name,
-        startDatetime: selected.startDatetime.toString(),
-        team1: selected.team1,
-        team2: selected.team2,
-        tournamentId: selected.tournamentId,
-        venueId: selected.venueId
-      })
-    );
+
     props.onClick(selected);
     props.handleClose();
   }
@@ -115,158 +167,184 @@ export default function MatchesCrud(props) {
           open={props.open}
           TransitionComponent={Transition}
         >
-          <AppBar sx={{ position: 'relative' }}>
-            <Toolbar>
-              <IconButton
-                edge="start"
-                color="inherit"
-                onClick={props.handleClose}
-                aria-label="close"
-              >
-                <CloseIcon />
-              </IconButton>
-              <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                {props.update ? 'Update Match Details' : 'Insert Match Details'}
-              </Typography>
-              {props.update !== '' &&
-                <Button autoFocus color="inherit" onClick={updateMatchesHandler}>
-                  Update
-                </Button>
-              }
-              {props.update === '' &&
-                <Button autoFocus color="inherit" onClick={addMatchesHandler}>
-                  Insert
-                </Button>
-              }
-            </Toolbar>
-          </AppBar>
-          <Box
-            component="form"
-            sx={{
-              '& .MuiTextField-root': { m: 1, width: '25ch' },
-            }}
-            noValidate
-            autoComplete="off"
-            onSubmit={(e) => { e.preventDefault(); }}
-          >
-            <ParentDiv>
+          <form onSubmit={formik.handleSubmit}>
+            <AppBar sx={{ position: 'relative' }}>
+              <Toolbar>
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  onClick={props.handleClose}
+                  aria-label="close"
+                >
+                  <CloseIcon />
+                </IconButton>
+                <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                  {props.update ? 'Update Match Details' : 'Insert Match Details'}
+                </Typography>
+                {props.update !== '' &&
+                  <Button autoFocus color="inherit" type='submit'>
+                    Update
+                  </Button>
+                }
+                {props.update === '' &&
+                  <Button autoFocus color="inherit" type='submit'>
+                    Insert
+                  </Button>
+                }
+              </Toolbar>
+            </AppBar>
+            <Box
+              // component="form"
+              sx={{
+                '& .MuiTextField-root': { m: 1, width: '25ch' },
+              }}
+              noValidate
+              autoComplete="off"
+            // onSubmit={(e) => { e.preventDefault(); }}
+            >
+              <ParentDiv>
 
-              <TextField
-                value={selected.matchId || ''}
-                disabled={props.update === '' ? false : true}
-                id="outlined-disabled"
-                focused={props.update ? true : false}
-                label='Match ID'
-                InputProps={{
-                  readOnly: false,
-                }}
-                onChange={(e) => { setSelected(prevState => ({ ...prevState, matchId: e.target.value })) }}
-              />
-
-              <TextField
-                focused={props.update ? true : false}
-                id="outlined-select-currency"
-                select
-                label="Tournament"
-                helperText="Please select a tournament"
-                value={selected.tournamentId || ''}
-                onChange={(e) => setSelected(prevState => ({ ...prevState, tournamentId: e.target.value }))}
-              >
-                {tournamentData.map((option) => (
-                  <MenuItem
-                    key={option.tournamentId}
-                    value={option.tournamentId}
-                  >
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </TextField>
-
-              <TextField
-                focused={props.update ? true : false}
-                id="outlined-basic"
-                label="Name"
-                variant="outlined"
-                value={selected.name || ''}
-                onChange={(e) => { setSelected(prevState => ({ ...prevState, name: e.target.value })) }}
-              />
-
-              <LocalizationProvider dateAdapter={DateAdapter}>
-                <MobileDateTimePicker
-                  value={selected.startDatetime || ''}
-                  label='Start Date Time'
-                  onChange={(newValue) => {
-                    setSelected(prevState => ({ ...prevState, startDatetime: moment(newValue._i).format() }))
-                    // console.log(newValue)
+                <TextField
+                  error={formik.touched.matchId && Boolean(formik.errors.matchId)}
+                  helperText={formik.touched.matchId && formik.errors.matchId}
+                  name='matchId'
+                  value={formik.values.matchId || ''}
+                  disabled={props.update === '' ? false : true}
+                  id="outlined-disabled"
+                  focused={props.update ? true : false}
+                  label='Match ID'
+                  InputProps={{
+                    readOnly: false,
                   }}
-                  renderInput={(params) => <TextField {...params} />}
+                  onChange={formik.handleChange}
                 />
-              </LocalizationProvider>
 
-              <TextField
-                id="outlined-select-currency"
-                select
-                label="Venue"
-                helperText="Please select a Venue"
-                value={selected.venueId || ''}
-                onChange={(e) => setSelected(prevState => ({ ...prevState, venueId: e.target.value }))}
-              >
-                {venueData.map((option) => (
-                  <MenuItem
-                    key={option.venueId}
-                    value={option.venueId}
-                  >
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </TextField>
+                <TextField
+                  focused={props.update ? true : false}
+                  id="outlined-select-currency"
+                  select
+                  label="Tournament"
+                  error={formik.touched.tournamentId && Boolean(formik.errors.tournamentId)}
+                  helperText={formik.touched.tournamentId && formik.errors.tournamentId}
+                  name='tournamentId'
+                  value={formik.values.tournamentId || ''}
+                  onChange={formik.handleChange}
+                >
+                  {tournamentData.map((option) => (
+                    <MenuItem
+                      key={option.tournamentId}
+                      value={option.tournamentId}
+                    >
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
 
-              <TextField
-                id="outlined-select-currency"
-                select
-                label="Team 1"
-                helperText="Please select a Team"
-                value={selected.team1Id || ''}
-                onChange={(e) => setSelected(prevState => ({ ...prevState, team1Id: e.target.value }))}
-              >
-                {teamData.map((option) => (
-                  <MenuItem
-                    key={option.teamId}
-                    value={option.teamId}
-                  >
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </TextField>
+                <TextField
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
+                  focused={props.update ? true : false}
+                  name='name'
+                  id="outlined-basic"
+                  label="Name"
+                  variant="outlined"
+                  value={formik.values.name || ''}
+                  onChange={formik.handleChange}
+                />
 
-              <TextField
-                id="outlined-select-currency"
-                select
-                label="Team 2"
-                helperText="Please select a team"
-                value={selected.team2Id || ''}
-                onChange={(e) => setSelected(prevState => ({ ...prevState, team2Id: e.target.value }))}
-              >
-                {teamData.map((option) => (
-                  <MenuItem
-                    key={option.teamId}
-                    value={option.teamId}
-                  >
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </TextField>
+                <LocalizationProvider dateAdapter={DateAdapter}>
+                  <MobileDateTimePicker
+                    name='startDatetime'
+                    label='Start Date Time'
+                    value={formik.values.startDatetime}
+                    onChange={(v) => {
+                      formik.setFieldValue('startDatetime', JSON.parse(JSON.stringify(v._d)))
+                    }}
+                    renderInput={(params) => <TextField
+                      error={formik.touched.startDatetime && Boolean(formik.errors.startDatetime)}
+                      helperText={formik.touched.startDatetime && formik.errors.startDatetime}
+                      {...params} />}
+                  />
+                </LocalizationProvider>
 
-              <TextField
-                focused={props.update ? true : false}
-                value={selected.minimumPoints || ''}
-                id="outlined-basic" label="Minimum Points"
-                variant="outlined"
-                onChange={(e) => { setSelected(prevState => ({ ...prevState, minimumPoints: e.target.value })) }}
-              />
+                <TextField
+                  error={formik.touched.venueId && Boolean(formik.errors.venueId)}
+                  helperText={formik.touched.venueId && formik.errors.venueId}
+                  id="outlined-select-currency"
+                  select
+                  label="Venue"
+                  helperText="Please select a Venue"
+                  name='venueId'
+                  value={formik.values.venueId || ''}
+                  onChange={formik.handleChange}
+                >
+                  {venueData.map((option) => (
+                    <MenuItem
+                      key={option.venueId}
+                      value={option.venueId}
+                    >
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
 
-            </ParentDiv>
-          </Box>
+                <TextField
+                  error={formik.touched.team1Id && Boolean(formik.errors.team1Id)}
+                  helperText={formik.touched.team1Id && formik.errors.team1Id}
+                  id="outlined-select-currency"
+                  select
+                  label="Team 1"
+                  helperText="Please select a Team"
+                  name='team1Id'
+                  value={formik.values.team1Id || ''}
+                  onChange={formik.handleChange}
+                >
+                  {teamData.map((option) => (
+                    <MenuItem
+                      key={option.teamId}
+                      value={option.teamId}
+                    >
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField
+                  error={formik.touched.team2Id && Boolean(formik.errors.team2Id)}
+                  helperText={formik.touched.team2Id && formik.errors.team2Id}
+                  id="outlined-select-currency"
+                  select
+                  label="Team 2"
+                  helperText="Please select a team"
+                  name='team2Id'
+                  value={formik.values.team2Id || ''}
+                  onChange={formik.handleChange}
+                >
+                  {teamData.map((option) => (
+                    <MenuItem
+                      key={option.teamId}
+                      value={option.teamId}
+                    >
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField
+                  error={formik.touched.minimumPoints && Boolean(formik.errors.minimumPoints)}
+                  helperText={formik.touched.minimumPoints && formik.errors.minimumPoints}
+                  focused={props.update ? true : false}
+                  value={formik.values.minimumPoints || ''}
+                  id="outlined-basic"
+                  label="Minimum Points"
+                  name='minimumPoints'
+                  variant="outlined"
+                  onChange={formik.handleChange}
+                />
+
+              </ParentDiv>
+            </Box>
+          </form>
         </Dialog>
       }
 

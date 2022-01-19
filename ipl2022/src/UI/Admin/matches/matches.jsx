@@ -157,62 +157,6 @@ const Matches = (props) => {
   // const [openDeleteModal, setDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState([]);
   const [selectedRowDelete, setSelectedRowDelete] = useState([]);
-  const [selected, setSelected] = React.useState({
-    matchId: '',
-    minimumPoints: '',
-    name: '',
-    resultStatus: '',
-    startDatetime: new Date(),
-    team1: '',
-    team1Id: '',
-    team1Logo: '',
-    team1Short: '',
-    team2: '',
-    team2Id: '',
-    team2Logo: '',
-    team2Short: '',
-    tournamentId: '',
-    venue: '',
-    venueId: '',
-    winnerTeamId: ''
-  });
-
-  const setIncomingData = (data) => {
-    setSelected(data);
-  }
-
-  useEffect(() => {
-    if (isInitial) {
-      isInitial = false;
-      return;
-    }
-    const z = matchData.find((y) => y.matchId === selected.matchId)
-    if (!z) {
-      dispatch(sendMatchData({
-        matchId: selected.matchId,
-        minimumPoints: selected.minimumPoints,
-        name: selected.name,
-        startDatetime: selected.startDatetime.toString(),
-        team1: selected.team1Id,
-        team2: selected.team2Id,
-        tournamentId: selected.tournamentId,
-        venueId: selected.venueId
-      }));
-    }
-    if (z) {
-      dispatch(sendUpdatedMatchData({
-        matchId: selected.matchId,
-        minimumPoints: selected.minimumPoints,
-        name: selected.name,
-        startDatetime: selected.startDatetime.toString(),
-        team1: selected.team1Id,
-        team2: selected.team2Id,
-        tournamentId: selected.tournamentId,
-        venueId: selected.venueId
-      }));
-    }
-  }, [selected, dispatch]);
-
 
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -384,7 +328,7 @@ const Matches = (props) => {
           </Paper>
           {/* <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" /> */}
         </Box>
-        <MatchesCrud onClick={setIncomingData} update={selectedRow} delete={selectedRowDelete} open={openCrudModal} handleClose={() => setCrudModal(false)} />
+        <MatchesCrud update={selectedRow} delete={selectedRowDelete} open={openCrudModal} handleClose={() => setCrudModal(false)} />
       </div>
     </div >
 
