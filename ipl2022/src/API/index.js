@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import matchSlice from "./matches/matches-slice";
 import teamSlice from "./team/team-slice";
 import tournamentSlice from "./tournament/tournament-slice";
+import userSlice from './users/user-slice';
 import venueSlice from "./venue/venue-slice";
 
 const store = configureStore({
@@ -10,6 +11,7 @@ const store = configureStore({
     tournament: tournamentSlice.reducer,
     venue: venueSlice.reducer,
     team: teamSlice.reducer,
+    users: userSlice.reducer
   },
 });
 

@@ -8,7 +8,6 @@ const matchSlice = createSlice({
   },
   reducers: {
     replaceMatches(state, action) {
-      state.totalQuantity = action.payload.totalQuantity;
       state.items = action.payload.items;
     },
     addMatches(state, action) {
@@ -30,6 +29,15 @@ const matchSlice = createSlice({
           team2: newItem.team2,
           tournamentId: newItem.tournamentId,
           venueId: newItem.venueId,
+          resultStatus: newItem.resultStatus,
+          team1Id: newItem.team1Id,
+          team1Logo: newItem.team1Logo,
+          team1Short: newItem.team1Short,
+          team2Id: newItem.team2Id,
+          team2Logo: newItem.team2Logo,
+          team2Short: newItem.team2Short,
+          venue: newItem.venue,
+          winnerTeamId: 0
         });
       }
     },
@@ -40,13 +48,13 @@ const matchSlice = createSlice({
         (item) => item.matchId === newItem.matchId
       );
       console.log(existingItem, " existing item");
-      // state.changed = true;
       if (existingItem) {
         state.changed = true;
         let a = state.items.map((item) =>
-          item.matchId == newItem.matchId
+          item.matchId === newItem.matchId
             ? {
                 ...item,
+                matchId: newItem.matchId,
                 minimumPoints: newItem.minimumPoints,
                 name: newItem.name,
                 startDatetime: newItem.startDatetime,
@@ -54,6 +62,15 @@ const matchSlice = createSlice({
                 team2: newItem.team2,
                 tournamentId: newItem.tournamentId,
                 venueId: newItem.venueId,
+                resultStatus: newItem.resultStatus,
+                team1Id: newItem.team1Id,
+                team1Logo: newItem.team1Logo,
+                team1Short: newItem.team1Id,
+                team2Id: newItem.team2Id,
+                team2Logo: newItem.team2Logo,
+                team2Short: newItem.team2Short,
+                venue: newItem.venue,
+                winnerTeamId: 0
               }
             : item
         );
@@ -64,7 +81,7 @@ const matchSlice = createSlice({
       const id = action.payload;
       console.log(id);
       const existingItem = state.items.find((item) => item.matchId === id);
-      console.log(existingItem,' deleting existing item');
+      console.log(existingItem, " deleting existing item");
       if (existingItem) {
         state.changed = true;
         state.items = state.items.filter((item) => item.matchId !== id);

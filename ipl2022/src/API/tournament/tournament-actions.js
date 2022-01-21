@@ -18,7 +18,7 @@ const Token = {
       }
 
       const data = await response.data;
-      console.log(data,' actions file');
+      console.log(data,' tournament file');
 
       return data;
     };

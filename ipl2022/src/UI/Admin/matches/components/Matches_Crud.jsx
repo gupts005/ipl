@@ -16,7 +16,6 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MobileDateTimePicker from '@mui/lab/MobileDateTimePicker';
 import { useDispatch, useSelector } from 'react-redux';
 import { matchActions } from '../../../../API/matches/matches-slice';
-import moment from 'moment';
 import { deleteMatchData, sendMatchData, sendUpdatedMatchData } from '../../../../API/matches/matches-actions';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -37,7 +36,7 @@ const validationSchema = yup.object({
   matchId: yup.number().min(1, 'atleast 1 number is required').required('MatchId is required'),
   minimumPoints: yup.number().min(3, 'minimum 3 digits').required('minimum points is required'),
   name: yup.string().min(2, 'name should be of minimum 2 characters length').max(20, 'max 10 chars').required('name is required'),
-  startDatetime: yup.date(),
+  startDatetime: yup.date().required(),
   team1Id: yup.number().required(),
   team2Id: yup.number().required(),
   tournamentId: yup.number().required(),
@@ -57,7 +56,7 @@ export default function MatchesCrud(props) {
     minimumPoints: '',
     name: '',
     resultStatus: '',
-    startDatetime: new Date(),
+    startDatetime: '',
     team1: '',
     team1Id: '',
     team1Logo: '',
@@ -91,16 +90,34 @@ export default function MatchesCrud(props) {
     validationSchema: validationSchema,
     onSubmit: (selected, { resetForm }) => {
       if (props.update === '') {
+        
+        let tempTeamData = teamData;
+        let tempVenueData = venueData;
+        let indexOfTempTeam1Data = tempTeamData.findIndex(i=> i.teamId === selected.team1Id);
+        console.log(indexOfTempTeam1Data,'indexOfTempTeam1Data');
+        let indexOfTempTeam2Data = tempTeamData.findIndex(i=> i.teamId === selected.team2Id);
+        console.log(indexOfTempTeam2Data,'indexOfTempTeam2Data');
+        let indexOfTempVenueData = tempVenueData.findIndex(i=> i.venueId === selected.venueId);
+        console.log(indexOfTempVenueData,'indexOfTempVenueData');
         dispatch(
           matchActions.addMatches({
             matchId: selected.matchId,
             minimumPoints: selected.minimumPoints,
             name: selected.name,
             startDatetime: selected.startDatetime,
-            team1: selected.team1Id,
-            team2: selected.team2Id,
+            team1: tempTeamData[indexOfTempTeam1Data].name,
+            team1Short: tempTeamData[indexOfTempTeam1Data].shortName,
+            team1Id: selected.team1Id,
+            team1Logo: tempTeamData[indexOfTempTeam1Data].teamLogo,
+            team2: tempTeamData[indexOfTempTeam2Data].name,
+            team2Short: tempTeamData[indexOfTempTeam2Data].shortName,
+            team2Id: selected.team2Id,
+            team2Logo: tempTeamData[indexOfTempTeam2Data].teamLogo,
             tournamentId: selected.tournamentId,
-            venueId: selected.venueId
+            venue: tempVenueData[indexOfTempVenueData].name,
+            venueId: selected.venueId,
+            resultStatus: 0,
+            winnerTeamId: 0
           })
         );
         dispatch(sendMatchData({
@@ -144,12 +161,6 @@ export default function MatchesCrud(props) {
       }
     },
   });
-
-  const updateMatchesHandler = () => {
-
-    props.onClick(selected);
-    props.handleClose();
-  }
 
   const deleteMatchHandler = () => {
     dispatch(matchActions.deleteMatch(props.delete.matchId));

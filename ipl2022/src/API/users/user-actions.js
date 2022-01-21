@@ -1,34 +1,34 @@
 
 import axios from 'axios';
-import { matchBaseURL } from '../../common/http-urls';
-import { matchActions } from './matches-slice';
+import { usersBaseURL } from '../../common/http-urls';
+import { userActions } from './user-slice';
 
 const userData = JSON.parse(localStorage.getItem('loginState'));
 const Token = {
   headers: { Authorization: `Bearer ${userData?.token}` }
 };
 
-export const fetchMatchData = () => {
+export const fetchUsersData = () => {
 
   return async (dispatch) => {
     const fetchData = async () => {
-      const response = await axios.get(matchBaseURL,Token);
+      const response = await axios.get(usersBaseURL,Token);
 
       if (response.status !== 200) {
-        throw new Error('Could not fetch match data!');
+        throw new Error('Could not fetch user data!');
       }
 
       const data = await response.data;
-      console.log(data,' matches file');
+      console.log(data,' users file');
 
       return data;
     };
 
     try {
-      const matchData = await fetchData();
+      const userData = await fetchData();
       dispatch(
-        matchActions.replaceMatches({
-          items : matchData || []
+        userActions.replaceUsers({
+          items : userData || []
         })
       );
     } catch (error) {
@@ -37,14 +37,14 @@ export const fetchMatchData = () => {
   };
 };
 
-export const sendMatchData = (match) => {
+export const sendUserData = (user) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {
-      const response = await axios.post(matchBaseURL,match,Token);
+      const response = await axios.post(usersBaseURL+ '/register',user,Token);
 
       if (response.status !== 201) {
-        throw new Error('Could not send match data!');
+        throw new Error('Could not send user data!');
       }
 
       const data = await response.data;
@@ -62,15 +62,15 @@ export const sendMatchData = (match) => {
   };
 };
 
-export const sendUpdatedMatchData = (match) => {
+export const sendUpdatedUserData = (userId,user) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {
-      const response = await axios.put(matchBaseURL+`/${match.matchId}`,match,Token);
+      const response = await axios.put(usersBaseURL+`/${userId}`,user,Token);
       console.log(response);
 
       if (response.status !== 200) {
-        throw new Error('Could not update match data!');
+        throw new Error('Could not update user data!');
       }
 
       const data = await response.data;
@@ -88,15 +88,40 @@ export const sendUpdatedMatchData = (match) => {
   };
 };
 
-export const deleteMatchData = (matchId) => {
+export const deleteUserData = (userId) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {
-      const response = await axios.delete(matchBaseURL+`/${matchId}`,Token);
+      const response = await axios.delete(usersBaseURL+`/${userId}`,Token);
       console.log(response);
 
       if (response.status !== 200) {
-        throw new Error('Could not delete match data!');
+        throw new Error('Could not delete user data!');
+      }
+
+      const data = await response.data;
+      console.log(data,' delete success');
+
+      return data;
+    };
+
+    try {
+      await sendRequest();
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const updateUserStatus = (userId,status) => {
+  return async (dispatch) => {
+    
+    const sendRequest = async () => {
+      const response = await axios.put(usersBaseURL+`/${userId}/update-status/${status}`,{},Token);
+
+      if (response.status !== 200) {
+        throw new Error('Could not delete user data!');
       }
 
       const data = await response.data;

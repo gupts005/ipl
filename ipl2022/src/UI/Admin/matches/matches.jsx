@@ -1,6 +1,3 @@
-
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,36 +10,16 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import moment from 'moment';
-import React, { useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useContext, useState } from 'react';
+import { useSelector } from 'react-redux';
 import classes from './matches.module.scss';
 import { Delete, Edit, SportsCricket, ArrowDropUp, ArrowDropDown } from '@mui/icons-material';
 import { Fab, TextField } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import AuthContext from '../../../API/auth-context';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
-import Button from '@mui/material/Button';
 import MatchesCrud from './components/Matches_Crud';
-import { deleteMatchData, sendMatchData, sendUpdatedMatchData } from '../../../API/matches/matches-actions';
+import { getComparator, TablePaginationActions } from '../../common/components/Utils';
 
 let isInitial = true;
 
@@ -59,90 +36,7 @@ const headCells = [
   { id: 'startDatetime', numeric: true, label: 'Date', disablePadding: false }
 ];
 
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function TablePaginationActions(props) {
-  const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
-
-  const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0);
-  };
-
-  const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1);
-  };
-
-  const handleNextButtonClick = (event) => {
-    onPageChange(event, page + 1);
-  };
-
-  const handleLastPageButtonClick = (event) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
-
-  return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton
-        // style={{ color: 'white' }}
-        onClick={handleFirstPageButtonClick}
-        disabled={page === 0}
-        aria-label="first page"
-      >
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-      </IconButton>
-      <IconButton
-        // style={{ color: 'white' }}
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
-      >
-        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-      </IconButton>
-      <IconButton
-        // style={{ color: 'white' }}
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
-      >
-        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-      </IconButton>
-      <IconButton
-        // style={{ color: 'white' }}
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-      </IconButton>
-    </Box>
-  );
-}
-
-TablePaginationActions.propTypes = {
-  count: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired,
-};
-
 const Matches = (props) => {
-
-  const dispatch = useDispatch();
 
   const authCtx = useContext(AuthContext);
   const matchData = useSelector((state) => state.matches.items);
@@ -154,7 +48,6 @@ const Matches = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [dense, setDense] = React.useState(false);
   const [openCrudModal, setCrudModal] = useState(false);
-  // const [openDeleteModal, setDeleteModal] = useState(false);
   const [selectedRow, setSelectedRow] = useState([]);
   const [selectedRowDelete, setSelectedRowDelete] = useState([]);
 
@@ -196,7 +89,7 @@ const Matches = (props) => {
                 Match Details
               </Typography>
 
-              <TextField label="Search" color='secondary' sx={{ marginRight: '10px' }} onKeyUp={(e) => setSearchTerm(e.target.value)} variant="outlined" />
+              <TextField label="Search" color='secondary' sx={{ marginRight: '10px' }} onChange={(e) => setSearchTerm(e.target.value)} variant="outlined" />
               <Fab onClick={() => { setSelectedRow(''); setSelectedRowDelete(false); setCrudModal(true) }} color='secondary'><SportsCricket /></Fab>
             </Toolbar>
             <TableContainer>
@@ -257,7 +150,7 @@ const Matches = (props) => {
                       return (
                         <TableRow
                           hover
-                          key={item.matchId}
+                          key={index}
                         >
                           <TableCell component="th" scope="row" align="center">
                             {item.matchId}
@@ -331,7 +224,6 @@ const Matches = (props) => {
         <MatchesCrud update={selectedRow} delete={selectedRowDelete} open={openCrudModal} handleClose={() => setCrudModal(false)} />
       </div>
     </div >
-
   );
 };
 
