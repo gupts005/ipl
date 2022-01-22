@@ -21,8 +21,6 @@ import AuthContext from '../../../API/auth-context';
 import MatchesCrud from './components/Matches_Crud';
 import { getComparator, TablePaginationActions } from '../../common/components/Utils';
 
-let isInitial = true;
-
 const headCells = [
   { id: 'matchId', numeric: true, label: 'ID', disablePadding: true },
   { id: 'name', numeric: false, label: 'Name', disablePadding: false },
@@ -152,10 +150,10 @@ const Matches = (props) => {
                           hover
                           key={index}
                         >
-                          <TableCell component="th" scope="row" align="center">
+                          <TableCell style={{ width: 100 }} component="th" scope="row" align="center">
                             {item.matchId}
                           </TableCell>
-                          <TableCell component="th" scope="row" align="center">
+                          <TableCell style={{ width: 160 }} component="th" scope="row" align="center">
                             {item.name}
                           </TableCell>
                           <TableCell style={{ width: 160 }} align="center">

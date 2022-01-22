@@ -14,7 +14,7 @@ import { DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem 
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { sendUpdatedUserData, sendUserData } from '../../../../API/users/user-actions';
+import { deleteUserData, sendUpdatedUserData, sendUserData } from '../../../../API/users/user-actions';
 import { userActions } from '../../../../API/users/user-slice';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -147,7 +147,7 @@ export default function UsersCrud(props) {
     },
   });
 
-  const deleteUserData = () => {
+  const deleteUserHandler = () => {
     dispatch(userActions.deleteUser(props.delete.userId));
     dispatch(deleteUserData(props.delete.userId));
     props.handleClose();
@@ -310,7 +310,7 @@ export default function UsersCrud(props) {
           </DialogContent>
           <DialogActions>
             <Button onClick={props.handleClose}>Cancel</Button>
-            <Button onClick={deleteUserData}>Delete</Button>
+            <Button onClick={deleteUserHandler}>Delete</Button>
           </DialogActions>
         </Dialog>
       }

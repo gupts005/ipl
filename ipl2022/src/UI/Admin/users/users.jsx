@@ -11,7 +11,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
-import moment from 'moment';
 import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classes from './users.module.scss';
@@ -25,16 +24,16 @@ import { userActions } from '../../../API/users/user-slice';
 import { updateUserStatus } from '../../../API/users/user-actions';
 
 const headCells = [
-  { id: 'username', numeric: true, label: 'Username', disablePadding: true },
-  { id: 'firstName', numeric: false, label: 'First Name', disablePadding: false },
-  { id: 'lastName', numeric: true, label: 'Last Name', disablePadding: false },
-  { id: 'genderName', numeric: false, label: 'Gender', disablePadding: false },
-  { id: 'profilePicture', numeric: false, label: 'Picture', disablePadding: false },
-  { id: 'role', numeric: true, label: 'Role', disablePadding: false },
-  { id: 'availablePoints', numeric: false, label: 'Available Points', disablePadding: false },
-  { id: 'status', numeric: false, label: 'Status', disablePadding: false },
-  { id: 'mobileNumber', numeric: false, label: 'Cell No.', disablePadding: false },
-  { id: 'email', numeric: true, label: 'Email', disablePadding: false }
+  { id: 'username', label: 'Username', disablePadding: true },
+  { id: 'firstName', label: 'First Name', disablePadding: false },
+  { id: 'lastName', label: 'Last Name', disablePadding: false },
+  { id: 'genderName', label: 'Gender', disablePadding: false },
+  { id: 'profilePicture', label: 'Picture', disablePadding: false },
+  { id: 'role', label: 'Role', disablePadding: false },
+  { id: 'availablePoints', label: 'Available Points', disablePadding: false },
+  { id: 'status', label: 'Status', disablePadding: false },
+  { id: 'mobileNumber', label: 'Cell No.', disablePadding: false },
+  { id: 'email', label: 'Email', disablePadding: false }
 ];
 
 const Users = () => {
@@ -164,10 +163,10 @@ const Users = () => {
                           hover
                           key={index}
                         >
-                          <TableCell component="th" scope="row" align="center">
+                          <TableCell style={{ width: 160 }} component="th" scope="row" align="center">
                             {item.username}
                           </TableCell>
-                          <TableCell component="th" scope="row" align="center">
+                          <TableCell style={{ width: 160 }} component="th" scope="row" align="center">
                             {item.firstName}
                           </TableCell>
                           <TableCell style={{ width: 160 }} align="center">

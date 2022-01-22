@@ -1,46 +1,64 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const teamSlice = createSlice({
-  name: 'team',
+  name: "team",
   initialState: {
-    teamItems: [],
+    items: [],
     changed: false,
   },
   reducers: {
     replaceTeam(state, action) {
-      state.totalQuantity = action.payload.totalQuantity;
-      state.teamItems = action.payload.teamItems;
+      state.items = action.payload.items;
     },
-    // addItemToCart(state, action) {
-    //   const newItem = action.payload;
-    //   const existingItem = state.teamItems.find((item) => item.id === newItem.id);
-    //   state.totalQuantity++;
-    //   state.changed = true;
-    //   if (!existingItem) {
-    //     state.teamItems.push({
-    //       id: newItem.id,
-    //       price: newItem.price,
-    //       quantity: 1,
-    //       totalPrice: newItem.price,
-    //       name: newItem.title,
-    //     });
-    //   } else {
-    //     existingItem.quantity++;
-    //     existingItem.totalPrice = existingItem.totalPrice + newItem.price;
-    //   }
-    // },
-    // removeItemFromCart(state, action) {
-    //   const id = action.payload;
-    //   const existingItem = state.teamItems.find((item) => item.id === id);
-    //   state.totalQuantity--;
-    //   state.changed = true;
-    //   if (existingItem.quantity === 1) {
-    //     state.teamItems = state.teamItems.filter((item) => item.id !== id);
-    //   } else {
-    //     existingItem.quantity--;
-    //     existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
-    //   }
-    // },
+    addTeam(state, action) {
+      const newItem = action.payload;
+      console.log(newItem, " newItem");
+      const existingItem = state.items.find(
+        (item) => item.teamId === newItem.teamId
+      );
+      console.log(existingItem, " existing item");
+      // state.changed = true;
+      if (!existingItem) {
+        state.changed = true;
+        state.items.push({
+          name: newItem.name,
+          shortName: newItem.shortName,
+          teamLogo: newItem.teamLogo
+        });
+      }
+    },
+    updateTeam(state, action) {
+      const newItem = action.payload;
+      console.log(newItem, " updateItem");
+      const existingItem = state.items.find(
+        (item) => item.teamId === newItem.teamId
+      );
+      console.log(existingItem, " existing item");
+      if (existingItem) {
+        state.changed = true;
+        let a = state.items.map((item) =>
+          item.teamId === newItem.teamId
+            ? {
+                ...item,
+                name: newItem.name,
+                shortName: newItem.shortName,
+                teamLogo: newItem.teamLogo
+              }
+            : item
+        );
+        state.items = a;
+      }
+    },
+    deleteUser(state, action) {
+      const id = action.payload;
+      console.log(id);
+      const existingItem = state.items.find((item) => item.teamId === id);
+      console.log(existingItem, " deleting existing team");
+      if (existingItem) {
+        state.changed = true;
+        state.items = state.items.filter((item) => item.teamId !== id);
+      }
+    }
   },
 });
 

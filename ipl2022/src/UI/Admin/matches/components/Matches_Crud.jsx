@@ -49,7 +49,7 @@ export default function MatchesCrud(props) {
 
   const tournamentData = useSelector((state) => state.tournament.items);
   const venueData = useSelector((state) => state.venue.items);
-  const teamData = useSelector((state) => state.team.teamItems);
+  const teamData = useSelector((state) => state.team.items);
 
   const [selected, setSelected] = React.useState({
     matchId: '',
@@ -89,16 +89,15 @@ export default function MatchesCrud(props) {
     enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: (selected, { resetForm }) => {
+      let tempTeamData = teamData;
+      let tempVenueData = venueData;
+      let indexOfTempTeam1Data = tempTeamData.findIndex(i => i.teamId === selected.team1Id);
+      console.log(indexOfTempTeam1Data, 'indexOfTempTeam1Data');
+      let indexOfTempTeam2Data = tempTeamData.findIndex(i => i.teamId === selected.team2Id);
+      console.log(indexOfTempTeam2Data, 'indexOfTempTeam2Data');
+      let indexOfTempVenueData = tempVenueData.findIndex(i => i.venueId === selected.venueId);
+      console.log(indexOfTempVenueData, 'indexOfTempVenueData');
       if (props.update === '') {
-        
-        let tempTeamData = teamData;
-        let tempVenueData = venueData;
-        let indexOfTempTeam1Data = tempTeamData.findIndex(i=> i.teamId === selected.team1Id);
-        console.log(indexOfTempTeam1Data,'indexOfTempTeam1Data');
-        let indexOfTempTeam2Data = tempTeamData.findIndex(i=> i.teamId === selected.team2Id);
-        console.log(indexOfTempTeam2Data,'indexOfTempTeam2Data');
-        let indexOfTempVenueData = tempVenueData.findIndex(i=> i.venueId === selected.venueId);
-        console.log(indexOfTempVenueData,'indexOfTempVenueData');
         dispatch(
           matchActions.addMatches({
             matchId: selected.matchId,
@@ -140,10 +139,17 @@ export default function MatchesCrud(props) {
             minimumPoints: selected.minimumPoints,
             name: selected.name,
             startDatetime: selected.startDatetime,
-            team1: selected.team1,
-            team2: selected.team2,
+            team1: tempTeamData[indexOfTempTeam1Data].name,
+            team1Short: tempTeamData[indexOfTempTeam1Data].shortName,
+            team1Id: selected.team1Id,
+            team1Logo: tempTeamData[indexOfTempTeam1Data].teamLogo,
+            team2: tempTeamData[indexOfTempTeam2Data].name,
+            team2Short: tempTeamData[indexOfTempTeam2Data].shortName,
+            team2Id: selected.team2Id,
+            team2Logo: tempTeamData[indexOfTempTeam2Data].teamLogo,
             tournamentId: selected.tournamentId,
-            venueId: selected.venueId
+            venue: tempVenueData[indexOfTempVenueData].name,
+            venueId: selected.venueId,
           })
         );
         dispatch(sendUpdatedMatchData({

@@ -65,7 +65,7 @@ const matchSlice = createSlice({
                 resultStatus: newItem.resultStatus,
                 team1Id: newItem.team1Id,
                 team1Logo: newItem.team1Logo,
-                team1Short: newItem.team1Id,
+                team1Short: newItem.team1Short,
                 team2Id: newItem.team2Id,
                 team2Logo: newItem.team2Logo,
                 team2Short: newItem.team2Short,

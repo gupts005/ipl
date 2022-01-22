@@ -68,7 +68,7 @@ const userSlice = createSlice({
       const id = action.payload;
       console.log(id);
       const existingItem = state.items.find((item) => item.userId === id);
-      console.log(existingItem, " deleting existing item");
+      console.log(existingItem, " deleting existing user");
       if (existingItem) {
         state.changed = true;
         state.items = state.items.filter((item) => item.userId !== id);
