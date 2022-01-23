@@ -1,17 +1,15 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { BackGroundImage, Matches, TeamFontColor, BorderTop, Token,TeamColor } from '../common/constants/data';
-import { matchBaseURL } from '../../common/http-urls';
+import React from 'react';
+import { BackGroundImage, TeamFontColor, BorderTop, TeamColor } from '../common/constants/data';
 import classes from './MatchList.module.scss';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 const MatchList = (props) => {
 
   const navigate = useNavigate();
   
-  const matchData = useSelector((state) => state.matches.items);
-  console.log(matchData, ' main file');
+  const upcomingMatchData = useSelector((state) => state.upcomingMatches.items);
 
   const gotoBettingPage = (item) => {
     navigate(`/match-list/${item.matchId}`,{state:item});
@@ -21,7 +19,7 @@ const MatchList = (props) => {
     <div className={classes.parent}>
 
       <div className={classes.match_list} style={{ backgroundImage: `url(${BackGroundImage})` }}>
-        {matchData.map((item) => (
+        {upcomingMatchData.map((item) => (
           <div className={classes.card} onClick={()=>gotoBettingPage(item)} key={item.matchId}>
             <div
               className={classes.left}
@@ -44,7 +42,7 @@ const MatchList = (props) => {
                 </h3>
               </div>
               <div className={classes.details}>
-                <h3 className={classes.date}> {item.startDatetime}</h3>
+                <h3 className={classes.date}> {moment(item.startDatetime).format('MMMM Do YYYY, h:mm:ss a')} </h3>
                 <h1 className={classes.versus}>VS</h1>
                 <h4 className={classes.venue}>{item.venue} </h4>
               </div>

@@ -227,7 +227,6 @@ export default function MatchesCrud(props) {
                   name='matchId'
                   value={formik.values.matchId || ''}
                   disabled={props.update === '' ? false : true}
-                  id="outlined-disabled"
                   focused={props.update ? true : false}
                   label='Match ID'
                   InputProps={{
@@ -238,7 +237,6 @@ export default function MatchesCrud(props) {
 
                 <TextField
                   focused={props.update ? true : false}
-                  id="outlined-select-currency"
                   select
                   label="Tournament"
                   error={formik.touched.tournamentId && Boolean(formik.errors.tournamentId)}

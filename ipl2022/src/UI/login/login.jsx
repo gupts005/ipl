@@ -207,7 +207,7 @@ const Login = () => {
                   </div>
                   <div className={classes.login_btn}>
                     {!state.isLoading && (
-                      <AnimatedButton />
+                      <AnimatedButton text={'login'} />
                     )}
                     {state.isLoading && <p>Sending request...</p>}
                   </div>

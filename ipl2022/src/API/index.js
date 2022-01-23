@@ -1,10 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
+import botSlice from './bot/bot-slice';
 import matchSlice from "./matches/matches-slice";
 import oldMatchSlice from './old-matches/oldMatches-slice';
 import teamSlice from "./team/team-slice";
 import tournamentSlice from "./tournament/tournament-slice";
+import upcomingMatchSlice from './upcoming-matches/upcomingMatches-slice';
 import userSlice from './users/user-slice';
 import venueSlice from "./venue/venue-slice";
+import userByIdSlice from "./user-by-id/userById-slice";
 
 const store = configureStore({
   reducer: {
@@ -13,7 +16,10 @@ const store = configureStore({
     venue: venueSlice.reducer,
     team: teamSlice.reducer,
     users: userSlice.reducer,
-    oldMatches: oldMatchSlice.reducer
+    oldMatches: oldMatchSlice.reducer,
+    upcomingMatches: upcomingMatchSlice.reducer,
+    bot: botSlice.reducer,
+    userById: userByIdSlice.reducer
   },
 });
 

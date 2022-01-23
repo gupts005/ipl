@@ -1,17 +1,17 @@
 import React from 'react'
 import classes from './animated-button.module.scss';
 
-const AnimatedButton = () => {
+const AnimatedButton = (props) => {
   return (
     <React.Fragment>
       <div className={classes.xyz}>
 
-        <button>
+        <button type='submit'>
           <span></span>
           <span></span>
           <span></span>
           <span></span>
-          Login
+          {props.text}
         </button>
       </div>
     </React.Fragment>

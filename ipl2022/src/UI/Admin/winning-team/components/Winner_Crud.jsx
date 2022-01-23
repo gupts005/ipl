@@ -114,7 +114,6 @@ export default function WinnerCrud(props) {
 
                 <TextField
                   focused={props.update ? true : false}
-                  id="outlined-select-currency"
                   select
                   label="Select Result Status"
                   error={formik.touched.resultStatus && Boolean(formik.errors.resultStatus)}

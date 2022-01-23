@@ -228,7 +228,7 @@
         &.team_name {
           text-align: left;
           color: black;
-          font-size: 2rem;
+          font-size: 1.3rem;
 
           @include mobile {
             text-align: left;
@@ -304,6 +304,7 @@
         text-align: right;
         transition: 0.5s;
         margin-top: 40px;
+        font-size: 1.3rem;
 
         @include mobile {
           padding: 15px 0 0;
