@@ -22,16 +22,16 @@ import MatchesCrud from './components/Matches_Crud';
 import { getComparator, TablePaginationActions } from '../../common/components/Utils';
 
 const headCells = [
-  { id: 'matchId', numeric: true, label: 'ID', disablePadding: true },
-  { id: 'name', numeric: false, label: 'Name', disablePadding: false },
-  { id: 'resultStatus', numeric: true, label: 'Result', disablePadding: false },
-  { id: 'team1Short', numeric: false, label: 'Team 1', disablePadding: false },
-  { id: 'team2Short', numeric: false, label: 'Team 2', disablePadding: false },
-  { id: 'team1Logo', numeric: false, label: 'Team1 Logo', disablePadding: false },
-  { id: 'team2Logo', numeric: false, label: 'Team2 Logo', disablePadding: false },
-  { id: 'venue', numeric: false, label: 'Venue', disablePadding: false },
-  { id: 'minimumPoints', numeric: true, label: 'Min Points', disablePadding: false },
-  { id: 'startDatetime', numeric: true, label: 'Date', disablePadding: false }
+  { id: 'matchId', label: 'ID', disablePadding: true },
+  { id: 'name', label: 'Name', disablePadding: false },
+  { id: 'resultStatus', label: 'Result', disablePadding: false },
+  { id: 'team1Short', label: 'Team 1', disablePadding: false },
+  { id: 'team2Short', label: 'Team 2', disablePadding: false },
+  { id: 'team1Logo', label: 'Team1 Logo', disablePadding: false },
+  { id: 'team2Logo', label: 'Team2 Logo', disablePadding: false },
+  { id: 'venue', label: 'Venue', disablePadding: false },
+  { id: 'minimumPoints', label: 'Min Points', disablePadding: false },
+  { id: 'startDatetime', label: 'Date', disablePadding: false }
 ];
 
 const Matches = (props) => {
