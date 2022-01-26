@@ -11,9 +11,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
-import React, { useContext, useState } from 'react';
-import { Delete, Edit, SportsCricket, ArrowDropUp, ArrowDropDown } from '@mui/icons-material';
-import { Fab, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { TextField } from '@mui/material';
 import { getComparator, TablePaginationActions } from '../../common/components/Utils';
 import styled from 'styled-components';
 
@@ -41,7 +40,7 @@ const BetTable = (props) => {
   const [selected, setSelected] = useState([]);
 
   console.log(props,' bet tableeeeeeeee');
-  React.useEffect(() => {
+  useEffect(() => {
     setSelected(props.allContestData);
   }, [props]);
 

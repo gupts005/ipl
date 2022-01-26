@@ -31,16 +31,16 @@
         cursor: pointer;
         overflow: hidden;
 
-        h3 {
+        h4 {
           overflow: hidden;
           padding: 0 10px;
         }
-        h3.selected {
+        h4.selected {
           color: #0f0f0f;
           background-color: #fff;
-          pointer-events: none;
+          // pointer-events: none;
           opacity: 1;
-          font: normal 1.3vw;
+          font: normal 1vw;
           border-radius: 50%;
           border-bottom: 3px solid rgb(194, 70, 70);
           border-top: 3px solid rgb(198, 238, 21);
@@ -82,10 +82,10 @@
         span.selected {
           color: #0f0f0f;
           background-color: #fff;
-          pointer-events: none;
+          // pointer-events: none;
           opacity: 1;
           font: normal 1.3vw;
-          border-radius: 50%;
+          border-radius: 20px;
           border-bottom: 3px solid rgb(194, 70, 70);
           border-top: 3px solid rgb(198, 238, 21);
           border-right: 3px solid rgb(21, 79, 238);

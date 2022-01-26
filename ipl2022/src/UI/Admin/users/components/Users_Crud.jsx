@@ -73,7 +73,7 @@ export default function UsersCrud(props) {
 
   React.useEffect(() => {
     setSelected(props.update);
-  }, [props]);
+  }, [props.update]);
 
   const formik = useFormik({
     initialValues: {

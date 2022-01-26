@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchallUserFutureBets } from '../../../API/all-users-future-bets/allUsersFutureBets-actions';
+import { fetchallUserStats } from '../../../API/all-users-stats/allUserStats-actions';
 import { fetchMatchData, sendMatchData } from '../../../API/matches/matches-actions';
 import { fetchOldMatchData } from '../../../API/old-matches/oldMatches-actions';
 import { fetchTeamData } from '../../../API/team/team-actions';
@@ -22,6 +24,8 @@ const FetchingApi = () => {
     dispatch(fetchOldMatchData());
     dispatch(fetchUpcomingMatchData());
     dispatch(fetchUserById(userData.userId));
+    dispatch(fetchallUserFutureBets());
+    dispatch(fetchallUserStats());
   }, [dispatch]);
 
   return (

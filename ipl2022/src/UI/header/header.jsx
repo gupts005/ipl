@@ -38,11 +38,11 @@ const Header = (props) => {
       <div className={classes.wrapper}>
         <div className={classes.left}>
           <div className={classes.left_inner_left}>
-            <h3
+            <h4
               onClick={() => setHomeSelected('99')}
               className={state.clicked === true && state.selectedIndex === '99' ? classes.selected : ''}>
               Home
-            </h3>
+            </h4>
           </div>
           <div className={classes.left_inner_right}>
             {HeaderData.map((item) => (
