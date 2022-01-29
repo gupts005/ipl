@@ -2,10 +2,11 @@ import React from 'react'
 import classes from './MyMatches.module.scss';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
-import Typography from '@mui/material/Typography';
-import { BackGroundImage, BorderTop, Matches, TeamColor, TeamFontColor } from '../common/constants/data';
+import { BorderShortTop, TeamShortColor, TeamShortFontColor } from '../common/constants/data';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -40,8 +41,31 @@ function a11yProps(index) {
   };
 }
 
-const MyMatches = () => {
+const MyMatches = (props) => {
+
+  const navigate = useNavigate();
+
+  const upcomingMatchesByUserId = useSelector((state) => state.upcomingMatchesByUserId.items);
+  const liveMatches = useSelector((state) => state.liveMatch.items);
+  const allMatchResult = useSelector((state) => state.allMatchResult.items);
   const [value, setValue] = React.useState(0);
+  
+  const upcomingMatchData = useSelector((state) => state.upcomingMatches.items);
+
+  const gotoBettingPage = (item) => {
+    const selectedData = upcomingMatchData.find(d => d.matchId === item.matchId);
+    navigate(`/match-list/${item.matchId}`,{state:selectedData});
+  };
+
+  const gotoLiveMatches = (item) => {
+    const selectedData = upcomingMatchData.find(d => d.matchId === item.matchId);
+    navigate(`/live-match/${item.matchId}`,{state:selectedData});
+  };
+
+  const gotoResult = (item) => {
+    const selectedData = upcomingMatchData.find(d => d.matchId === item.matchId);
+    navigate(`/match-result/${item.matchId}`,{state:selectedData});
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -57,34 +81,34 @@ const MyMatches = () => {
         </Tabs>
         <TabPanel value={value} index={0}>
           <div className={classes.match_list} >
-            {Matches.map((item) => (
-              <div className={classes.card} key={item.matchId}>
+            {upcomingMatchesByUserId.map((item) => (
+              <div className={classes.card} key={item.matchId} onClick={()=>gotoBettingPage(item)}>
                 <div
                   className={classes.left}
                   style={{
-                    background: item.team1Id ? TeamColor[item.team1Id] : TeamColor.t1,
-                    borderTop: item.team1Id ? BorderTop[item.team1Id] : BorderTop.t1
+                    background: item.team1Short ? TeamShortColor[item.team1Short] : TeamShortColor.t1,
+                    borderTop: item.team1Short ? BorderShortTop[item.team1Short] : BorderShortTop.t1
                   }}>
                 </div>
                 <div
                   className={classes.right}
                   style={{
-                    background: item.team2Id ? TeamColor[item.team2Id] : TeamColor.t2,
-                    borderTop: item.team2Id ? BorderTop[item.team2Id] : BorderTop.t2
+                    background: item.team2Short ? TeamShortColor[item.team2Short] : TeamShortColor.t2,
+                    borderTop: item.team2Short ? BorderShortTop[item.team2Short] : BorderShortTop.t2
                   }}>
                 </div>
-                <h2> {item.name} </h2>
+                <h2> {item.team1Short} vs {item.team2Short} </h2>
                 <div className={classes.match_details}>
                   <div className={classes.team1}>
                     <img src={item.team1Logo} alt='1' />
                     <h3
                       className={classes.team_name}
-                      style={{ color: item.team1Id ? TeamFontColor[item.team1Id] : TeamFontColor.t1 }}>
-                      {item.team1}
+                      style={{ color: item.team1Short ? TeamShortFontColor[item.team1Short] : TeamShortFontColor.t1 }}>
+                      {item.team1Short}
                     </h3>
                   </div>
                   <div className={classes.details}>
-                    <h3 className={classes.date}> {item.startDatetime}</h3>
+                    <h3 className={classes.date}> {moment(item.startDatetime).format('MMMM Do YYYY, h:mm:ss a')}</h3>
                     <h1 className={classes.versus}>VS</h1>
                     <h4 className={classes.venue}>{item.venue} </h4>
                   </div>
@@ -92,9 +116,9 @@ const MyMatches = () => {
                     <img src={item.team2Logo} alt='2' />
                     <h3
                       className={classes.team_name}
-                      style={{ color: item.team2Id ? TeamFontColor[item.team2Id] : TeamFontColor.t2 }}
+                      style={{ color: item.team2Short ? TeamShortFontColor[item.team2Short] : TeamShortFontColor.t2 }}
                     >
-                      {item.team2}
+                      {item.team2Short}
                     </h3>
                   </div>
                 </div>
@@ -105,20 +129,20 @@ const MyMatches = () => {
 
         <TabPanel value={value} index={1}>
           <div className={classes.match_list} >
-            {Matches.map((item) => (
-              <div className={classes.card} key={item.matchId}>
+            {liveMatches.map((item) => (
+              <div className={classes.card} key={item.matchId} onClick={()=> gotoLiveMatches(item)}>
                 <div
                   className={classes.left}
                   style={{
-                    background: item.team1Id ? TeamColor[item.team1Id] : TeamColor.t1,
-                    borderTop: item.team1Id ? BorderTop[item.team1Id] : BorderTop.t1
+                    background: item.team1Short ? TeamShortColor[item.team1Short] : TeamShortColor.t1,
+                    borderTop: item.team1Short ? BorderShortTop[item.team1Short] : BorderShortTop.t1
                   }}>
                 </div>
                 <div
                   className={classes.right}
                   style={{
-                    background: item.team2Id ? TeamColor[item.team2Id] : TeamColor.t2,
-                    borderTop: item.team2Id ? BorderTop[item.team2Id] : BorderTop.t2
+                    background: item.team2Short ? TeamShortColor[item.team2Short] : TeamShortColor.t2,
+                    borderTop: item.team2Short ? BorderShortTop[item.team2Short] : BorderShortTop.t2
                   }}>
                 </div>
                 <h2> {item.name} </h2>
@@ -127,7 +151,7 @@ const MyMatches = () => {
                     <img src={item.team1Logo} alt='1' />
                     <h3
                       className={classes.team_name}
-                      style={{ color: item.team1Id ? TeamFontColor[item.team1Id] : TeamFontColor.t1 }}>
+                      style={{ color: item.team1Short ? TeamShortFontColor[item.team1Short] : TeamShortFontColor.t1 }}>
                       {item.team1}
                     </h3>
                   </div>
@@ -140,7 +164,7 @@ const MyMatches = () => {
                     <img src={item.team2Logo} alt='2' />
                     <h3
                       className={classes.team_name}
-                      style={{ color: item.team2Id ? TeamFontColor[item.team2Id] : TeamFontColor.t2 }}
+                      style={{ color: item.team2Short ? TeamShortFontColor[item.team2Short] : TeamShortFontColor.t2 }}
                     >
                       {item.team2}
                     </h3>
@@ -153,34 +177,34 @@ const MyMatches = () => {
 
         <TabPanel value={value} index={2}>
           <div className={classes.match_list} >
-            {Matches.map((item) => (
-              <div className={classes.card} key={item.matchId}>
+            {allMatchResult.map((item) => (
+              <div className={classes.card} key={item.matchId} onClick={()=>gotoResult(item)}>
                 <div
                   className={classes.left}
                   style={{
-                    background: item.team1Id ? TeamColor[item.team1Id] : TeamColor.t1,
-                    borderTop: item.team1Id ? BorderTop[item.team1Id] : BorderTop.t1
+                    background: item.team1Short ? TeamShortColor[item.team1Short] : TeamShortColor.t1,
+                    borderTop: item.team1Short ? BorderShortTop[item.team1Short] : BorderShortTop.t1
                   }}>
                 </div>
                 <div
                   className={classes.right}
                   style={{
-                    background: item.team2Id ? TeamColor[item.team2Id] : TeamColor.t2,
-                    borderTop: item.team2Id ? BorderTop[item.team2Id] : BorderTop.t2
+                    background: item.team2Short ? TeamShortColor[item.team2Short] : TeamShortColor.t2,
+                    borderTop: item.team2Short ? BorderShortTop[item.team2Short] : BorderShortTop.t2
                   }}>
                 </div>
-                <h2> {item.name} </h2>
+                <h2> {item.team1Short} vs {item.team2Short} </h2>
                 <div className={classes.match_details}>
                   <div className={classes.team1}>
                     <img src={item.team1Logo} alt='1' />
                     <h3
                       className={classes.team_name}
-                      style={{ color: item.team1Id ? TeamFontColor[item.team1Id] : TeamFontColor.t1 }}>
-                      {item.team1}
+                      style={{ color: item.team1Short ? TeamShortFontColor[item.team1Short] : TeamShortFontColor.t1 }}>
+                      {item.team1Short}
                     </h3>
                   </div>
                   <div className={classes.details}>
-                    <h3 className={classes.date}> {item.startDatetime}</h3>
+                    <h3 className={classes.date}> {moment(item.startDatetime).format('MMMM Do YYYY, h:mm:ss a')}</h3>
                     <h1 className={classes.versus}>VS</h1>
                     <h4 className={classes.venue}>{item.venue} </h4>
                   </div>
@@ -188,9 +212,9 @@ const MyMatches = () => {
                     <img src={item.team2Logo} alt='2' />
                     <h3
                       className={classes.team_name}
-                      style={{ color: item.team2Id ? TeamFontColor[item.team2Id] : TeamFontColor.t2 }}
+                      style={{ color: item.team2Short ? TeamShortFontColor[item.team2Short] : TeamShortFontColor.t2 }}
                     >
-                      {item.team2}
+                      {item.team2Short}
                     </h3>
                   </div>
                 </div>

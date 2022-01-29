@@ -10,6 +10,9 @@ import venueSlice from "./venue/venue-slice";
 import userByIdSlice from "./user-by-id/userById-slice";
 import allUserStatsSlice from './all-users-stats/allUserStats-slice';
 import allUsersFutureBetsSlice from './all-users-future-bets/allUsersFutureBets-slice';
+import upcomingMatchesByUserId from './upcoming-matches-by-userid/upcomingMatchesByUserId-slice';
+import allMatchResult from './all-matches-result/allMatchResult-slice';
+import liveMatch from './live-match-by-userid/liveMatch-slice';
 
 const store = configureStore({
   reducer: {
@@ -24,6 +27,9 @@ const store = configureStore({
     userById: userByIdSlice.reducer,
     allUserStats: allUserStatsSlice.reducer,
     allUsersFutureBets: allUsersFutureBetsSlice.reducer,
+    upcomingMatchesByUserId: upcomingMatchesByUserId.reducer,
+    allMatchResult: allMatchResult.reducer,
+    liveMatch: liveMatch.reducer,
   },
 });
 

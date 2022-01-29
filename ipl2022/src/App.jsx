@@ -19,10 +19,9 @@ import Error from './UI/error/error';
 import Users from './UI/Admin/users/users';
 import Winner from './UI/Admin/winning-team/update-winner';
 import Teams from './UI/Admin/teams/teams';
-import { fetchTeamData } from './API/team/team-actions';
-import { fetchTournamentData } from './API/tournament/tournament-actions';
-import { fetchVenueData } from './API/venue/venue-actions';
 import FetchingApi from './UI/common/components/FetchingApi';
+import LiveMatch from './UI/live-match/LiveMatches';
+import MatchResult from './UI/match-result/MatchResult';
 
 function App() {
 
@@ -51,6 +50,10 @@ function App() {
             <Route path='/my-matches' element={<MyMatches />} />
 
             <Route path='/profile' element={<UserProfile />} />
+            
+            <Route path='/live-match/:matchId' element={<LiveMatch />} />
+            
+            <Route path='/match-result/:matchId' element={<MatchResult />} />
 
             <Route path='/manage-matches' element={role === 'Admin' ? <Matches /> : <Error />} />
             <Route path='/manage-users' element={role === 'Admin' ? <Users /> : <Error />} />
