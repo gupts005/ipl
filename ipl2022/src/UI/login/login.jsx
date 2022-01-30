@@ -31,6 +31,10 @@ const Login = () => {
     // console.log(container);
   };
 
+  const gotoResetPassword = () => {
+    navigate('/forgot-password');
+  }
+
   const textRef = useRef();
   const textRef2 = useRef();
 
@@ -215,7 +219,7 @@ const Login = () => {
               </div>
               <div className={classes.child_right_3}>
                 <div className={classes.child_right_3_left}>
-                  <a>Forgot Password?</a>
+                  <a onClick={gotoResetPassword}>Forgot Password?</a>
                 </div>
                 <div className={classes.child_right_3_right}>
                   <span className={classes.span1} ref={textRef2}> </span>

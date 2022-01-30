@@ -10,12 +10,12 @@ import Slide from '@mui/material/Slide';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
-import { DialogActions, DialogContent, DialogContentText, DialogTitle, MenuItem } from '@mui/material';
+import { MenuItem } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { deleteUserData, sendUpdatedUserData, sendUserData } from '../../../../API/users/user-actions';
-import { userActions } from '../../../../API/users/user-slice';
+import { userByIdActions } from '../../../API/user-by-id/userById-slice';
+import { sendUpdatedUserData } from '../../../API/users/user-actions';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -33,26 +33,18 @@ const validationSchema = yup.object({
   username: yup.string().min(3, 'atleast 3 char is required').required('Username is required'),
   firstName: yup.string().min(3, 'minimum 3 digits').required(),
   lastName: yup.string().min(3, 'name should be of minimum 2 characters length').required(),
-  genderId: yup.number().required().oneOf([1 , 2], 'Selecting the gender field is required'),
+  genderId: yup.date().required(),
   availablePoints: yup.number().required(),
   mobileNumber: yup.number().required(),
   email: yup.string().email().required(),
 });
 
-const roleName = {
-  1: "Admin",
-  2: "User"
-}
-
-const gender = {
-  1: "Male",
-  2: "Female"
-}
 const genderId = [{ genderId: 1, name: "Male" }, { genderId: 2, name: "Female" }];
 
-export default function UsersCrud(props) {
+export default function UpdateProfile(props) {
 
   const dispatch = useDispatch();
+  console.log(props);
 
   const [selected, setSelected] = React.useState({
     userId: '',
@@ -61,7 +53,6 @@ export default function UsersCrud(props) {
     genderId: '',
     genderName: '',
     username: '',
-    password: '',
     profilePicture: '',
     roleId: '',
     roleName: '',
@@ -74,54 +65,26 @@ export default function UsersCrud(props) {
   React.useEffect(() => {
     setSelected(props.update);
   }, [props.update]);
-console.log(props.update);
+
   const formik = useFormik({
     initialValues: {
-      userId: selected.userId,
-      username: selected.username,
-      firstName: selected.firstName,
-      lastName: selected.lastName,
-      genderId: selected.genderId,
-      availablePoints: selected.availablePoints,
-      profilePicture: selected.profilePicture,
-      mobileNumber: selected.mobileNumber,
-      email: selected.email,
+      userId: selected?.userId,
+      username: selected?.username,
+      firstName: selected?.firstName,
+      lastName: selected?.lastName,
+      genderId: selected?.genderId,
+      availablePoints: selected?.availablePoints,
+      profilePicture: selected?.profilePicture,
+      mobileNumber: selected?.mobileNumber,
+      email: selected?.email,
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: (selected, { resetForm }) => {
+      console.log(selected,' selected data');
       var formData = new FormData();
-      if (props.update === '') {
         dispatch(
-          userActions.addUser({
-            username: selected.username,
-            firstName: selected.firstName,
-            lastName: selected.lastName,
-            genderName: gender[selected.genderId],
-            roleName: roleName[selected.roleId],
-            availablePoints: selected.availablePoints,
-            profilePicture: selected.profilePicture,
-            mobileNumber: selected.mobileNumber,
-            email: selected.email
-          })
-        );
-        formData.append("username", selected.username);
-        formData.append("firstName", selected.firstName);
-        formData.append("lastName", selected.lastName);
-        formData.append("genderId", selected.genderId);
-        formData.append("availablePoints", selected.availablePoints);
-        formData.append("profilePicture", selected.profilePicture);
-        formData.append("mobileNumber", selected.mobileNumber);
-        formData.append("email", selected.email);
-        formData.append("password", 123456789);
-        formData.append("roleId", 2);
-        dispatch(sendUserData(formData));
-        resetForm();
-        props.handleClose();
-      }
-      if (props.update !== '') {
-        dispatch(
-          userActions.updateUser({
+          userByIdActions.updateUser({
             userId: formik.values.userId,
             username: selected.username,
             firstName: selected.firstName,
@@ -143,20 +106,12 @@ console.log(props.update);
         dispatch(sendUpdatedUserData(formik.values.userId,formData));
         resetForm();
         props.handleClose();
-      }
     },
   });
-
-  const deleteUserHandler = () => {
-    dispatch(userActions.deleteUser(props.delete.userId));
-    dispatch(deleteUserData(props.delete.userId));
-    props.handleClose();
-  };
 
   return (
     <React.Fragment >
 
-      {props.update !== false && props.delete === false &&
         <Dialog
           keepMounted
           onClose={props.handleClose}
@@ -175,18 +130,11 @@ console.log(props.update);
                   <CloseIcon />
                 </IconButton>
                 <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                  {props.update ? 'Update Match Details' : 'Insert Match Details'}
+                  Update your Details
                 </Typography>
-                {props.update !== '' &&
-                  <Button autoFocus color="inherit" type='submit'>
+                  <Button autoFocus color="inherit" type='submit' >
                     Update
                   </Button>
-                }
-                {props.update === '' &&
-                  <Button autoFocus color="inherit" type='submit'>
-                    Insert
-                  </Button>
-                }
               </Toolbar>
             </AppBar>
             <Box
@@ -196,7 +144,6 @@ console.log(props.update);
               }}
               noValidate
               autoComplete="off"
-            // onSubmit={(e) => { e.preventDefault(); }}
             >
               <ParentDiv>
 
@@ -205,10 +152,9 @@ console.log(props.update);
                   helperText={formik.touched.username && formik.errors.username}
                   name='username'
                   value={formik.values.username || ''}
-                  disabled={props.update === '' ? false : true}
                   label='Username'
                   InputProps={{
-                    readOnly: false,
+                    readOnly: true,
                   }}
                   onChange={formik.handleChange}
                 />
@@ -252,15 +198,6 @@ console.log(props.update);
                 />
 
                 <TextField
-                  error={formik.touched.availablePoints && Boolean(formik.errors.availablePoints)}
-                  helperText={formik.touched.availablePoints && formik.errors.availablePoints}
-                  label="Available Points"
-                  name='availablePoints'
-                  value={formik.values.availablePoints || ''}
-                  onChange={formik.handleChange}
-                />
-
-                <TextField
                   label="Profile Pic"
                   type='file'
                   name='profilePicture'
@@ -292,28 +229,6 @@ console.log(props.update);
             </Box>
           </form>
         </Dialog>
-      }
-
-      {props.update === false && props.delete !== false &&
-        <Dialog
-          keepMounted
-          onClose={props.handleClose}
-          open={props.open}
-          TransitionComponent={Transition}
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle>{"Are you sure you want to delete?"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              username: {props.delete.username}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={props.handleClose}>Cancel</Button>
-            <Button onClick={deleteUserHandler}>Delete</Button>
-          </DialogActions>
-        </Dialog>
-      }
 
     </React.Fragment >
   );

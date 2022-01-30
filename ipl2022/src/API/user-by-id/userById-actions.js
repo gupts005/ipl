@@ -28,7 +28,8 @@ export const fetchUserById = (userId) => {
       const userData = await fetchData();
       dispatch(
         userByIdActions.replaceUserById({
-          items : userData || []
+          items : userData || [],
+          changed: true
         })
       );
     } catch (error) {

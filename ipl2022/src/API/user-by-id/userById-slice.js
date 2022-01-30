@@ -8,8 +8,14 @@ const userByIdSlice = createSlice({
   },
   reducers: {
     replaceUserById(state, action) {
+      state.changed = action.payload.changed;
       state.items = action.payload.items;
-    }
+    },
+    updateUser(state, action) {
+      const newItem = action.payload;
+      state.changed = true;
+      state.items = newItem;
+    },
   },
 });
 

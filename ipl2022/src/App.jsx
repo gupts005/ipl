@@ -22,6 +22,7 @@ import Teams from './UI/Admin/teams/teams';
 import FetchingApi from './UI/common/components/FetchingApi';
 import LiveMatch from './UI/live-match/LiveMatches';
 import MatchResult from './UI/match-result/MatchResult';
+import ForgotPassword from './UI/forgot-password/ForgotPassword';
 
 function App() {
 
@@ -70,6 +71,8 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route path="/registration" element={<SignUp />} />
+          
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
 
       )}
