@@ -59,7 +59,7 @@ const BettingPage = (props) => {
   const UpdateStateData = (data) => {
     console.log(data, ' betting page update');
   };
-  
+
   useEffect(() => {
     setTimeout(() => {
       setState(false);
@@ -77,6 +77,74 @@ const BettingPage = (props) => {
           </>
         }
         <div className={classes.child}>
+          <div className={classes.primary}>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+            <div className={classes.box}></div>
+          </div>
 
           {!state &&
             <>

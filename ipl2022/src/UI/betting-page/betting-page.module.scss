@@ -5,6 +5,9 @@
   overflow-x: hidden;
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
+  margin: 0;
+  padding: 0;
+  background: #000;
 
   .child {
     min-height: calc(100vh - 70px);
@@ -16,11 +19,77 @@
     align-content: center;
     justify-content: center;
     align-items: center;
+    --columns: 9;
+    --value: calc(100vw / var(--columns));
+    animation: background 2s infinite linear;
+
+    .primary {
+      display: grid;
+      height: calc(100vh - 70px);
+      grid-template-columns: repeat(var(--columns), var(--value));
+      grid-template-rows: repeat(var(--columns), var(--value));
+    }
+    .box:nth-child(odd) {
+      background: #fff;
+      animation: rotate 4s linear infinite, first 2s linear infinite;
+    }
+    .box:nth-child(even) {
+      background: #000;
+      animation: rotate 4s linear infinite, second 2s linear infinite;
+    }
+
     > *{
       width: 100%;
       height: calc(100vh - 70px);
       scroll-snap-align: end;
     }
 
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes background {
+  0% {
+    background: #000;
+  }
+  49% {
+    background: #000;
+  }
+  50% {
+    background: #fff;
+  }
+  100% {
+    background: #fff;
+  }
+}
+@keyframes first {
+  0% {
+    z-index: 1;
+  }
+  100% {
+    z-index: 0;
+  }
+}
+@keyframes second {
+  0% {
+    z-index: 0;
+  }
+  100% {
+    z-index: 1;
   }
 }

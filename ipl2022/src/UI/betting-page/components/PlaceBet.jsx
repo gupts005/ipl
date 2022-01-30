@@ -95,86 +95,87 @@ const PlaceBet = (props) => {
 
   return (
     <React.Fragment>
-      <Box
-        sx={{
-          width: '90%',
-          height: '80vh',
-          backgroundColor: '#f5edde',
-          display: 'flex',
-          flexDirection: 'column',
-          alignContent: 'center',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <Paper
+      <div className={classes.wrapper}>
+        <Box
           sx={{
-            padding: '20px',
-            backgroundColor: '#531053',
-            borderRadius: '10px',
+            width: '90%',
+            height: '80vh',
+            // backgroundColor: '#f5edde',
+            display: 'flex',
+            flexDirection: 'column',
+            alignContent: 'center',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
-          elevation={3} >
+        >
+          <Paper
+            sx={{
+              padding: '20px',
+              backgroundColor: '#531053',
+              borderRadius: '10px',
+            }}
+            elevation={3} >
 
-          <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit}>
 
-            <div className={classes.form_heading}>
-              <p>Select a Team</p>
-            </div>
-
-            <div className={classes.radio_group}>
-              <div className={classes.left_radio}>
-                <label>
-                  <input
-                    type="radio"
-                    onChange={formik.handleChange}
-                    onClick={() => displayTeamName(props.matchData.team1Id)}
-                    name="teamId"
-                    value={props.matchData.team1Id}
-                    defaultChecked={selectedTeam?.teamId === props.matchData.team1Id ? true : false}
-                  />
-                  <img src={props.matchData.team1Logo} />
-                </label>
+              <div className={classes.form_heading}>
+                <p>Select a Team</p>
               </div>
-              <div className={classes.right_radio}>
-                <label>
-                  <input
-                    type="radio"
-                    onChange={formik.handleChange}
-                    onClick={() => displayTeamName(props.matchData.team2Id)}
-                    name='teamId'
-                    value={props.matchData.team2Id}
-                    defaultChecked={selectedTeam?.teamId === props.matchData.team2Id ? true : false}
-                  />
-                  <img src={props.matchData.team2Logo} />
-                </label>
+
+              <div className={classes.radio_group}>
+                <div className={classes.left_radio}>
+                  <label>
+                    <input
+                      type="radio"
+                      onChange={formik.handleChange}
+                      onClick={() => displayTeamName(props.matchData.team1Id)}
+                      name="teamId"
+                      value={props.matchData.team1Id}
+                      defaultChecked={selectedTeam?.teamId === props.matchData.team1Id ? true : false}
+                    />
+                    <img src={props.matchData.team1Logo} />
+                  </label>
+                </div>
+                <div className={classes.right_radio}>
+                  <label>
+                    <input
+                      type="radio"
+                      onChange={formik.handleChange}
+                      onClick={() => displayTeamName(props.matchData.team2Id)}
+                      name='teamId'
+                      value={props.matchData.team2Id}
+                      defaultChecked={selectedTeam?.teamId === props.matchData.team2Id ? true : false}
+                    />
+                    <img src={props.matchData.team2Logo} />
+                  </label>
+                </div>
               </div>
-            </div>
 
-            <div className={classes.form_content}>
-              <p>
-                Selected Team : {userbotData.contestPoints === '' ? selectedTeamState||'Select team to place bet' : selectedTeamState || selectedTeam?.name}
-              </p>
-              <TextField
-                className={classes.textField}
-                name='contestPoints'
-                value={formik.values?.contestPoints}
-                onChange={formik.handleChange}
-                focused={true}
-                label='Enter Points'
-                sx={{ input: { color: 'white' } }}
-                error={formik.touched.contestPoints && Boolean(formik.errors.contestPoints)}
-                helperText={formik.touched.contestPoints && formik.errors.contestPoints}
-              />
-              <AnimatedButton 
-                onClick={props.onClick(userbotData)}
-                text={userbotData.contestPoints !== '' ? 'Update Bet' : 'Place Bet'} />
-            </div>
+              <div className={classes.form_content}>
+                <p>
+                  Selected Team : {userbotData.contestPoints === '' ? selectedTeamState || 'Select team to place bet' : selectedTeamState || selectedTeam?.name}
+                </p>
+                <TextField
+                  className={classes.textField}
+                  name='contestPoints'
+                  value={formik.values?.contestPoints}
+                  onChange={formik.handleChange}
+                  focused={true}
+                  label='Enter Points'
+                  sx={{ input: { color: 'white' } }}
+                  error={formik.touched.contestPoints && Boolean(formik.errors.contestPoints)}
+                  helperText={formik.touched.contestPoints && formik.errors.contestPoints}
+                />
+                <AnimatedButton
+                  onClick={props.onClick(userbotData)}
+                  text={userbotData.contestPoints !== '' ? 'Update Bet' : 'Place Bet'} />
+              </div>
 
-          </form>
+            </form>
 
-        </Paper>
-      </Box>
-
+          </Paper>
+        </Box>
+      </div>
     </React.Fragment>
   );
 };

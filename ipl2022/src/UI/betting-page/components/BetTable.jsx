@@ -27,6 +27,7 @@ const ParentDiv = styled.div`
   align-content: center;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 `;
 
 const BetTable = (props) => {
