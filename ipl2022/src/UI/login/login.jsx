@@ -7,19 +7,52 @@ import { init } from "ityped";
 import Particles from 'react-tsparticles';
 import { authBaseURL } from '../../common/http-urls.js';
 import AnimatedButton from '../common/components/AnimatedButton/AnimatedButton';
+import axios from 'axios';
+import { useFormik } from 'formik';
+import { authentication } from '../../API/authentication/authentication-actions';
+import { useDispatch, useSelector } from 'react-redux';
+import * as yup from 'yup';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { Alert, Button, Slide } from '@mui/material';
 
-const Login = () => {
+const validationSchema = yup.object({
+  username: yup.string().required('username is required'),
+  password: yup.string().required('password is required')
+});
 
-  const navigate = useNavigate();
+const Login = (props) => {
 
   const [state, setState] = useState({
     isLoading: false
   });
-
+  const [snackbarState, setSnackbarState] = useState({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = snackbarState;
+  const dispatch = useDispatch();
+  const loginData = useSelector((state) => state.authentication.items);
+  const loginChanged = useSelector((state) => state.authentication.changed);
+  const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
 
-  const usernameInputRef = useRef();
-  const passwordInputRef = useRef();
+  useEffect(() => {
+    if (loginChanged) {
+      setState({
+        isLoading: false
+      });
+      setSnackbarState({
+        open: true,
+        vertical: 'top',
+        horizontal: 'center',
+      });
+      authCtx.login(loginData);
+      navigate('/');
+    }
+  }, [loginChanged]);
 
   const particlesInit = (main) => {
     // console.log(main);
@@ -29,6 +62,12 @@ const Login = () => {
 
   const particlesLoaded = (container) => {
     // console.log(container);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
   };
 
   const gotoResetPassword = () => {
@@ -54,60 +93,65 @@ const Login = () => {
     });
   }, []);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
 
-    const enteredUsername = usernameInputRef.current.value;
-    const enteredPassword = passwordInputRef.current.value;
+  //   const enteredUsername = usernameInputRef.current.value;
+  //   const enteredPassword = passwordInputRef.current.value;
 
-    // console.log(enteredPassword, enteredUsername);
-    setState({
-      isLoading: true
-    });
+  //   setState({
+  //     isLoading: true
+  //   });
 
-    fetch(authBaseURL, {
-      method: 'POST',
-      body: JSON.stringify({
-        username: enteredUsername,
-        password: enteredPassword
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-      .then((res) => {
-        setState({
-          isLoading: false
-        });
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            let errorMessage = 'Authentication failed!';
-            if (data) {
-              errorMessage = data.message;
-            }
-            throw new Error(errorMessage);
-          });
-        }
-      })
-      .then((data) => {
-        authCtx.login(data);
-        navigate('/');
-      }).catch((err) => {
-        alert(err.message, ' catch block');
-      })
-  };
+  //   let username = enteredUsername;
+  //   let password = enteredPassword;
+  //   const loginData = { username, password };
+  //   const response = await axios.post(authBaseURL, loginData);
+  //   const resp = await response;
+
+  //   if (resp.status !== 200) {
+  //     alert('error');
+  //     setState({
+  //       isLoading: false
+  //     });
+  //   }
+
+  //   if (resp.data) {
+  //     setState({ isLoading: false });
+  //     authCtx.login(resp.data);
+  //     navigate('/');
+  //   }
+
+  // };
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: ''
+    },
+    validationSchema: validationSchema,
+    onSubmit: (selectedFormData) => {
+      setState({
+        isLoading: true
+      });
+      console.log(selectedFormData);
+      dispatch(authentication({
+        username: selectedFormData.username,
+        password: selectedFormData.password
+      }));
+    }
+  });
 
   const gotoRegistration = () => {
     navigate('/registration');
   };
 
+  const sucess = 'Login Successfully';
   return (
     <React.Fragment>
 
       <div className={classes.parent}>
-        <Particles
+        {/* <Particles
           id="tsparticles"
           init={particlesInit}
           loaded={particlesLoaded}
@@ -188,7 +232,7 @@ const Login = () => {
             },
             detectRetina: true,
           }}
-        />
+        /> */}
         <div className={classes.child}>
           <div className={classes.child_left}>
             <MiniCarousel />
@@ -202,12 +246,22 @@ const Login = () => {
                 </p>
               </div>
               <div className={classes.child_right_2}>
-                <form onSubmit={submitHandler}>
+                <form onSubmit={formik.handleSubmit}>
                   <div className={classes.input_field}>
-                    <input type="text" placeholder='U S E R N A M E' id='username' required ref={usernameInputRef} />
+                    <input
+                      type="text"
+                      placeholder='U S E R N A M E'
+                      id='username'
+                      name='username'
+                      onChange={formik.handleChange} />
                   </div>
                   <div className={classes.input_field}>
-                    <input type="password" placeholder='P A S S W O R D' id='password' required ref={passwordInputRef} />
+                    <input
+                      type="password"
+                      placeholder='P A S S W O R D'
+                      id='password'
+                      name='password'
+                      onChange={formik.handleChange} />
                   </div>
                   <div className={classes.login_btn}>
                     {!state.isLoading && (
@@ -223,9 +277,9 @@ const Login = () => {
                 </div>
                 <div className={classes.child_right_3_right}>
                   <span className={classes.span1} ref={textRef2}> </span>
-                  <br /> 
+                  <br />
                   <span className={classes.span2} onClick={gotoRegistration}>
-                  <i className="fas fa-sign-in-alt"></i>Hit me to register
+                    <i className="fas fa-sign-in-alt"></i>Hit me to register
 
                   </span>
                 </div>
@@ -235,6 +289,22 @@ const Login = () => {
           </div>
         </div>
       </div>
+          <Slide direction="up" in={open}>
+            <Snackbar
+              anchorOrigin={{ vertical, horizontal }}
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleClose}
+              message="sdsd"
+              key={vertical + horizontal}
+            >
+              <Alert
+                severity={JSON.stringify(loginData).toLowerCase().includes('invalid') ? 'error' : 'success'}
+              >
+                {JSON.stringify(loginData).toLowerCase().includes('invalid') ? loginData : sucess}
+              </Alert>
+            </Snackbar>
+          </Slide>
 
     </React.Fragment>
   );

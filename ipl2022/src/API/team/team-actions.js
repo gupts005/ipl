@@ -1,14 +1,10 @@
 
 import axios from 'axios';
 import { teamBaseURL } from '../../common/http-urls';
+import { Token } from '../../common/LS';
 import { teamActions } from './team-slice';
 
-const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
-
-export const fetchTeamData = () => {
+export const fetchTeamData = (Token) => {
 
   return async (dispatch) => {
     const fetchData = async () => {

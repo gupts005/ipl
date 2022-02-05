@@ -9,6 +9,7 @@ const matchSlice = createSlice({
   reducers: {
     replaceMatches(state, action) {
       state.items = action.payload.items;
+      state.changed = action.payload.changed;
     },
     addMatches(state, action) {
       const newItem = action.payload;

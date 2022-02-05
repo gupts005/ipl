@@ -1,14 +1,10 @@
 
 import axios from 'axios';
 import { matchBaseURL } from '../../common/http-urls';
+import { Token } from '../../common/LS';
 import { matchActions } from './matches-slice';
 
-const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
-
-export const fetchMatchData = () => {
+export const fetchMatchData = (Token) => {
 
   return async (dispatch) => {
     const fetchData = async () => {
@@ -28,7 +24,8 @@ export const fetchMatchData = () => {
       const matchData = await fetchData();
       dispatch(
         matchActions.replaceMatches({
-          items : matchData || []
+          items : matchData || [],
+          changed: true
         })
       );
     } catch (error) {

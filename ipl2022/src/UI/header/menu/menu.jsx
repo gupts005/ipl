@@ -3,8 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { HeaderData } from '../../common/constants/data';
 import AuthContext from '../../../API/auth-context';
 import classes from "./menu.module.scss";
+import { authenticationActions } from '../../../API/authentication/authentication-slice';
+import { useDispatch } from 'react-redux';
 
 const Menu = (props) => {
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
 
@@ -12,7 +16,8 @@ const Menu = (props) => {
     navigate(`${item.url}`);
   };
 
-  const logoutHandler = () => {
+  const logoutHandler = () => {    
+    dispatch(authenticationActions.removeAuthData());
     authCtx.logout();
     navigate('/');
   };

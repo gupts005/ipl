@@ -1,14 +1,10 @@
 
 import axios from 'axios';
 import { matchBaseURL } from '../../common/http-urls';
+import { Token } from '../../common/LS';
 import { oldMatchActions } from './oldMatches-slice';
 
-const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
-
-export const fetchOldMatchData = () => {
+export const fetchOldMatchData = (Token) => {
 
   return async (dispatch) => {
     const fetchData = async () => {

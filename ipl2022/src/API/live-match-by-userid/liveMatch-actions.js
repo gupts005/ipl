@@ -3,12 +3,7 @@ import axios from 'axios';
 import { usersBaseURL } from '../../common/http-urls';
 import { liveMatchActions } from './liveMatch-slice';
 
-const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
-
-export const fetchliveMatch = (userId) => {
+export const fetchliveMatch = (userId,Token) => {
 
   return async (dispatch) => {
     const fetchData = async () => {

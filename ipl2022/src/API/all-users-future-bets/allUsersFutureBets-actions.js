@@ -2,12 +2,7 @@ import axios from "axios";
 import { usersBaseURL } from "../../common/http-urls";
 import { allUsersFutureBetsActions } from "./allUsersFutureBets-slice";
 
-const userData = JSON.parse(localStorage.getItem("loginState"));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` },
-};
-
-export const fetchallUserFutureBets = () => {
+export const fetchallUserFutureBets = (Token) => {
   return async (dispatch) => {
     const fetchData = async () => {
       const response = await axios.get(usersBaseURL +"/future-contest", Token);

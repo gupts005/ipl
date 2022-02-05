@@ -3,12 +3,7 @@ import axios from 'axios';
 import { usersBaseURL } from '../../common/http-urls';
 import { allMatchResultActions } from './allMatchResult-slice';
 
-const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
-
-export const fetchallMatchResult = (userId) => {
+export const fetchallMatchResult = (userId,Token) => {
 
   return async (dispatch) => {
     const fetchData = async () => {

@@ -138,7 +138,7 @@ const Matches = (props) => {
                         item.team2Short.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         item.team2.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         item.venue.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        item.minimumPoints.toString().includes(searchTerm)  ||
+                        JSON.stringify(item.minimumPoints).toLowerCase().includes(searchTerm.toLowerCase())  ||
                         item.startDatetime.toLowerCase().includes(searchTerm.toLowerCase())) {
                         return item;
                       }

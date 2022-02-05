@@ -3,82 +3,62 @@ import React, { useState, useCallback } from "react";
 // let logoutTimer;
 
 const AuthContext = React.createContext({
-  userData: '',
+  userData: "",
   isLoggedIn: false,
   login: (data) => {},
   logout: () => {},
-  screenSize: null
+  screenSize: null,
 });
 
-const retrieveStoredToken = () => {
-  const storedState = localStorage.getItem("loginState");
-  return JSON.parse(storedState);
-};
-
 export const AuthContextProvider = (props) => {
+
   const [screenSize, getDimension] = React.useState({
     dynamicWidth: window.innerWidth,
-    dynamicHeight: window.innerHeight
+    dynamicHeight: window.innerHeight,
   });
 
   const setDimension = () => {
     getDimension({
       dynamicWidth: window.innerWidth,
-      dynamicHeight: window.innerHeight
+      dynamicHeight: window.innerHeight,
     });
-  }
+  };
 
   React.useEffect(() => {
-    window.addEventListener('resize', setDimension);
+    window.addEventListener("resize", setDimension);
 
-    return (() => {
-      window.removeEventListener('resize', setDimension);
-    })
+    return () => {
+      window.removeEventListener("resize", setDimension);
+    };
   }, [screenSize]);
 
-  const tokenData = retrieveStoredToken();
+  const tokenData = JSON.parse(localStorage.getItem("loginState"));
 
   let initialToken;
   if (tokenData) {
-    initialToken = tokenData.username;
+    initialToken = tokenData;
   }
-
-  const [state, setState] = useState({
-    userId: null,
-    username: null,
-    status: null,
-    role: null,
-    token: null
-  });
 
   const [LoggedIn, setLoggedIn] = useState(initialToken);
 
   const userIsLoggedIn = !!LoggedIn;
 
   const logoutHandler = useCallback(() => {
-    setState(null);
     setLoggedIn(null);
     localStorage.removeItem("loginState");
   }, []);
 
   const loginHandler = (data) => {
     setLoggedIn(data);
-    setState({
-      userId: data.userId,
-      username: data.username,
-      status: data.status,
-      role: data.role,
-      token: data.token
-    });
     localStorage.setItem("loginState", JSON.stringify(data));
   };
 
   const contextValue = {
-    userData: state,
+    userData: LoggedIn,
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
-    screenSize: screenSize
+    screenSize: screenSize,
   };
 
   return (

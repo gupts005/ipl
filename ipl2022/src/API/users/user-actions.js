@@ -1,14 +1,10 @@
 
 import axios from 'axios';
 import { usersBaseURL } from '../../common/http-urls';
+import { Token } from '../../common/LS';
 import { userActions } from './user-slice';
 
-const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
-
-export const fetchUsersData = () => {
+export const fetchUsersData = (Token) => {
 
   return async (dispatch) => {
     const fetchData = async () => {

@@ -5,11 +5,8 @@ import { Token } from '../../UI/common/constants/data';
 import { venueActions } from './venue-slice';
 
 
-export const fetchVenueData = () => {
-  const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
+export const fetchVenueData = (Token) => {
+
   return async (dispatch) => {
     const fetchData = async () => {
       const response = await axios.get(venueBaseURL,Token);
