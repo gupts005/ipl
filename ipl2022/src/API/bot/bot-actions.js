@@ -1,13 +1,7 @@
-
 import axios from 'axios';
-import React from 'react';
 import { contestBaseURL,matchBaseURL } from '../../common/http-urls';
+import { Token } from '../../common/LS';
 import { botActions } from './bot-slice';
-
-const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
 
 export const fetchAllContestByMatchId = (matchId) => {
   

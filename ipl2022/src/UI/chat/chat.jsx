@@ -5,7 +5,7 @@ import Fab from '@mui/material/Fab';
 import SendIcon from '@mui/icons-material/Send';
 import SwipeableTemporaryDrawer from '../common/components/SwipableDrawer';
 import styled from 'styled-components';
-import { chatBaseURL, NodeJSURL } from '../../common/http-urls';
+import { chatBaseURL, ContestLogBaseURL, NodeJSURL } from '../../common/http-urls';
 import { useFormik } from 'formik';
 import AuthContext from '../../API/auth-context';
 import * as yup from 'yup';
@@ -16,7 +16,9 @@ import { Avatar, LinearProgress } from '@mui/material';
 import { Token, userData } from '../../common/LS';
 import { stringAvatar } from '../common/components/Utils';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendChatData } from '../../API/chat/chat-actions';
+import { chatActions } from '../../API/chat/chat-slice';
 
 const validationSchema = yup.object({
   message: yup.string().required('message is required')
@@ -24,54 +26,43 @@ const validationSchema = yup.object({
 
 const Chat = (props) => {
 
+  const dispatch = useDispatch();
   const userByIdData = useSelector((state) => state.userById.items);
+  const chatData = useSelector((state) => state.chat.items);
+  const chatDataChanged = useSelector((state) => state.chat.changed);
   const authCtx = useContext(AuthContext);
   const socket = socketIOClient(NodeJSURL, { transports: ['websocket'] });
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
-  console.log(messages);
+  // const [logs, setLogs] = useState([]);
+  // const [combinedData, setCombinedData] = useState([]);
 
   useEffect(() => {
-    getAllMsg();
+    setMessages(chatData);
     setTimeout(() => {
       scrollToBottom();
     }, 300);
-  }, []);
+  }, [chatDataChanged]);
+
+  // useEffect(() => {
+  //   const tempD = [...messages, ...logs];
+  //   setCombinedData(tempD);
+  // }, [messages, logs]);
 
   useEffect(() => {
-    // socket.connect();
-    socket.on('newMsg', (IncomingMsg) => {
+    socket.once('newMsg', (IncomingMsg) => {
       const tempData = [...messages, IncomingMsg]
       setMessages(tempData);
       scrollToBottom();
+      // socket.off("newMsg", IncomingMsg);
       socket.disconnect();
     });
   }, [socket]);
 
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "instant" })
-  }
-
-  const getAllMsg = async () => {
-    const response = await axios.get(chatBaseURL + `/last-days/${10}`, Token);
-    if (response.status !== 200) {
-      throw new Error('Could not fetch user data!');
-      // return response.data.message;
-    }
-    const data = await response.data;
-    setMessages(data);
-  }
-
-  const saveMsg = async (chatData) => {
-    const response = await axios.post(chatBaseURL, chatData, Token);
-    if (response.status !== 201) {
-      throw new Error('Could not fetch user data!');
-      // return response.data.message;
-    }
-    const data = await response.data;
-    console.log(data);
   }
 
   const formik = useFormik({
@@ -81,6 +72,7 @@ const Chat = (props) => {
     validationSchema: validationSchema,
     onSubmit: (selectedFormData, { resetForm }) => {
       // console.log(selectedFormData);
+      socket.connect();
       const message = selectedFormData.message;
       const userId = userData.userId;
       const firstName = userByIdData.firstName;
@@ -91,14 +83,11 @@ const Chat = (props) => {
       const status = true;
       const chat = { userId, message, firstName, lastName, profilePicture, chatTimestamp, publicChatId, status };
       const kjk = { userId, message };
-      saveMsg(kjk);
-      socket.connect();
+      // saveMsg(kjk);
       socket.emit('sendMsg', chat);
+      dispatch(chatActions.updateChat(chat));
+      dispatch(sendChatData(kjk));
       resetForm();
-      // dispatch(authentication({
-      //   username: selectedFormData.username,
-      //   password: selectedFormData.password
-      // }));
     }
   });
 
@@ -133,7 +122,7 @@ const Chat = (props) => {
                 {messages.map((item, index) => {
                   return (
                     <div key={index}>
-                      {item.userId !== userData.userId &&
+                      {item.userId !== userData.userId && !item.contestLogId &&
                         <div className={classes.notUserId}>
                           <Avatar {...stringAvatar(`${item.firstName} ${item.lastName}`)} src={item.profilePicture} />
                           <div className={classes.notUserIdInner}>
@@ -151,7 +140,7 @@ const Chat = (props) => {
                           </div>
                         </div>
                       }
-                      {item.userId === userData.userId &&
+                      {item.userId === userData.userId && !item.contestLogId &&
                         <div className={classes.isUserId}>
                           <div className={classes.isUserIdInner}>
                             <span className={classes.isUser1span}>
@@ -167,6 +156,13 @@ const Chat = (props) => {
                             </span>
                           </div>
                           <Avatar {...stringAvatar(`${item.firstName} ${item.lastName}`)} src={item.profilePicture} />
+                        </div>
+                      }
+                      {item.contestLogId &&
+                        <div className={classes.log}>
+                          <span style={{ background: 'silver' }}>
+                            {item.message}
+                          </span>
                         </div>
                       }
                       <div ref={messagesEndRef} />

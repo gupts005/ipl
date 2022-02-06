@@ -57,19 +57,32 @@ $padding: 10px 0 0 20px;
         // border: 3px solid skyblue;
         background: lightblue;
 
-        .time{
+        .log {
+          display: flex;
+          justify-content: center;
+          font-size: 0.8rem;
+          margin: 5px;
+
+          span {
+            padding: 5px;
+            border-radius: 10px;
+            background: silver;
+          }
+        }
+
+        .time {
           display: flex;
           flex-direction: row;
           justify-content: space-between;
           font-size: 0.6rem;
         }
 
-        .notUserId{
+        .notUserId {
           display: flex;
           flex-direction: row;
           align-items: center;
 
-          .notUserIdInner{
+          .notUserIdInner {
             display: flex;
             flex-direction: column;
             background: dodgerblue;
@@ -82,15 +95,14 @@ $padding: 10px 0 0 20px;
             word-wrap: break-word;
             padding-right: 10px;
             padding-left: 10px;
-
           }
         }
-        .isUserId{
+        .isUserId {
           display: flex;
           flex-direction: row;
           align-items: center;
 
-          .isUserIdInner{
+          .isUserIdInner {
             display: flex;
             flex-direction: column;
             background: #fff;
@@ -104,11 +116,10 @@ $padding: 10px 0 0 20px;
             padding-right: 10px;
             padding-left: 10px;
 
-            .isUser1span{
+            .isUser1span {
               display: flex;
               justify-content: flex-end;
             }
-
           }
         }
       }
@@ -133,7 +144,7 @@ $padding: 10px 0 0 20px;
             overflow: hidden;
             border-radius: 25px;
 
-            textarea{
+            textarea {
               border: none;
               outline: none;
             }
@@ -157,15 +168,15 @@ $padding: 10px 0 0 20px;
       }
     }
     @media screen and (max-width: 600px) {
-      .chat_left{
+      .chat_left {
         display: none;
         width: 0;
       }
       .chat_right {
-        width: 100%;  
-        left: 0;      
+        width: 100%;
+        left: 0;
       }
-      .chat_submit_btn{
+      .chat_submit_btn {
         padding: 0 10px 0 0;
       }
     }

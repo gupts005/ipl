@@ -14,6 +14,7 @@ import upcomingMatchesByUserId from './upcoming-matches-by-userid/upcomingMatche
 import allMatchResult from './all-matches-result/allMatchResult-slice';
 import liveMatch from './live-match-by-userid/liveMatch-slice';
 import authentication from './authentication/authentication-slice';
+import chatSlice from './chat/chat-slice';
 
 const store = configureStore({
   reducer: {
@@ -31,7 +32,8 @@ const store = configureStore({
     upcomingMatchesByUserId: upcomingMatchesByUserId.reducer,
     allMatchResult: allMatchResult.reducer,
     liveMatch: liveMatch.reducer,
-    authentication: authentication.reducer
+    authentication: authentication.reducer,
+    chat: chatSlice.reducer
   },
 });
 

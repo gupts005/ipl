@@ -4,6 +4,7 @@ import { fetchallMatchResult } from '../../../API/all-matches-result/allMatchRes
 import { fetchallUserFutureBets } from '../../../API/all-users-future-bets/allUsersFutureBets-actions';
 import { fetchallUserStats } from '../../../API/all-users-stats/allUserStats-actions';
 import AuthContext from '../../../API/auth-context';
+import { fetchChatData } from '../../../API/chat/chat-actions';
 import { fetchliveMatch } from '../../../API/live-match-by-userid/liveMatch-actions';
 import { fetchMatchData } from '../../../API/matches/matches-actions';
 import { fetchOldMatchData } from '../../../API/old-matches/oldMatches-actions';
@@ -42,7 +43,8 @@ const FetchingApi = (props) => {
       dispatch(fetchallUserStats(Token)),
       dispatch(fetchupcomingMatchesByUserId(userData.userId,Token)),
       dispatch(fetchallMatchResult(userData.userId,Token)),
-      dispatch(fetchliveMatch(userData.userId,Token))
+      dispatch(fetchliveMatch(userData.userId,Token)),
+      dispatch(fetchChatData())
     ]).then((data) => {
       // console.log(data);
     }).catch((error) => {
