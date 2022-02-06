@@ -14,7 +14,7 @@ export const fetchUserById = (userId,Token) => {
       }
 
       const data = await response.data;
-      console.log(data,' user by id file');
+      // console.log(data,' user by id file');
 
       return data;
     };

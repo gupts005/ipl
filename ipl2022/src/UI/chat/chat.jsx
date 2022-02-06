@@ -1,128 +1,216 @@
-import React, { useEffect, useState } from 'react';
-import './chat.scss';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import classes from './chat.module.scss';
 import socketIOClient from "socket.io-client";
-import { EndPoint } from '../common/constants/data';
 import Fab from '@mui/material/Fab';
 import SendIcon from '@mui/icons-material/Send';
 import SwipeableTemporaryDrawer from '../common/components/SwipableDrawer';
 import styled from 'styled-components';
+import { chatBaseURL, NodeJSURL } from '../../common/http-urls';
+import { useFormik } from 'formik';
+import AuthContext from '../../API/auth-context';
+import * as yup from 'yup';
+import axios from 'axios';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import { Avatar, LinearProgress } from '@mui/material';
+import { Token, userData } from '../../common/LS';
+import { stringAvatar } from '../common/components/Utils';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
 
-const Chat = () => {
+const validationSchema = yup.object({
+  message: yup.string().required('message is required')
+});
 
-  const [screenSize, getDimension] = useState({
-    dynamicWidth: window.innerWidth,
-    dynamicHeight: window.innerHeight
-  });
+const Chat = (props) => {
 
-  const setDimension = () => {
-    getDimension({
-      dynamicWidth: window.innerWidth,
-      dynamicHeight: window.innerHeight
-    });
-  }
-  
-  useEffect(() => {
-    window.addEventListener('resize', setDimension);
-    
-    return(() => {
-        window.removeEventListener('resize', setDimension);
-    })
-  }, [screenSize]);
-
+  const userByIdData = useSelector((state) => state.userById.items);
+  const authCtx = useContext(AuthContext);
+  const socket = socketIOClient(NodeJSURL, { transports: ['websocket'] });
+  const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
-  
-  const socket = socketIOClient(EndPoint, { transports: ['websocket'] });
+  console.log(messages);
 
   useEffect(() => {
-    socket.on('message', data => {
-      let temp = messages;
-      temp.push(data.text);
-      setMessages([...temp]);
-      console.log(temp, ' sdsdsdsds');
-    });
+    getAllMsg();
+    setTimeout(() => {
+      scrollToBottom();
+    }, 300);
+  }, []);
 
+  useEffect(() => {
+    // socket.connect();
+    socket.on('newMsg', (IncomingMsg) => {
+      const tempData = [...messages, IncomingMsg]
+      setMessages(tempData);
+      scrollToBottom();
+      socket.disconnect();
+    });
   }, [socket]);
 
-  const [enteredMessage, setEnteredMessage] = useState('');
-  const [enteredMsgTouched, setEnteredMsgTouched] = useState(false);
+  const messagesEndRef = useRef(null)
 
-  const enteredMessageIsValid = enteredMessage.trim() !== '';
-  const msgInputIsInvalid = !enteredMessageIsValid && enteredMsgTouched;
-
-  let formIsValid = false;
-
-  if (enteredMessageIsValid) {
-    formIsValid = true;
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "instant" })
   }
 
-  const msgInputChangeHandler = event => {
-    setEnteredMessage(event.target.value);
-  };
-
-  const msgInputBlurHandler = () => {
-    setEnteredMsgTouched(true);
-  };
-
-  const sendChatDataHandler = event => {
-    event.preventDefault();
-
-    setEnteredMsgTouched(true);
-
-    if (!enteredMessageIsValid) {
-      return;
+  const getAllMsg = async () => {
+    const response = await axios.get(chatBaseURL + `/last-days/${10}`, Token);
+    if (response.status !== 200) {
+      throw new Error('Could not fetch user data!');
+      // return response.data.message;
     }
+    const data = await response.data;
+    setMessages(data);
+  }
 
-    // console.log(enteredMessage);
-    socket.emit('sendMsg', enteredMessage);
+  const saveMsg = async (chatData) => {
+    const response = await axios.post(chatBaseURL, chatData, Token);
+    if (response.status !== 201) {
+      throw new Error('Could not fetch user data!');
+      // return response.data.message;
+    }
+    const data = await response.data;
+    console.log(data);
+  }
 
-    setEnteredMessage('');
-    setEnteredMsgTouched(false);
-  };
+  const formik = useFormik({
+    initialValues: {
+      message: ''
+    },
+    validationSchema: validationSchema,
+    onSubmit: (selectedFormData, { resetForm }) => {
+      // console.log(selectedFormData);
+      const message = selectedFormData.message;
+      const userId = userData.userId;
+      const firstName = userByIdData.firstName;
+      const lastName = userByIdData.lastName;
+      const profilePicture = userByIdData.profilePicture;
+      const chatTimestamp = new Date().getTime();
+      const publicChatId = Math.max.apply(Math, messages.map(function (o) { return o.publicChatId + 1; }));
+      const status = true;
+      const chat = { userId, message, firstName, lastName, profilePicture, chatTimestamp, publicChatId, status };
+      const kjk = { userId, message };
+      saveMsg(kjk);
+      socket.connect();
+      socket.emit('sendMsg', chat);
+      resetForm();
+      // dispatch(authentication({
+      //   username: selectedFormData.username,
+      //   password: selectedFormData.password
+      // }));
+    }
+  });
 
-  console.log(enteredMessage, ' mess');
-
-  const messageInputClasses = msgInputIsInvalid ? 'chat_msg_invalid' : 'chat_msg';
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 200)
+  }, []);
 
   return (
 
-    <div className='chat_parent'>
-      <div className="chat_child">
-        <div className="chat_left">
+    <div className={classes.chat_parent}>
+      {loading &&
+        <>
+          <Box sx={{ width: '100%', marginTop: '70px', position: 'absolute' }}>
+            <LinearProgress />
+          </Box>
+        </>
+      }
+      <div className={classes.chat_child}>
+        {!loading &&
+          <>
+            <div className={classes.chat_left}>
 
-        </div>
+            </div>
 
-        <div className="chat_right">
-          {screenSize.dynamicWidth < 600 ? 
-            <SwipeableTemporaryDrawer />
-          :''}
-          <div className="chat_upper">
-            {messages.map((i) => (
-              <p> {i} </p>
-            ))}
-          </div>
-          <div className="chat_lower">
-            <form onSubmit={sendChatDataHandler}>
-              <div className='chat_input_msg'>
-                <textarea
-                  // onKeyPress={(e) => { e.key === 'Enter' && e.preventDefault(); }}
-                  className={messageInputClasses}
-                  type="text"
-                  id='message'
-                  placeholder='enter message'
-                  onChange={msgInputChangeHandler}
-                  onBlur={msgInputBlurHandler}
-                  value={enteredMessage} />
+            <div className={classes.chat_right}>
+              {authCtx.screenSize.dynamicWidth < 600 ?
+                <SwipeableTemporaryDrawer />
+                : ''}
+              <div className={classes.chat_upper}>
+                {messages.map((item, index) => {
+                  return (
+                    <div key={index}>
+                      {item.userId !== userData.userId &&
+                        <div className={classes.notUserId}>
+                          <Avatar {...stringAvatar(`${item.firstName} ${item.lastName}`)} src={item.profilePicture} />
+                          <div className={classes.notUserIdInner}>
+                            <span>
+                              {item.message}
+                            </span>
+                            <span className={classes.time}>
+                              <span>
+                                ~ {item.firstName + ' ' + item.lastName}
+                              </span>
+                              <span>
+                                {moment(item.chatTimestamp).format('MMM Do, h:mm')}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      }
+                      {item.userId === userData.userId &&
+                        <div className={classes.isUserId}>
+                          <div className={classes.isUserIdInner}>
+                            <span className={classes.isUser1span}>
+                              {item.message}
+                            </span>
+                            <span className={classes.time}>
+                              <span>
+                                {moment(item.chatTimestamp).format('MMM Do, h:mm')}
+                              </span>
+                              <span>
+                                {item.firstName + ' ' + item.lastName} ~
+                              </span>
+                            </span>
+                          </div>
+                          <Avatar {...stringAvatar(`${item.firstName} ${item.lastName}`)} src={item.profilePicture} />
+                        </div>
+                      }
+                      <div ref={messagesEndRef} />
+                    </div>
+                  );
+                })}
               </div>
-              <div className="chat_submit_btn">
-                <Fab color="secondary">
-                  <SendIcon />
-                </Fab>
+              <div className={classes.chat_lower}>
+                <form onSubmit={formik.handleSubmit}>
+                  <div className={classes.chat_input_msg}>
+                    <textarea
+                      className={classes.chat_msg}
+                      type="text"
+                      placeholder='enter message'
+                      name='message'
+                      onChange={formik.handleChange}
+                      value={formik.values.message}
+                    />
+                  </div>
+                  <div className={classes.chat_submit_btn}>
+                    <Fab color="secondary" type='submit'>
+                      <SendIcon />
+                    </Fab>
+                  </div>
+                </form>
               </div>
-            </form>
-          </div>
-        </div>
+            </div>
+          </>
+        }
+        {loading &&
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignContent: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh'
+          }}
+          >
+            <CircularProgress color="secondary" />
+          </Box>
+        }
       </div>
-    </div>
+    </div >
   )
 }
 

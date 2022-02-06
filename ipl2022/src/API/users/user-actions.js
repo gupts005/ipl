@@ -15,7 +15,7 @@ export const fetchUsersData = (Token) => {
       }
 
       const data = await response.data;
-      console.log(data,' users file');
+      // console.log(data,' users file');
 
       return data;
     };

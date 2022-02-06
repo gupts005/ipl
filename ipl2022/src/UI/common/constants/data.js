@@ -1,7 +1,5 @@
 export const BackGroundImage = "https://wallpaperaccess.com/full/1088620.jpg";
 
-export const EndPoint = "http://localhost:8080";
-
 export const HeaderData = [
   {
     id: "1",

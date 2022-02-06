@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 
 app.use(express.json({ limit: '1mb' }));
 app.use(bodyParser.json());
@@ -29,11 +29,9 @@ app.get('*', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('new client connected');
-
-  socket.on('sendMsg', (message) => {
-    io.emit('message', message);
-  });
+  socket.on('sendMsg',(data)=>{
+    io.emit('newMsg', data);
+  })
 });
 
 getUserByUsernamePassword = (username, password, callBack) => {

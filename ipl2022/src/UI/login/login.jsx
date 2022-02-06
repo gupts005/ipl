@@ -151,7 +151,7 @@ const Login = (props) => {
     <React.Fragment>
 
       <div className={classes.parent}>
-        {/* <Particles
+        <Particles
           id="tsparticles"
           init={particlesInit}
           loaded={particlesLoaded}
@@ -232,7 +232,7 @@ const Login = (props) => {
             },
             detectRetina: true,
           }}
-        /> */}
+        />
         <div className={classes.child}>
           <div className={classes.child_left}>
             <MiniCarousel />

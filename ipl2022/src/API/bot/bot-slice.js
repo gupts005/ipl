@@ -12,11 +12,11 @@ const botSlice = createSlice({
     },
     addBet(state, action) {
       const newItem = action.payload;
-      console.log(newItem, " newItem");
+      // console.log(newItem, " newItem");
       const existingItem = state.items.find(
         (item) => item.contestId === newItem.contestId
       );
-      console.log(existingItem, " existing item");
+      // console.log(existingItem, " existing item");
       // state.changed = true;
       if (!existingItem) {
         state.changed = true;
@@ -33,11 +33,11 @@ const botSlice = createSlice({
     },
     updateBet(state, action) {
       const newItem = action.payload;
-      console.log(newItem, " updateItem");
+      // console.log(newItem, " updateItem");
       const existingItem = state.items.find(
         (item) => item.contestId === newItem.contestId
       );
-      console.log(existingItem, " existing item");
+      // console.log(existingItem, " existing item");
       if (existingItem) {
         state.changed = true;
         let a = state.items.map((item) =>

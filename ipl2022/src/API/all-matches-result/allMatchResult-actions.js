@@ -14,7 +14,7 @@ export const fetchallMatchResult = (userId,Token) => {
       }
 
       const data = await response.data;
-      console.log(data,' allMatchResult file');
+      // console.log(data,' allMatchResult file');
 
       return data;
     };

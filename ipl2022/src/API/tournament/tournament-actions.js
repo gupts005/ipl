@@ -14,7 +14,7 @@ export const fetchTournamentData = (Token) => {
       }
 
       const data = await response.data;
-      console.log(data, " tournament file");
+      // console.log(data, " tournament file");
 
       return data;
     };

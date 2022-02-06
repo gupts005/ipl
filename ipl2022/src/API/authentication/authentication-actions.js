@@ -15,7 +15,7 @@ export const authentication = (loginData) => {
       }
 
       const data = await response.data;
-      console.log(data,' login file');
+      // console.log(data,' login file');
 
       return data;
     };

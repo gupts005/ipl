@@ -20,7 +20,7 @@ export const fetchAllContestByMatchId = (matchId) => {
       }
 
       const data = await response.data;
-      console.log(data,' bot file');
+      // console.log(data,' bot file');
 
       return data;
     }
@@ -49,7 +49,7 @@ export const sendBetData = (betData) => {
       }
 
       const data = await response.data;
-      console.log(data,' betData success');
+      // console.log(data,' betData success');
 
       return data;
     };
@@ -58,7 +58,7 @@ export const sendBetData = (betData) => {
       await sendRequest();
       
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 };
@@ -68,14 +68,14 @@ export const sendUpdatedBetData = (betData) => {
     
     const sendRequest = async () => {
       const response = await axios.put(contestBaseURL+`/${betData.contestId}`,betData,Token);
-      console.log(response);
+      // console.log(response);
 
       if (response.status !== 200) {
         throw new Error('Could not update betData data!');
       }
 
       const data = await response.data;
-      console.log(data,' update success');
+      // console.log(data,' update success');
 
       return data;
     };
@@ -84,7 +84,7 @@ export const sendUpdatedBetData = (betData) => {
       await sendRequest();
       
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 };

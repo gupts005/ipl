@@ -13,7 +13,7 @@ export const fetchallUserStats = (Token) => {
       }
 
       const data = await response.data;
-      console.log(data,' allUserStats file');
+      // console.log(data,' allUserStats file');
 
       return data;
     };

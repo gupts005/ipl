@@ -17,40 +17,11 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
 import { TextField } from '@mui/material';
-import { getComparator, TablePaginationActions } from '../common/components/Utils';
+import { getComparator, stringAvatar, TablePaginationActions } from '../common/components/Utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchallUserFutureBets } from '../../API/all-users-future-bets/allUsersFutureBets-actions';
 import { fetchallUserStats } from '../../API/all-users-stats/allUserStats-actions';
 import { allUserStatsActions } from '../../API/all-users-stats/allUserStats-slice';
-
-function stringToColor(string) {
-  let hash = 0;
-  let i;
-
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
-  }
-
-  let color = '#';
-
-  for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += `00${value.toString(16)}`.substr(-2);
-  }
-  /* eslint-enable no-bitwise */
-
-  return color;
-}
-
-function stringAvatar(name) {
-  return {
-    sx: {
-      bgcolor: stringToColor(name),
-    },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
-  };
-}
 
 const headCells = [
   { id: 'rank', label: 'Rank', disablePadding: true },

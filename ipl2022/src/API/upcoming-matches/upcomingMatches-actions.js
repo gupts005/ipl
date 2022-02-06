@@ -14,7 +14,7 @@ export const fetchUpcomingMatchData = (Token) => {
       }
 
       const data = await response.data;
-      console.log(data,' upcoming matches file');
+      // console.log(data,' upcoming matches file');
 
       return data;
     };

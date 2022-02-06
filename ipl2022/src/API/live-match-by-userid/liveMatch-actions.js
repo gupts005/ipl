@@ -14,7 +14,7 @@ export const fetchliveMatch = (userId,Token) => {
       }
 
       const data = await response.data;
-      console.log(data,' liveMatch file');
+      // console.log(data,' liveMatch file');
 
       return data;
     };

@@ -12,7 +12,7 @@ export const fetchallUserFutureBets = (Token) => {
       }
 
       const data = await response.data;
-      console.log(data, " allUsersFutureBets file");
+      // console.log(data, " allUsersFutureBets file");
 
       return data;
     };

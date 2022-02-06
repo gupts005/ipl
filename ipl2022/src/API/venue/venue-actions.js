@@ -16,7 +16,7 @@ export const fetchVenueData = (Token) => {
       }
 
       const data = await response.data;
-      console.log(data,' venue file');
+      // console.log(data,' venue file');
 
       return data;
     };

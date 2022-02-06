@@ -13,7 +13,7 @@ const allUserStatsSlice = createSlice({
     replaceData(state, action) {
       state.changed = true;
       let incoming = action.payload;
-      console.log(incoming,' incoming state data');
+      // console.log(incoming,' incoming state data');
       // const findsum = (data) => {
         state.items.forEach((element) => {
           let obj = incoming.find(o => o.userId == element.userId);

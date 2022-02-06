@@ -44,9 +44,9 @@ const FetchingApi = (props) => {
       dispatch(fetchallMatchResult(userData.userId,Token)),
       dispatch(fetchliveMatch(userData.userId,Token))
     ]).then((data) => {
-      console.log(data);
+      // console.log(data);
     }).catch((error) => {
-      console.log(error);
+      // console.log(error);
     })
     }
   }, [dispatch]);

@@ -15,7 +15,7 @@ export const fetchTeamData = (Token) => {
       }
 
       const data = await response.data;
-      console.log(data,' team file');
+      // console.log(data,' team file');
 
       return data;
     };
