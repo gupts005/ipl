@@ -22,7 +22,7 @@ export const fetchChatData = () => {
         return obj;
       });
       // console.log(data,' bot file');
-      let combineData = chat.concat(newChat).sort((a, b) => new Date(b.chatTimestamp) - new Date(a.chatTimestamp));
+      let combineData = chat.concat(newChat).sort((a, b) => new Date(a.chatTimestamp) - new Date(b.chatTimestamp));
       console.log(combineData);
       return combineData;
     }

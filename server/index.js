@@ -28,10 +28,36 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../ipl2022/build', 'index.html'));
 });
 
+let users = [];
+
+const addUser = (userData, socketId) => {
+  userData.socketId = socketId;
+  !users.some(user => user.userId === userData.userId) &&
+  users.push(userData);
+}
+
+const removeUser = (socketId) => {
+  users = users.filter((user) => user.socketId !== socketId);
+};
+
 io.on('connection', (socket) => {
+  console.log('user connected');
+  
+  socket.on('addUser', (userData) => {
+    addUser(userData,socket.id);
+    io.emit('getUsers', users);
+  });
+
   socket.on('sendMsg',(data)=>{
     io.emit('newMsg', data);
-  })
+  });
+
+  //when disconnect
+  socket.on("disconnect", () => {
+    console.log("a user disconnected!");
+    removeUser(socket.id);
+    io.emit("getUsers", users);
+  });
 });
 
 getUserByUsernamePassword = (username, password, callBack) => {

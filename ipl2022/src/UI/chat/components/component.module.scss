@@ -1,0 +1,23 @@
+.heading {
+  margin: 20px;
+  text-align: center;
+  color: white;
+}
+
+.online {
+  color: white;
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 10%;
+
+  .onlineInner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    span {
+      padding: 0 10px 0 10px;
+    }
+  }
+}

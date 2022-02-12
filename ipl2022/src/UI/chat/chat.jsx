@@ -1,19 +1,17 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import classes from './chat.module.scss';
-import socketIOClient from "socket.io-client";
+import { io } from "socket.io-client";
 import Fab from '@mui/material/Fab';
 import SendIcon from '@mui/icons-material/Send';
-import SwipeableTemporaryDrawer from '../common/components/SwipableDrawer';
-import styled from 'styled-components';
-import { chatBaseURL, ContestLogBaseURL, NodeJSURL } from '../../common/http-urls';
+import SwipeableTemporaryDrawer from './components/SwipableDrawer';
+import { NodeJSURL } from '../../common/http-urls';
 import { useFormik } from 'formik';
 import AuthContext from '../../API/auth-context';
 import * as yup from 'yup';
-import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { Avatar, LinearProgress } from '@mui/material';
-import { Token, userData } from '../../common/LS';
+import { userData } from '../../common/LS';
 import { stringAvatar } from '../common/components/Utils';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,6 +22,53 @@ const validationSchema = yup.object({
   message: yup.string().required('message is required')
 });
 
+const tooltip = `Yellow Indicates Changes < 1h,
+Red Indicates Changes < 5m ,
+Blue Indicates Changes > 1h & < 2h,
+Green Indicates Changes > 2h `;
+
+const contestLogColor = {
+  1: '#ff5349', // if Bet is newer than 5 minutes
+  2: 'yellow', // if Bet is newer than 1 hour
+  3: 'skyblue', // if Bet is greater than 1 hour and less than 2 hours
+  4: '#6FFF00', // if Bet is greater than 1 hour
+};
+
+const contestLogFontColor = {
+  1: '#fff', // if Bet is newer than 5 minutes
+  2: 'black', // if Bet is newer than 1 hour
+  3: 'white', // if Bet is greater than 1 hour and less than 2 hours
+  4: 'black', // if Bet is greater than 1 hour
+};
+
+const diffMins = (dateSent) => {
+  let currentDate = new Date();
+  dateSent = new Date(dateSent);
+  var diffMs = currentDate.getTime() - dateSent.getTime(); // milliseconds between now & Christmas
+  var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+  // console.log('ms'+diffMs,'days'+ diffDays,'hours'+diffHrs,'mins'+diffMins);
+  return diffMins;
+  // console.log(diffMins);
+}
+
+const diffHrs = (dateSent) => {
+  let currentDate = new Date();
+  dateSent = new Date(dateSent);
+  var diffMs = currentDate.getTime() - dateSent.getTime(); // milliseconds between now & Christmas
+  var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+  // console.log(diffHrs);
+  return diffHrs;
+}
+
+const diffDays = (dateSent) => {
+  let currentDate = new Date();
+  dateSent = new Date(dateSent);
+  var diffMs = currentDate.getTime() - dateSent.getTime(); // milliseconds between now & Christmas
+  var diffDays = Math.floor(diffMs / 86400000); // days
+  // console.log(diffDays);
+  return diffDays;
+}
+
 const Chat = (props) => {
 
   const dispatch = useDispatch();
@@ -31,31 +76,33 @@ const Chat = (props) => {
   const chatData = useSelector((state) => state.chat.items);
   const chatDataChanged = useSelector((state) => state.chat.changed);
   const authCtx = useContext(AuthContext);
-  const socket = socketIOClient(NodeJSURL, { transports: ['websocket'] });
+  // const socket = io(NodeJSURL, { transports: ['websocket'] });
+  const socket = useRef();
   const [loading, setLoading] = useState(true);
   const [messages, setMessages] = useState([]);
-  // const [logs, setLogs] = useState([]);
-  // const [combinedData, setCombinedData] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  useEffect(() => {
+    socket.current = io(NodeJSURL, { transports: ['websocket'] });
+  }, []);
 
   useEffect(() => {
     setMessages(chatData);
+    socket.current.emit('addUser', userByIdData);
+    socket.current.on('getUsers', users => {
+      setOnlineUsers(users);
+      console.log(users);
+    })
     setTimeout(() => {
       scrollToBottom();
     }, 300);
   }, [chatDataChanged]);
 
-  // useEffect(() => {
-  //   const tempD = [...messages, ...logs];
-  //   setCombinedData(tempD);
-  // }, [messages, logs]);
-
   useEffect(() => {
-    socket.once('newMsg', (IncomingMsg) => {
-      const tempData = [...messages, IncomingMsg]
-      setMessages(tempData);
+    socket.current.on('newMsg', (IncomingMsg) => {
+      // const tempData = [...messages, IncomingMsg];
+      setMessages((prevState) => [...prevState, IncomingMsg]);
       scrollToBottom();
-      // socket.off("newMsg", IncomingMsg);
-      socket.disconnect();
     });
   }, [socket]);
 
@@ -72,7 +119,6 @@ const Chat = (props) => {
     validationSchema: validationSchema,
     onSubmit: (selectedFormData, { resetForm }) => {
       // console.log(selectedFormData);
-      socket.connect();
       const message = selectedFormData.message;
       const userId = userData.userId;
       const firstName = userByIdData.firstName;
@@ -84,7 +130,7 @@ const Chat = (props) => {
       const chat = { userId, message, firstName, lastName, profilePicture, chatTimestamp, publicChatId, status };
       const kjk = { userId, message };
       // saveMsg(kjk);
-      socket.emit('sendMsg', chat);
+      socket.current.emit('sendMsg', chat);
       dispatch(chatActions.updateChat(chat));
       dispatch(sendChatData(kjk));
       resetForm();
@@ -111,12 +157,25 @@ const Chat = (props) => {
         {!loading &&
           <>
             <div className={classes.chat_left}>
-
+              <div className={classes.heading}>
+                <h4>Online Users</h4>
+              </div>
+              {onlineUsers.map((ou, index) => {
+                return (
+                  <div className={classes.online} key={index}>
+                    {ou.userId &&
+                      <div className={classes.onlineInner}>
+                        <Avatar {...stringAvatar(`${ou.firstName} ${ou.lastName}`)} src={ou.profilePicture} />
+                        <span>{ou.firstName} {ou.lastName}</span>
+                      </div>}
+                  </div>
+                )
+              })}
             </div>
 
             <div className={classes.chat_right}>
               {authCtx.screenSize.dynamicWidth < 600 ?
-                <SwipeableTemporaryDrawer />
+                <SwipeableTemporaryDrawer onlineUsers={onlineUsers} />
                 : ''}
               <div className={classes.chat_upper}>
                 {messages.map((item, index) => {
@@ -160,7 +219,20 @@ const Chat = (props) => {
                       }
                       {item.contestLogId &&
                         <div className={classes.log}>
-                          <span style={{ background: 'silver' }}>
+                          <span style={{
+                            background: diffDays(item.chatTimestamp) < 1 &&
+                              diffHrs(item.chatTimestamp) < 1 &&
+                              diffMins(item.chatTimestamp) < 5 ? contestLogColor[1] : diffDays(item.chatTimestamp) < 1 &&
+                                diffHrs(item.chatTimestamp) < 1 ? contestLogColor[2] : diffDays(item.chatTimestamp) < 1 &&
+                                  diffHrs(item.chatTimestamp) < 2 ? contestLogColor[3] : contestLogColor[4],
+
+                            color: diffDays(item.chatTimestamp) < 1 &&
+                              diffHrs(item.chatTimestamp) < 1 &&
+                              diffMins(item.chatTimestamp) < 5 ? contestLogFontColor[1] : diffDays(item.chatTimestamp) < 1 &&
+                                diffHrs(item.chatTimestamp) < 1 ? contestLogFontColor[2] : diffDays(item.chatTimestamp) < 1 &&
+                                  diffHrs(item.chatTimestamp) < 2 ? contestLogFontColor[3] : contestLogFontColor[4]
+
+                          }}>
                             {item.message}
                           </span>
                         </div>
