@@ -38,28 +38,27 @@ $padding: 10px 0 0 20px;
       position: absolute;
       background: rgb(51, 79, 88);
 
-      .heading{
+      .heading {
         margin: 20px;
         text-align: center;
         color: white;
       }
 
-      .online{
+      .online {
         color: white;
         margin-top: 10px;
         display: flex;
         justify-content: flex-start;
         margin-left: 10%;
 
-        .onlineInner{
+        .onlineInner {
           display: flex;
           flex-direction: row;
           align-items: center;
-          
-          span{
+
+          span {
             padding: 0 10px 0 10px;
           }
-
         }
       }
     }
@@ -89,9 +88,19 @@ $padding: 10px 0 0 20px;
           margin: 5px;
 
           span {
-            padding: 5px;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 5px 5px 5px;
             border-radius: 10px;
-            background: silver;
+
+            .spanInner {
+              background: silver;
+              text-align: center;
+              font-weight: bold;
+              color: black;
+              padding-top: 5px;
+            }
           }
         }
 

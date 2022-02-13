@@ -15,6 +15,8 @@ import React, { useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import { getComparator, TablePaginationActions } from '../../common/components/Utils';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { userData } from '../../../common/LS';
 
 const headCells = [
   { id: 'username', label: 'Username', disablePadding: true },
@@ -32,6 +34,7 @@ const ParentDiv = styled.div`
 
 const BetTable = (props) => {
 
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('username');
@@ -64,6 +67,10 @@ const BetTable = (props) => {
     setDense(event.target.checked);
   };
 
+  // const viewUser = (ud) => {
+  //   navigate(`/other-user/${ud.userId}`,{state: userData.userId});
+  // }
+
   // Avoid a layout jump when reaching the last page with empty selected.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - selected.length) : 0;
@@ -86,7 +93,7 @@ const BetTable = (props) => {
           </Toolbar>
           <TableContainer>
             <Table
-              sx={{ minWidth: 750 }}
+              sx={{ minWidth: 'auto' }}
               aria-labelledby="tableTitle"
               size={dense ? 'small' : 'medium'}
             >
@@ -136,9 +143,10 @@ const BetTable = (props) => {
                       <TableRow
                         hover
                         key={index}
+                        style={{background: userData.username === item.username ?  'yellow':''}}
                       >
-                        <TableCell style={{ width: 100 }} component="th" scope="row" align="center">
-                          {item.username}
+                        <TableCell style={{ width: 100}} component="th" scope="row" align="center">
+                          {item.firstName} {item.lastName}
                         </TableCell>
                         <TableCell style={{ width: 160 }} component="th" scope="row" align="center">
                           {item.teamShortName}

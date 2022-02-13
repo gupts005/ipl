@@ -20,6 +20,7 @@ import MatchResult from '../match-result/MatchResult';
 import MyMatches from '../my-matches/MyMatches';
 import SignUp from '../registration/SignUp';
 import UserProfile from '../user-profile/UserProfile';
+import ViewOtherUser from '../view-other-user-profile/ViewOtherUser';
 
 const Router = (props) => {
   
@@ -47,6 +48,8 @@ const Router = (props) => {
             <Route path='/my-matches' element={<MyMatches />} />
 
             <Route path='/profile' element={<UserProfile />} />
+            
+            <Route path='/other-user/:userId' element={<ViewOtherUser />} />
             
             <Route path='/live-match/:matchId' element={<LiveMatch />} />
             

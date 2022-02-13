@@ -1,6 +1,6 @@
 import classes from './UserProfile.module.scss';
 import { ManageAccounts, Password } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Fab from '@mui/material/Fab';
 import { useDispatch, useSelector } from 'react-redux';
 import { usersBaseURL } from '../../common/http-urls';

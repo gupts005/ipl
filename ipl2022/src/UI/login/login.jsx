@@ -49,10 +49,19 @@ const Login = (props) => {
         vertical: 'top',
         horizontal: 'center',
       });
-      authCtx.login(loginData);
-      navigate('/');
+      if (JSON.stringify(loginData).toLowerCase().includes('400') ||
+        JSON.stringify(loginData).toLowerCase().includes('401') ||
+        JSON.stringify(loginData).toLowerCase().includes('sorry! you have been blocked by the admin.') ||
+        JSON.stringify(loginData).toLowerCase().includes('invalid username or password!') ||
+        JSON.stringify(loginData).toLowerCase().includes('500')) {
+        return;
+      }
+      if (JSON.stringify(loginData).toLowerCase().includes('userid')) {
+        authCtx.login(loginData);
+        navigate('/');
+      }
     }
-  }, [loginChanged]);
+  }, [loginChanged, loginData]);
 
   const particlesInit = (main) => {
     // console.log(main);
@@ -255,6 +264,9 @@ const Login = (props) => {
                       name='username'
                       onChange={formik.handleChange} />
                   </div>
+                  {formik.touched.username && Boolean(formik.errors.username) &&
+                    <span className={classes.formError}>{formik.errors.username}</span>
+                  }
                   <div className={classes.input_field}>
                     <input
                       type="password"
@@ -263,6 +275,9 @@ const Login = (props) => {
                       name='password'
                       onChange={formik.handleChange} />
                   </div>
+                  {formik.touched.password && Boolean(formik.errors.password) &&
+                    <span className={classes.formError}>{formik.errors.password}</span>
+                  }
                   <div className={classes.login_btn}>
                     {!state.isLoading && (
                       <AnimatedButton text={'login'} />
@@ -289,22 +304,30 @@ const Login = (props) => {
           </div>
         </div>
       </div>
-          <Slide direction="up" in={open}>
-            <Snackbar
-              anchorOrigin={{ vertical, horizontal }}
-              open={open}
-              autoHideDuration={6000}
-              onClose={handleClose}
-              message="sdsd"
-              key={vertical + horizontal}
-            >
-              <Alert
-                severity={JSON.stringify(loginData).toLowerCase().includes('invalid') ? 'error' : 'success'}
-              >
-                {JSON.stringify(loginData).toLowerCase().includes('invalid') ? loginData : sucess}
-              </Alert>
-            </Snackbar>
-          </Slide>
+      <Slide direction="up" in={open}>
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          message="sdsd"
+          key={vertical + horizontal}
+        >
+          <Alert
+            severity={JSON.stringify(loginData).toLowerCase().includes('400') ||
+              JSON.stringify(loginData).toLowerCase().includes('401') ||
+              JSON.stringify(loginData).toLowerCase().includes('sorry! you have been blocked by the admin.') ||
+              JSON.stringify(loginData).toLowerCase().includes('invalid username or password!') ||
+              JSON.stringify(loginData).toLowerCase().includes('500') ? 'error' : 'success'}
+          >
+            {JSON.stringify(loginData).toLowerCase().includes('400') ||
+              JSON.stringify(loginData).toLowerCase().includes('401') ||
+              JSON.stringify(loginData).toLowerCase().includes('sorry! you have been blocked by the admin.') ||
+              JSON.stringify(loginData).toLowerCase().includes('invalid username or password!') ||
+              JSON.stringify(loginData).toLowerCase().includes('500') ? loginData : sucess}
+          </Alert>
+        </Snackbar>
+      </Slide>
 
     </React.Fragment>
   );

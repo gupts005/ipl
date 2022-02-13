@@ -56,10 +56,6 @@ const BettingPage = (props) => {
       })
   }
 
-  const UpdateStateData = (data) => {
-    console.log(data, ' betting page update');
-  };
-
   useEffect(() => {
     setTimeout(() => {
       setState(false);
@@ -157,7 +153,6 @@ const BettingPage = (props) => {
                 userByIdData={userByIdData}
                 userbotData={userbotData}
                 userData={userData}
-                onClick={UpdateStateData}
               />
 
               <BetTable allContestData={allContestData} />

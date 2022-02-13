@@ -12,7 +12,7 @@ import { botActions } from '../../../API/bot/bot-slice';
 
 const validationSchema = yup.object({
   contestPoints: yup.number().required('contestPoints is required'),
-  teamId: yup.number().required('teamId is required')
+  teamId: yup.number().required('Team not Selected')
 });
 
 const PlaceBet = (props) => {
@@ -150,7 +150,9 @@ const PlaceBet = (props) => {
                   </label>
                 </div>
               </div>
-
+              {formik.touched.teamId && Boolean(formik.errors.teamId) &&
+                <span className={classes.formError}>{formik.errors.teamId}</span>
+              }
               <div className={classes.form_content}>
                 <p>
                   Selected Team : {userbotData.contestPoints === '' ? selectedTeamState || 'Select team to place bet' : selectedTeamState || selectedTeam?.name}
@@ -167,7 +169,6 @@ const PlaceBet = (props) => {
                   helperText={formik.touched.contestPoints && formik.errors.contestPoints}
                 />
                 <AnimatedButton
-                  onClick={props.onClick(userbotData)}
                   text={userbotData.contestPoints !== '' ? 'Update Bet' : 'Place Bet'} />
               </div>
 

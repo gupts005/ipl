@@ -91,7 +91,7 @@ const Chat = (props) => {
     socket.current.emit('addUser', userByIdData);
     socket.current.on('getUsers', users => {
       setOnlineUsers(users);
-      console.log(users);
+      // console.log(users);
     })
     setTimeout(() => {
       scrollToBottom();
@@ -179,6 +179,7 @@ const Chat = (props) => {
                 : ''}
               <div className={classes.chat_upper}>
                 {messages.map((item, index) => {
+                  const arr = item.message.split(' -> ')
                   return (
                     <div key={index}>
                       {item.userId !== userData.userId && !item.contestLogId &&
@@ -233,7 +234,10 @@ const Chat = (props) => {
                                   diffHrs(item.chatTimestamp) < 2 ? contestLogFontColor[3] : contestLogFontColor[4]
 
                           }}>
-                            {item.message}
+                            <span className={classes.spanInner}>
+                              {arr[0]}
+                            </span>
+                            {arr[1]}
                           </span>
                         </div>
                       }

@@ -19,20 +19,19 @@ import { visuallyHidden } from '@mui/utils';
 import { TextField } from '@mui/material';
 import { getComparator, stringAvatar, TablePaginationActions } from '../common/components/Utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchallUserFutureBets } from '../../API/all-users-future-bets/allUsersFutureBets-actions';
-import { fetchallUserStats } from '../../API/all-users-stats/allUserStats-actions';
 import { allUserStatsActions } from '../../API/all-users-stats/allUserStats-slice';
+import { useNavigate } from 'react-router-dom';
 
 const headCells = [
-  { id: 'rank', label: 'Rank', disablePadding: true },
+  { id: 'rank', label: 'Rank', disablePadding: false },
   { id: 'userName', label: 'User Name', disablePadding: false },
-  { id: 'availableavailablePoints', label: 'availablePoints', disablePadding: false }
+  { id: 'availableavailablePoints', label: 'Available Points', disablePadding: false }
 ];
 
 const LeaderBoard = (props) => {
 
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const allUsersFutureBets = useSelector((state) => state.allUsersFutureBets.items);
   const isUserFutureStatsChanged = useSelector((state) => state.allUsersFutureBets.changed);
   const allUserStats = useSelector((state) => state.allUserStats.items);
@@ -43,10 +42,10 @@ const LeaderBoard = (props) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [dense, setDense] = useState(false);
-  console.log(allUserStats, ' data');
+  // console.log(allUserStats, ' data');
 
   useEffect(() => {
-    if (isUserStatsChanged===false && isUserFutureStatsChanged===true) {
+    if (isUserStatsChanged === false && isUserFutureStatsChanged === true) {
       dispatch(
         allUserStatsActions.replaceData(allUsersFutureBets)
       );
@@ -72,6 +71,10 @@ const LeaderBoard = (props) => {
     setDense(event.target.checked);
   };
 
+  const viewUser = (ud) => {
+    navigate(`/other-user/${ud.userId}`,{state: ud});
+  }
+
   // Avoid a layout jump when reaching the last page with empty allUserStatsState.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - allUserStats.length) : 0;
@@ -88,9 +91,15 @@ const LeaderBoard = (props) => {
                 <Fab color="action">
                   <LooksOne color="secondary" fontSize="large" />
                 </Fab>
-                <p className={classes.card_name + ' ' + classes.txtbg}> {allUserStats[0].firstName} {allUserStats[0].lastName} </p>
-                <Avatar {...stringAvatar(`${allUserStats[0].firstName} ${allUserStats[0].lastName}`)} src={allUserStats[0].profilePicture} />
-                <p className={classes.txtbg}> {allUserStats[0].availablePoints} </p>
+                <p className={classes.card_name + ' ' + classes.txtbg}>
+                  {allUserStats[0]?.firstName} {allUserStats[0]?.lastName}
+                </p>
+                <Avatar
+                  {...stringAvatar(`${allUserStats[0]?.firstName} ${allUserStats[0]?.lastName}`)}
+                  src={allUserStats[0]?.profilePicture} />
+                <p className={classes.txtbg}>
+                  {allUserStats[0]?.availablePoints}
+                </p>
               </div>
             </div>
             <div className={classes.item2}>
@@ -98,9 +107,15 @@ const LeaderBoard = (props) => {
                 <Fab color="action">
                   <LooksTwo color="secondary" fontSize="large" />
                 </Fab>
-                <p className={classes.card_name + ' ' + classes.txtbg}> {allUserStats[1].firstName} {allUserStats[1].lastName} </p>
-                <Avatar {...stringAvatar(`${allUserStats[1].firstName} ${allUserStats[1].lastName}`)} src={allUserStats[1].profilePicture} />
-                <p className={classes.txtbg}> {allUserStats[1].availablePoints} </p>
+                <p className={classes.card_name + ' ' + classes.txtbg}>
+                  {allUserStats[1]?.firstName} {allUserStats[1]?.lastName}
+                </p>
+                <Avatar
+                  {...stringAvatar(`${allUserStats[1]?.firstName} ${allUserStats[1]?.lastName}`)}
+                  src={allUserStats[1]?.profilePicture} />
+                <p className={classes.txtbg}>
+                  {allUserStats[1]?.availablePoints}
+                </p>
               </div>
             </div>
             <div className={classes.item3}>
@@ -108,9 +123,15 @@ const LeaderBoard = (props) => {
                 <Fab color="action">
                   <Looks3 color="secondary" fontSize="large" />
                 </Fab>
-                <p className={classes.card_name + ' ' + classes.txtbg}> {allUserStats[2]?.firstName} {allUserStats[2]?.lastName} </p>
-                <Avatar {...stringAvatar(`${allUserStats[2]?.firstName} ${allUserStats[2]?.lastName}`)} src={allUserStats[2]?.profilePicture} />
-                <p className={classes.txtbg}> {allUserStats[2]?.availablePoints} </p>
+                <p className={classes.card_name + ' ' + classes.txtbg}>
+                  {allUserStats[2]?.firstName} {allUserStats[2]?.lastName}
+                </p>
+                <Avatar
+                  {...stringAvatar(`${allUserStats[2]?.firstName} ${allUserStats[2]?.lastName}`)}
+                  src={allUserStats[2]?.profilePicture} />
+                <p className={classes.txtbg}>
+                  {allUserStats[2]?.availablePoints}
+                </p>
               </div>
             </div>
           </div>
@@ -131,11 +152,15 @@ const LeaderBoard = (props) => {
                   LeaderBoard
                 </Typography>
 
-                <TextField label="Search" color='secondary' sx={{ marginRight: '10px' }} onChange={(e) => setSearchTerm(e.target.value)} variant="outlined" />
+                <TextField
+                  label="Search"
+                  color='secondary'
+                  sx={{ marginRight: '10px' }}
+                  onChange={(e) => setSearchTerm(e.target.value)} variant="outlined" />
               </Toolbar>
               <TableContainer>
                 <Table
-                  sx={{ minWidth: 750 }}
+                  sx={{ minWidth: 'auto' }}
                   size={dense ? 'small' : 'medium'}
                 >
                   <TableHead>
@@ -187,12 +212,12 @@ const LeaderBoard = (props) => {
                             key={index}
                           >
                             <TableCell style={{ width: 100 }} component="th" scope="row" align="center">
-                              {index+1}
+                              {index + 1}
                             </TableCell>
-                            <TableCell style={{ width: 160 }} component="th" scope="row" align="center">
+                            <TableCell style={{ width: 100, cursor: 'pointer' }} component="th" scope="row" align="center" onClick={()=>viewUser(item)}>
                               {item.firstName} {item.lastName}
                             </TableCell>
-                            <TableCell style={{ width: 160 }} align="center">
+                            <TableCell style={{ width: 100 }} align="center">
                               {item.availablePoints}
                             </TableCell>
                           </TableRow>
