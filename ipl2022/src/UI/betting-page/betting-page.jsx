@@ -10,11 +10,7 @@ import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import BetTable from './components/BetTable';
 import PlaceBet from './components/PlaceBet';
-
-const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
+import { Token, userData } from '../../common/LS';
 
 const BettingPage = (props) => {
 

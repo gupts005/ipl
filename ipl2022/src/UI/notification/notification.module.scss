@@ -1,0 +1,11 @@
+@import "../../global.scss";
+
+.parent {
+  height: auto;
+  width: 100%;
+  position: fixed;
+  top: 180px;
+  display: flex;
+  justify-content: center;
+  z-index: 3;
+}

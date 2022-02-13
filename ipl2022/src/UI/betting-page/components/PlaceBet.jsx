@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import { Paper } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import AnimatedButton from '../../common/components/AnimatedButton/AnimatedButton';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { botActions } from '../../../API/bot/bot-slice';
 
 const validationSchema = yup.object({
@@ -44,15 +44,14 @@ const PlaceBet = (props) => {
       const f = props.teamData.find(item => item.teamId == formik.values.teamId);
       // console.log(f, ' f');
       if (userbotData.contestPoints === '' && userbotData.teamId === '') {
-        dispatch(
-          botActions.addBet({
-            firstName: props.userByIdData.firstName,
-            lastName: props.userByIdData.lastName,
-            profilePicture: props.userByIdData.profilePicture,
-            teamShortName: f.shortName,
-            contestPoints: selectedFormData.contestPoints,
-            username: props.userData.username
-          })
+        dispatch(botActions.addBet({
+          firstName: props.userByIdData.firstName,
+          lastName: props.userByIdData.lastName,
+          profilePicture: props.userByIdData.profilePicture,
+          teamShortName: f.shortName,
+          contestPoints: selectedFormData.contestPoints,
+          username: props.userData.username
+        })
         );
         setuserbotData({ contestPoints: selectedFormData.contestPoints, teamId: selectedFormData.teamId });
         setselectedTeamState(f.name);
@@ -65,16 +64,15 @@ const PlaceBet = (props) => {
         }));
       }
       if (userbotData.contestPoints !== '' && userbotData.teamId !== '') {
-        dispatch(
-          botActions.updateBet({
-            contestId: userContestDataForUpdate.contestId,
-            firstName: props.userByIdData.firstName,
-            lastName: props.userByIdData.lastName,
-            profilePicture: userContestDataForUpdate.profilePicture,
-            teamShortName: f.shortName,
-            contestPoints: selectedFormData.contestPoints,
-            username: props.userData.username
-          })
+        dispatch(botActions.updateBet({
+          contestId: userContestDataForUpdate.contestId,
+          firstName: props.userByIdData.firstName,
+          lastName: props.userByIdData.lastName,
+          profilePicture: userContestDataForUpdate.profilePicture,
+          teamShortName: f.shortName,
+          contestPoints: selectedFormData.contestPoints,
+          username: props.userData.username
+        })
         );
         setuserbotData({ contestPoints: selectedFormData.contestPoints, teamId: selectedFormData.teamId });
         dispatch(sendUpdatedBetData({

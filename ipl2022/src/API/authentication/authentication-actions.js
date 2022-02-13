@@ -1,12 +1,21 @@
 
 import axios from 'axios';
 import { authBaseURL, usersBaseURL } from '../../common/http-urls';
+import { notificationActions } from '../notification/notification-slice';
 import { authenticationActions } from './authentication-slice';
 
 export const authentication = (loginData) => {
 
   return async (dispatch) => {
     const fetchData = async () => {
+      dispatch(
+        notificationActions.showNotification({
+          status: "pending",
+          title: "Sending...",
+          message: "Sending cart data!",
+        })
+      );
+  
       const response = await axios.post(authBaseURL, loginData);
 
       if (response.status !== 200) {
@@ -22,6 +31,15 @@ export const authentication = (loginData) => {
 
     try {
       const loginData = await fetchData();
+      
+      dispatch(
+        notificationActions.showNotification({
+          status: "success",
+          title: "Success!",
+          message: "Sent cart data successfully!",
+        })
+      );
+
       dispatch(
         authenticationActions.replaceAuth({
           items : loginData || [],
@@ -29,6 +47,15 @@ export const authentication = (loginData) => {
         })
       );
     } catch (error) {
+      
+      dispatch(
+        notificationActions.showNotification({
+          status: "error",
+          title: "Error!",
+          message: "Sending bet data failed!",
+        })
+      );
+
       dispatch(
         authenticationActions.replaceAuth({
           items : error.response.data.message || [],

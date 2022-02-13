@@ -5,17 +5,12 @@ import AuthContext from '../../API/auth-context';
 import MiniCarousel from '../MiniCarousel/MiniCrousel';
 import { init } from "ityped";
 import Particles from 'react-tsparticles';
-import { authBaseURL } from '../../common/http-urls.js';
 import AnimatedButton from '../common/components/AnimatedButton/AnimatedButton';
-import axios from 'axios';
 import { useFormik } from 'formik';
 import { authentication } from '../../API/authentication/authentication-actions';
 import { useDispatch, useSelector } from 'react-redux';
 import * as yup from 'yup';
-import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import { Alert, Button, Slide } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 const validationSchema = yup.object({
   username: yup.string().required('username is required'),
@@ -27,15 +22,10 @@ const Login = (props) => {
   const [state, setState] = useState({
     isLoading: false
   });
-  const [snackbarState, setSnackbarState] = useState({
-    open: false,
-    vertical: 'top',
-    horizontal: 'center',
-  });
-  const { vertical, horizontal, open } = snackbarState;
   const dispatch = useDispatch();
   const loginData = useSelector((state) => state.authentication.items);
   const loginChanged = useSelector((state) => state.authentication.changed);
+  const notification = useSelector((state) => state.notification.notification);
   const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
 
@@ -43,11 +33,6 @@ const Login = (props) => {
     if (loginChanged) {
       setState({
         isLoading: false
-      });
-      setSnackbarState({
-        open: true,
-        vertical: 'top',
-        horizontal: 'center',
       });
       if (JSON.stringify(loginData).toLowerCase().includes('400') ||
         JSON.stringify(loginData).toLowerCase().includes('401') ||
@@ -62,6 +47,14 @@ const Login = (props) => {
       }
     }
   }, [loginChanged, loginData]);
+
+  useEffect(() => {
+    if (notification?.status === 'error') {
+      setState({
+        isLoading: false
+      });
+    }
+  }, [notification]);
 
   const particlesInit = (main) => {
     // console.log(main);
@@ -282,7 +275,7 @@ const Login = (props) => {
                     {!state.isLoading && (
                       <AnimatedButton text={'login'} />
                     )}
-                    {state.isLoading && <p>Sending request...</p>}
+                    {state.isLoading && <p> Fetching <CircularProgress color="secondary" /></p>}
                   </div>
                 </form>
               </div>
@@ -304,31 +297,6 @@ const Login = (props) => {
           </div>
         </div>
       </div>
-      <Slide direction="up" in={open}>
-        <Snackbar
-          anchorOrigin={{ vertical, horizontal }}
-          open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          message="sdsd"
-          key={vertical + horizontal}
-        >
-          <Alert
-            severity={JSON.stringify(loginData).toLowerCase().includes('400') ||
-              JSON.stringify(loginData).toLowerCase().includes('401') ||
-              JSON.stringify(loginData).toLowerCase().includes('sorry! you have been blocked by the admin.') ||
-              JSON.stringify(loginData).toLowerCase().includes('invalid username or password!') ||
-              JSON.stringify(loginData).toLowerCase().includes('500') ? 'error' : 'success'}
-          >
-            {JSON.stringify(loginData).toLowerCase().includes('400') ||
-              JSON.stringify(loginData).toLowerCase().includes('401') ||
-              JSON.stringify(loginData).toLowerCase().includes('sorry! you have been blocked by the admin.') ||
-              JSON.stringify(loginData).toLowerCase().includes('invalid username or password!') ||
-              JSON.stringify(loginData).toLowerCase().includes('500') ? loginData : sucess}
-          </Alert>
-        </Snackbar>
-      </Slide>
-
     </React.Fragment>
   );
 };
