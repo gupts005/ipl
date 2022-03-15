@@ -23,7 +23,7 @@ import UserProfile from '../user-profile/UserProfile';
 import ViewOtherUser from '../view-other-user-profile/ViewOtherUser';
 
 const Router = (props) => {
-  
+
   const authCtx = useContext(AuthContext);
   const userData = JSON.parse(localStorage.getItem('loginState'));
   const role = userData?.role;
@@ -48,12 +48,14 @@ const Router = (props) => {
             <Route path='/my-matches' element={<MyMatches />} />
 
             <Route path='/profile' element={<UserProfile />} />
-            
+
             <Route path='/other-user/:userId' element={<ViewOtherUser />} />
-            
+
             <Route path='/live-match/:matchId' element={<LiveMatch />} />
-            
+
             <Route path='/match-result/:matchId' element={<MatchResult />} />
+
+            <Route path="/*" element={<Error />} />
 
             <Route path='/manage-matches' element={role === 'Admin' ? <Matches /> : <Error />} />
             <Route path='/manage-users' element={role === 'Admin' ? <Users /> : <Error />} />
@@ -70,8 +72,10 @@ const Router = (props) => {
 
           <Route path="/login" element={<Login />} />
 
+          <Route path="/*" element={<Error />} />
+
           <Route path="/registration" element={<SignUp />} />
-          
+
           <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
 
