@@ -1,4 +1,4 @@
-@import '../../global.scss';
+@import "../../global.scss";
 
 .parent {
   height: 100vh;
@@ -17,20 +17,26 @@
     display: flex;
     border-radius: 5%;
     box-shadow: 12px 12px 22px grey;
-    
+    // border-radius: 12px;
+
     @include mobile {
       flex-direction: column;
       width: 90%;
-      height: 90%;
+      height: 95%;
     }
 
     .child_left {
       width: 50%;
       height: 100%;
       overflow: hidden;
+      border-radius: 12px 0 0 12px;
 
       @include mobile {
-       display: none;
+        //  display: none;
+        width: 100%;
+        height: 50%;
+        overflow: hidden;
+        border-radius: 12px 12px 0 0 ;
       }
 
       img {
@@ -48,11 +54,13 @@
       justify-content: center;
       align-self: center;
       background: rgb(37 18 75);
+      border-radius: 0 12px 12px 0;
 
       @include mobile {
         width: 100%;
-        height: 100%; 
-       }
+        height: 100%;
+      border-radius: 0 0 12px 12px;
+      }
 
       .child_right_inner {
         width: 80%;
@@ -77,12 +85,15 @@
           width: 100%;
           text-align: center;
           color: #fff;
-          background:#1f51ff;
+          background: #1f51ff;
           overflow: hidden;
 
-          p{
+          p {
             margin-top: 1rem;
-           
+
+            @include mobile {
+              margin: 5px;
+            }
           }
         }
 
@@ -99,7 +110,7 @@
             justify-content: center;
             text-align: center;
 
-            .formError{
+            .formError {
               color: red;
               font-size: 0.8rem;
             }
@@ -137,7 +148,6 @@
               display: flex;
               flex-direction: column;
               justify-content: center;
-              
             }
           }
         }
@@ -154,25 +164,28 @@
           padding: 5px 0;
           overflow: hidden;
 
-          .child_right_3_left{
+          @include mobile {
+            padding: 5px;
+          }
 
-            a{
+          .child_right_3_left {
+            a {
               cursor: pointer;
             }
           }
 
-          .child_right_3_right{
+          .child_right_3_right {
             font-size: 1rem;
-            
-            @include mobile {
-            font-size: 0.9rem;
-          }
 
-            .span1{
+            @include mobile {
+              font-size: 0.9rem;
+            }
+
+            .span1 {
               font-size: 0.7rem;
             }
 
-            .span2{
+            .span2 {
               cursor: pointer;
             }
           }
