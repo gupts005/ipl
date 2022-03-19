@@ -1,41 +1,27 @@
 import classes from './UserProfile.module.scss';
 import { ManageAccounts, Password } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Fab from '@mui/material/Fab';
 import { useDispatch, useSelector } from 'react-redux';
 import { usersBaseURL } from '../../common/http-urls';
 import axios from 'axios';
 import UpdateProfile from './components/UpdateProfile';
 import UpdatePassword from './components/UpdatePassword';
-
-const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
+import AuthContext from '../../API/auth-context';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { IconButton } from '@mui/material';
 
 const UserProfile = (props) => {
-  
+
+  const authCtx = useContext(AuthContext);
   const dispatch = useDispatch();
   const userByIdData = useSelector((state) => state.userById.items);
-  const [userWinningLossingPoints, setUserWinningLossingPoints] = useState();  
+  const userWLP = useSelector((state) => state.userWLP.items);
+  const [userWinningLossingPoints, setUserWinningLossingPoints] = useState(userWLP);
   const [openCrudModal, setCrudModal] = useState(false);
   const [openPasswordModal, setPasswordModal] = useState(false);
   const [selectedData, setSelectedData] = useState();
-
-  useEffect(() => {
-    getUserWinningLossingPoints(userData.userId);
-  },[userByIdData.userId]);
-
-  const getUserWinningLossingPoints = (userId) => {
-    axios.get(usersBaseURL + `/${userId}/winning-losing-points`, Token)
-      .then((response) => {
-        setUserWinningLossingPoints(response.data);
-      })
-      .catch((error) => {
-      })
-      .finally(() => {
-      })
-  }
+  // console.log(userWLP);
 
   return (
     <div className={classes.parent}>
@@ -43,8 +29,13 @@ const UserProfile = (props) => {
 
         <div className={classes.wrapper}>
           <div className={classes.left}>
-            <img src={'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F20%2F2020%2F11%2F13%2Fdwayne-johnson.jpg'} />
-            <div><i className={'fas fa-trash-alt ' + classes.remove} title='Remove Profile Picture' ></i></div>
+            <img src={userByIdData.profilePicture} alt='please upload a pic' />
+            <div>
+              {/* <i className={'fas fa-trash-alt ' + classes.remove} title='Remove Profile Picture' ></i> */}
+              <IconButton>
+                <DeleteForeverIcon sx={{ color: 'red' }}/>
+              </IconButton>
+              </div>
             <h4> </h4>
             <p> </p>
           </div>
@@ -83,10 +74,10 @@ const UserProfile = (props) => {
             </div>
             <div className={classes.social_media}>
               <ul>
-                <Fab color='secondary' className={classes.btn} onClick={() => { setSelectedData(userByIdData); setCrudModal(true);}} > 
+                <Fab color='secondary' className={classes.btn} onClick={() => { setSelectedData(userByIdData); setCrudModal(true); }} >
                   <ManageAccounts />
                 </Fab>
-                <Fab color='secondary' className={classes.btn} onClick={() => setPasswordModal(true)}> 
+                <Fab color='secondary' className={classes.btn} onClick={() => setPasswordModal(true)}>
                   <Password />
                 </Fab>
               </ul>

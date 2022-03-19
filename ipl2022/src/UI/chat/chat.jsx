@@ -11,7 +11,6 @@ import * as yup from 'yup';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { Avatar, LinearProgress } from '@mui/material';
-import { userData } from '../../common/LS';
 import { stringAvatar } from '../common/components/Utils';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
@@ -120,7 +119,7 @@ const Chat = (props) => {
     onSubmit: (selectedFormData, { resetForm }) => {
       // console.log(selectedFormData);
       const message = selectedFormData.message;
-      const userId = userData.userId;
+      const userId = authCtx.userData.userId;
       const firstName = userByIdData.firstName;
       const lastName = userByIdData.lastName;
       const profilePicture = userByIdData.profilePicture;
@@ -132,7 +131,7 @@ const Chat = (props) => {
       // saveMsg(kjk);
       socket.current.emit('sendMsg', chat);
       dispatch(chatActions.updateChat(chat));
-      dispatch(sendChatData(kjk));
+      dispatch(sendChatData(kjk,authCtx.Header));
       resetForm();
     }
   });
@@ -182,7 +181,7 @@ const Chat = (props) => {
                   const arr = item.message.split(' -> ')
                   return (
                     <div key={index}>
-                      {item.userId !== userData.userId && !item.contestLogId &&
+                      {item.userId !== authCtx.userData.userId && !item.contestLogId &&
                         <div className={classes.notUserId}>
                           <Avatar {...stringAvatar(`${item.firstName} ${item.lastName}`)} src={item.profilePicture} />
                           <div className={classes.notUserIdInner}>
@@ -200,7 +199,7 @@ const Chat = (props) => {
                           </div>
                         </div>
                       }
-                      {item.userId === userData.userId && !item.contestLogId &&
+                      {item.userId === authCtx.userData.userId && !item.contestLogId &&
                         <div className={classes.isUserId}>
                           <div className={classes.isUserIdInner}>
                             <span className={classes.isUser1span}>

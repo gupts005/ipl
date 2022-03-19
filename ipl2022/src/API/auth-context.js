@@ -53,12 +53,17 @@ export const AuthContextProvider = (props) => {
     localStorage.setItem("loginState", JSON.stringify(data));
   };
 
+  const HeaderToken = {
+    headers: { Authorization: `Bearer ${tokenData?.token}` }
+  };
+
   const contextValue = {
     userData: LoggedIn,
     isLoggedIn: userIsLoggedIn,
     login: loginHandler,
     logout: logoutHandler,
     screenSize: screenSize,
+    Header: HeaderToken
   };
 
   return (

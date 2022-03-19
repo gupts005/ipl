@@ -1,5 +1,5 @@
 import React from 'react';
-import { BackGroundImage, TeamFontColor, BorderTop, TeamColor, Matches } from '../common/constants/data';
+import { BackGroundImage, TeamFontColor, BorderTop, TeamColor } from '../common/constants/data';
 import classes from './MatchList.module.scss';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ const MatchList = (props) => {
     <div className={classes.parent}>
 
       <div className={classes.match_list} style={{ backgroundImage: `url(${BackGroundImage})` }}>
-        {Matches.map((item) => (
+        {upcomingMatchData.map((item) => (
           <div className={classes.card} onClick={()=>gotoBettingPage(item)} key={item.matchId}>
             <div
               className={classes.left}

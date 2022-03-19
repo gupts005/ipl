@@ -16,6 +16,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { deleteUserData, sendUpdatedUserData, sendUserData } from '../../../../API/users/user-actions';
 import { userActions } from '../../../../API/users/user-slice';
+import AuthContext from '../../../../API/auth-context';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -52,6 +53,7 @@ const genderId = [{ genderId: 1, name: "Male" }, { genderId: 2, name: "Female" }
 
 export default function UsersCrud(props) {
 
+  const authCtx = React.useContext(AuthContext);
   const dispatch = useDispatch();
 
   const [selected, setSelected] = React.useState({
@@ -74,7 +76,7 @@ export default function UsersCrud(props) {
   React.useEffect(() => {
     setSelected(props.update);
   }, [props.update]);
-console.log(props.update);
+// console.log(props.update);
   const formik = useFormik({
     initialValues: {
       userId: selected.userId,
@@ -115,7 +117,7 @@ console.log(props.update);
         formData.append("email", selected.email);
         formData.append("password", 123456789);
         formData.append("roleId", 2);
-        dispatch(sendUserData(formData));
+        dispatch(sendUserData(formData,authCtx.Header));
         resetForm();
         props.handleClose();
       }
@@ -140,7 +142,7 @@ console.log(props.update);
         formData.append("mobileNumber", selected.mobileNumber);
         formData.append("genderId", selected.genderId);
         formData.append("profilePicture", selected.profilePicture);
-        dispatch(sendUpdatedUserData(formik.values.userId,formData));
+        dispatch(sendUpdatedUserData(formik.values.userId,formData,authCtx.Header));
         resetForm();
         props.handleClose();
       }
@@ -149,7 +151,7 @@ console.log(props.update);
 
   const deleteUserHandler = () => {
     dispatch(userActions.deleteUser(props.delete.userId));
-    dispatch(deleteUserData(props.delete.userId));
+    dispatch(deleteUserData(props.delete.userId,authCtx.Header));
     props.handleClose();
   };
 

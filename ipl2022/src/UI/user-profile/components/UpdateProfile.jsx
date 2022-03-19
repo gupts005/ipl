@@ -16,6 +16,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { userByIdActions } from '../../../API/user-by-id/userById-slice';
 import { sendUpdatedUserData } from '../../../API/users/user-actions';
+import AuthContext from '../../../API/auth-context';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -44,7 +45,9 @@ const genderId = [{ genderId: 1, name: "Male" }, { genderId: 2, name: "Female" }
 export default function UpdateProfile(props) {
 
   const dispatch = useDispatch();
+  const authCtx = React.useContext(AuthContext);
   console.log(props);
+  const [isProfilePictureChanged, setIsProfilePictureChanged] = React.useState(false);
 
   const [selected, setSelected] = React.useState({
     userId: '',
@@ -81,154 +84,162 @@ export default function UpdateProfile(props) {
     enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: (selected, { resetForm }) => {
-      console.log(selected,' selected data');
+      console.log(selected, ' selected data');
+      if (selected.profilePicture !== '') {
+        setIsProfilePictureChanged(true);
+      }
       var formData = new FormData();
-        dispatch(
-          userByIdActions.updateUser({
-            userId: formik.values.userId,
-            username: selected.username,
-            firstName: selected.firstName,
-            lastName: selected.lastName,
-            email: selected.email,
-            mobileNumber: selected.mobileNumber,
-            genderId: selected.genderId,
-            profilePicture: selected.profilePicture,
-            availablePoints: formik.values.availablePoints
-          })
-        );
-        formData.append("username", selected.username);
-        formData.append("firstName", selected.firstName);
-        formData.append("lastName", selected.lastName);
-        formData.append("email", selected.email);
-        formData.append("mobileNumber", selected.mobileNumber);
-        formData.append("genderId", selected.genderId);
+      // dispatch(
+      //   userByIdActions.updateUser({
+      //     userId: formik.values.userId,
+      //     username: selected.username,
+      //     firstName: selected.firstName,
+      //     lastName: selected.lastName,
+      //     email: selected.email,
+      //     mobileNumber: selected.mobileNumber,
+      //     genderId: selected.genderId,
+      //     profilePicture: selected.profilePicture,
+      //     availablePoints: formik.values.availablePoints
+      //   })
+      // );
+      // formData.append("username", selected.username);
+      formData.append("firstName", selected.firstName);
+      formData.append("lastName", selected.lastName);
+      formData.append("genderId", selected.genderId);
+      formData.append("email", selected.email);
+      formData.append("mobileNumber", selected.mobileNumber);
+      // if (isProfilePictureChanged && selected.profilePicture !== '') {
         formData.append("profilePicture", selected.profilePicture);
-        dispatch(sendUpdatedUserData(formik.values.userId,formData));
-        resetForm();
-        props.handleClose();
+      // }
+      // formData.append('updateProfilePicture', isProfilePictureChanged);
+      dispatch(sendUpdatedUserData(formik.values.userId, formData, authCtx.Header));
+      resetForm();
+      props.handleClose();
     },
   });
 
   return (
     <React.Fragment >
 
-        <Dialog
-          keepMounted
-          onClose={props.handleClose}
-          open={props.open}
-          TransitionComponent={Transition}
-        >
-          <form onSubmit={formik.handleSubmit}>
-            <AppBar sx={{ position: 'relative' }}>
-              <Toolbar>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  onClick={props.handleClose}
-                  aria-label="close"
-                >
-                  <CloseIcon />
-                </IconButton>
-                <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                  Update your Details
-                </Typography>
-                  <Button autoFocus color="inherit" type='submit' >
-                    Update
-                  </Button>
-              </Toolbar>
-            </AppBar>
-            <Box
-              // component="form"
-              sx={{
-                '& .MuiTextField-root': { m: 1, width: '25ch' },
-              }}
-              noValidate
-              autoComplete="off"
-            >
-              <ParentDiv>
+      <Dialog
+        keepMounted
+        onClose={props.handleClose}
+        open={props.open}
+        TransitionComponent={Transition}
+      >
+        <form onSubmit={formik.handleSubmit}>
+          <AppBar sx={{ position: 'relative' }}>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={props.handleClose}
+                aria-label="close"
+              >
+                <CloseIcon />
+              </IconButton>
+              <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                Update your Details
+              </Typography>
+              <Button autoFocus color="inherit" type='submit' >
+                Update
+              </Button>
+            </Toolbar>
+          </AppBar>
+          <Box
+            // component="form"
+            sx={{
+              '& .MuiTextField-root': { m: 1, width: '25ch' },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <ParentDiv>
 
-                <TextField
-                  error={formik.touched.username && Boolean(formik.errors.username)}
-                  helperText={formik.touched.username && formik.errors.username}
-                  name='username'
-                  value={formik.values.username || ''}
-                  label='Username'
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                  onChange={formik.handleChange}
-                />
+              <TextField
+                error={formik.touched.username && Boolean(formik.errors.username)}
+                helperText={formik.touched.username && formik.errors.username}
+                name='username'
+                value={formik.values.username || ''}
+                label='Username'
+                InputProps={{
+                  readOnly: true,
+                }}
+                onChange={formik.handleChange}
+              />
 
-                <TextField
-                  error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-                  helperText={formik.touched.firstName && formik.errors.firstName}
-                  name='firstName'
-                  label="First Name"
-                  variant="outlined"
-                  value={formik.values.firstName || ''}
-                  onChange={formik.handleChange}
-                />
+              <TextField
+                error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                helperText={formik.touched.firstName && formik.errors.firstName}
+                name='firstName'
+                label="First Name"
+                variant="outlined"
+                value={formik.values.firstName || ''}
+                onChange={formik.handleChange}
+              />
 
-                <TextField
-                  error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-                  helperText={formik.touched.lastName && formik.errors.lastName}
-                  name='lastName'
-                  label="Last Name"
-                  variant="outlined"
-                  value={formik.values.lastName || ''}
-                  onChange={formik.handleChange}
-                />
+              <TextField
+                error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                helperText={formik.touched.lastName && formik.errors.lastName}
+                name='lastName'
+                label="Last Name"
+                variant="outlined"
+                value={formik.values.lastName || ''}
+                onChange={formik.handleChange}
+              />
 
-                <TextField
-                  label="Mobile No"
-                  error={formik.touched.mobileNumber && Boolean(formik.errors.mobileNumber)}
-                  helperText={formik.touched.mobileNumber && formik.errors.mobileNumber}
-                  name='mobileNumber'
-                  value={formik.values.mobileNumber || ''}
-                  onChange={formik.handleChange}
-                />
+              <TextField
+                label="Mobile No"
+                error={formik.touched.mobileNumber && Boolean(formik.errors.mobileNumber)}
+                helperText={formik.touched.mobileNumber && formik.errors.mobileNumber}
+                name='mobileNumber'
+                value={formik.values.mobileNumber || ''}
+                onChange={formik.handleChange}
+              />
 
-                <TextField
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.touched.email && formik.errors.email}
-                  label="Email"
-                  name='email'
-                  value={formik.values.email || ''}
-                  onChange={formik.handleChange}
-                />
+              <TextField
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
+                label="Email"
+                name='email'
+                value={formik.values.email || ''}
+                onChange={formik.handleChange}
+              />
 
-                <TextField
-                  label="Profile Pic"
-                  type='file'
-                  name='profilePicture'
-                  value={formik.values.profilePicture || ''}
-                  onChange={formik.handleChange}
-                  focused={true}
-                />
+              <TextField
+                label="Profile Pic"
+                type='file'
+                name='profilePicture'
+                // value={formik.values.profilePicture || ''}
+                onChange={(event) => {
+                  formik.setFieldValue("profilePicture", event.currentTarget.files[0]);
+                }}
+                focused={true}
+              />
 
-                <TextField
-                  error={formik.touched.genderId && Boolean(formik.errors.genderId)}
-                  helperText={formik.touched.genderId && formik.errors.genderId}
-                  label="Gender"
-                  select
-                  name='genderId'
-                  value={formik.values.genderId || ''}
-                  onChange={formik.handleChange}
-                >
-                  {genderId.map((option) => (
-                    <MenuItem
-                      key={option.genderId}
-                      value={option.genderId}
-                    >
-                      {option.name}
-                    </MenuItem>
-                  ))}
-                </TextField>
+              <TextField
+                error={formik.touched.genderId && Boolean(formik.errors.genderId)}
+                helperText={formik.touched.genderId && formik.errors.genderId}
+                label="Gender"
+                select
+                name='genderId'
+                value={formik.values.genderId || ''}
+                onChange={formik.handleChange}
+              >
+                {genderId.map((option) => (
+                  <MenuItem
+                    key={option.genderId}
+                    value={option.genderId}
+                  >
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </TextField>
 
-              </ParentDiv>
-            </Box>
-          </form>
-        </Dialog>
+            </ParentDiv>
+          </Box>
+        </form>
+      </Dialog>
 
     </React.Fragment >
   );

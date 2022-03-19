@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import classes from './place-bet.module.scss';
@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import AnimatedButton from '../../common/components/AnimatedButton/AnimatedButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { botActions } from '../../../API/bot/bot-slice';
+import AuthContext from '../../../API/auth-context';
 
 const validationSchema = yup.object({
   contestPoints: yup.number().required('contestPoints is required'),
@@ -16,7 +17,8 @@ const validationSchema = yup.object({
 });
 
 const PlaceBet = (props) => {
-
+  
+  const authCtx = useContext(AuthContext);
   const dispatch = useDispatch();
   const [userbotData, setuserbotData] = useState({
     contestPoints: '',
@@ -61,7 +63,7 @@ const PlaceBet = (props) => {
           matchId: props.matchData.matchId,
           contestPoints: selectedFormData.contestPoints,
           teamId: selectedFormData.teamId
-        }));
+        },authCtx.Header));
       }
       if (userbotData.contestPoints !== '' && userbotData.teamId !== '') {
         dispatch(botActions.updateBet({
@@ -81,7 +83,7 @@ const PlaceBet = (props) => {
           matchId: props.matchData.matchId,
           contestPoints: selectedFormData.contestPoints,
           teamId: selectedFormData.teamId
-        }));
+        },authCtx.Header));
       }
     }
   });

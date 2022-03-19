@@ -1,15 +1,14 @@
 import axios from "axios";
 import { contestBaseURL, matchBaseURL } from "../../common/http-urls";
-import { Token } from "../../common/LS";
 import { notificationActions } from '../notification/notification-slice';
 import { botActions } from "./bot-slice";
 
-export const fetchAllContestByMatchId = (matchId) => {
+export const fetchAllContestByMatchId = (matchId,token1) => {
   return async (dispatch) => {
     const fetchData = async () => {
       const response = await axios.get(
         matchBaseURL + `/${matchId}/contest`,
-        Token
+        token1
       );
 
       if (response.status !== 200) {
@@ -35,7 +34,7 @@ export const fetchAllContestByMatchId = (matchId) => {
   };
 };
 
-export const sendBetData = (betData) => {
+export const sendBetData = (betData,Token) => {
   return async (dispatch) => {
     dispatch(
       notificationActions.showNotification({
@@ -81,7 +80,7 @@ export const sendBetData = (betData) => {
   };
 };
 
-export const sendUpdatedBetData = (betData) => {
+export const sendUpdatedBetData = (betData,Token) => {
   return async (dispatch) => {
     dispatch(
       notificationActions.showNotification({

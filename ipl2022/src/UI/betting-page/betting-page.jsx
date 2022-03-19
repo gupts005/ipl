@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import classes from './betting-page.module.scss';
 import Box from '@mui/material/Box';
@@ -10,9 +10,11 @@ import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import BetTable from './components/BetTable';
 import PlaceBet from './components/PlaceBet';
-import { Token, userData } from '../../common/LS';
+import AuthContext from '../../API/auth-context';
 
 const BettingPage = (props) => {
+
+  const authCtx = useContext(AuthContext);
 
   const location = useLocation();
   const [matchData, setMatchData] = useState(location.state);
@@ -20,7 +22,7 @@ const BettingPage = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllContestByMatchId(matchData.matchId));
+    dispatch(fetchAllContestByMatchId(matchData.matchId,authCtx.Header));
   }, [matchData.matchId, dispatch]);
 
   const allContestData = useSelector((state) => state.bot.items);
@@ -33,12 +35,12 @@ const BettingPage = (props) => {
   });
 
   useEffect(() => {
-    getContestByUserMatchId(userData.userId, matchData.matchId);
+    getContestByUserMatchId(authCtx.userData.userId, matchData.matchId);
   }, [matchData.matchId]);
-
+  
   const getContestByUserMatchId = (userId, matchId) => {
     // setState(true);
-    axios.get(usersBaseURL + `/${userId}/contest/${matchId}`, Token)
+    axios.get(usersBaseURL + `/${userId}/contest/${matchId}`, authCtx.Header)
       .then((response) => {
         setuserbotData(response.data);
         // setState(false);
@@ -148,7 +150,7 @@ const BettingPage = (props) => {
                 teamData={teamData}
                 userByIdData={userByIdData}
                 userbotData={userbotData}
-                userData={userData}
+                userData={authCtx.userData}
               />
 
               <BetTable allContestData={allContestData} />

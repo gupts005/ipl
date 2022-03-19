@@ -11,12 +11,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TextField } from '@mui/material';
 import { getComparator, TablePaginationActions } from '../../common/components/Utils';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { userData } from '../../../common/LS';
+import AuthContext from '../../../API/auth-context';
 
 const headCells = [
   { id: 'username', label: 'Username', disablePadding: true },
@@ -34,7 +33,7 @@ const ParentDiv = styled.div`
 
 const BetTable = (props) => {
 
-  const navigate = useNavigate();
+  const authCtx = useContext(AuthContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('username');
@@ -143,7 +142,7 @@ const BetTable = (props) => {
                       <TableRow
                         hover
                         key={index}
-                        style={{background: userData.username === item.username ?  'yellow':''}}
+                        style={{background: authCtx.userData.username === item.username ?  'yellow':''}}
                       >
                         <TableCell style={{ width: 100}} component="th" scope="row" align="center">
                           {item.firstName} {item.lastName}

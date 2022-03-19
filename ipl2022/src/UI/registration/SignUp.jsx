@@ -8,18 +8,18 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Fab, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import axios from 'axios';
 import { usersBaseURL } from '../../common/http-urls';
 import Snackbar from '@mui/material/Snackbar';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const validationSchema = yup.object({
   username: yup.string().min(3, 'atleast 3 char is required').required('Username is required'),
   firstName: yup.string().min(3, 'minimum 3 digits').required(),
   lastName: yup.string().min(3, 'name should be of minimum 2 characters length').required(),
-  genderId: yup.number().required().oneOf([1 , 2], 'Selecting the gender field is required'),
+  genderId: yup.number().required().oneOf([1, 2], 'Selecting the gender field is required'),
   mobileNumber: yup.number().required(),
   email: yup.string().email().required(),
   password: yup.string().min(3, 'minimum 3 digits').required(),
@@ -31,7 +31,7 @@ const SignUp = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [data, setData] = useState();
+  const [showPassword, setShowPassword] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -49,6 +49,7 @@ const SignUp = (props) => {
     validationSchema: validationSchema,
     onSubmit: async (selected, { resetForm }) => {
       console.log(selected, ' selected data');
+
       var formData = new FormData();
       formData.append("username", selected.username);
       formData.append("firstName", selected.firstName);
@@ -60,8 +61,9 @@ const SignUp = (props) => {
       formData.append("password", selected.password);
       formData.append("availablePoints", 500);
       formData.append("roleId", 2);
-      const resp = await axios.post(usersBaseURL+ '/register',formData);
-      if (resp.status!==200) {
+
+      const resp = await axios.post(usersBaseURL + '/register', formData);
+      if (resp.status !== 201) {
         // setOpen(true);
         // setData(resp.data);
         return;
@@ -70,8 +72,9 @@ const SignUp = (props) => {
       if (data) {
         // setOpen(true);
         // setData('Registration Success, please wait till Admin approves your request');
+        resetForm();
+        gotoLogin();
       }
-      resetForm();
     },
   });
 
@@ -193,36 +196,75 @@ const SignUp = (props) => {
               </div>
               <div className={classes.textfield}>
 
-
                 <TextField
                   label="Profile Pic"
                   type='file'
                   name='profilePicture'
-                  value={formik.values.profilePicture || ''}
-                  onChange={formik.handleChange}
+                  // value={formik.values.profilePicture || ''}
+                  onChange={(event) => {
+                    formik.setFieldValue("profilePicture", event.currentTarget.files[0]);
+                  }}
                   focused={true}
                 />
               </div>
               <div className={classes.textfield}>
-                <TextField
-                  error={formik.touched.password && Boolean(formik.errors.password)}
-                  helperText={formik.touched.password && formik.errors.password}
-                  name='password'
-                  label="Password"
-                  variant="outlined"
-                  onChange={formik.handleChange}
-                />
+                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                  <InputLabel htmlFor="password"> Password</InputLabel>
+                  <OutlinedInput
+                    id="password"
+                    error={formik.touched.password && Boolean(formik.errors.password)}
+                    // helperText={formik.touched.password && formik.errors.password}
+                    name='password'
+                    label="Password"
+                    type={showPassword ? 'text' : 'password'}
+                    // variant="outlined"
+                    onChange={formik.handleChange}
+                    value={formik.values.password || ''}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                  {formik.touched.confPassword && formik.errors.confPassword &&
+                    <span style={{ color: 'red' }}>
+                      minimum 3 digits
+                    </span>}
+                </FormControl>
               </div>
               <div className={classes.textfield}>
-
-                <TextField
-                  error={formik.touched.confPassword && Boolean(formik.errors.confPassword)}
-                  helperText={formik.touched.confPassword && formik.errors.confPassword}
-                  name='confPassword'
-                  label="Confirm Password"
-                  variant="outlined"
-                  onChange={formik.handleChange}
-                />
+                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                  <InputLabel htmlFor="confPassword">Confirm Password</InputLabel>
+                  <OutlinedInput
+                    id="confPassword"
+                    error={formik.touched.confPassword && Boolean(formik.errors.confPassword)}
+                    name='confPassword'
+                    type={showPassword ? 'text' : 'password'}
+                    // variant="outlined"
+                    label="Confirm Password"
+                    onChange={formik.handleChange}
+                    value={formik.values.confPassword || ''}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                  {formik.touched.confPassword && formik.errors.confPassword &&
+                    <span style={{ color: 'red' }}>
+                      password does not match
+                    </span>}
+                </FormControl>
               </div>
               <div>
 
@@ -243,7 +285,7 @@ const SignUp = (props) => {
                   />
                 </RadioGroup>
                 {formik.touched.genderId && formik.errors.genderId && (
-                  <span style={{ color: "red"}}>
+                  <span style={{ color: "red" }}>
                     {formik.touched.genderId && formik.errors.genderId}
                   </span>
                 )}

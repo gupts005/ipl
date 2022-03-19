@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { chatBaseURL, ContestLogBaseURL } from '../../common/http-urls';
-import { Token } from '../../common/LS';
 import { chatActions } from './chat-slice';
 
-export const fetchChatData = () => {
+export const fetchChatData = (Token) => {
   
   return async (dispatch) => {
     const fetchData = async () => {
@@ -41,7 +40,7 @@ export const fetchChatData = () => {
   };
 };
 
-export const sendChatData = (chatData) => {
+export const sendChatData = (chatData,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {

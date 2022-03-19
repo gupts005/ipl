@@ -31,12 +31,14 @@ export const HeaderData = [
 export const TeamColor = {
   1: "#ff0", //csk
   2: "#2561ae", //dc
-  3: "#7300ab", //kkr
-  4: "#004f91", //mi
-  5: "#ed1f27", //pk
-  6: "RGB(37 ,74 ,165)", //rr
-  7: "#d5152c", //rcb
-  8: "#f7a721", //srh
+  3: "#00416a", //gt
+  4: "#7300ab", //kkr
+  5: "#ace5ee", //lsg
+  6: "#004f91", //mi
+  7: "#ed1f27", //pk
+  8: "RGB(37 ,74 ,165)", //rr
+  9: "#d5152c", //rcb
+  10: "#f7a721", //srh
   //in case if the ids of the above teams changes, default colors will be used
   t1: "pink", //
   t2: "silver", //
@@ -45,12 +47,14 @@ export const TeamColor = {
 export const TeamFontColor = {
   1: "black", //csk
   2: "#fff", //dc
-  3: "#fff", //kkr
-  4: "#fff", //mi
-  5: "#fff", //pk
-  6: "white", //rr
-  7: "#fff", //rcb
-  8: "black", //srh
+  3: "#fff", //gt
+  4: "#fff", //kkr
+  5: "black", //lsg
+  6: "#fff", //mi
+  7: "#fff", //pk
+  8: "white", //rr
+  9: "#fff", //rcb
+  10: "black", //srh
   //in case if the ids of the above teams changes, default colors will be used
   t1: "black", //
   t2: "black", //
@@ -59,12 +63,14 @@ export const TeamFontColor = {
 export const BorderTop = {
   1: "5px solid #ef9b0f", //csk
   2: "5px solid #4B9CD3", //dc
-  3: "5px solid #430064", //kkr
-  4: "5px solid blue", //mi
-  5: "5px solid #af002a", //pk
-  6: "5px solid #1877F2", //rr
-  7: "5px solid #800000", //rcb
-  8: "5px solid #F05E23", //srh
+  3: "5px solid #1d2951", //gt
+  4: "5px solid #430064", //kkr
+  5: "5px solid #9bc4e2", //lsg
+  6: "5px solid blue", //mi
+  7: "5px solid #af002a", //pk
+  8: "5px solid #1877F2", //rr
+  9: "5px solid #800000", //rcb
+  10: "5px solid #F05E23", //srh
   //in case if the ids of the above teams changes, default colors will be used
   t1: "pink", //
   t2: "silver", //

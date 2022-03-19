@@ -1,7 +1,6 @@
 
 import axios from 'axios';
 import { matchBaseURL } from '../../common/http-urls';
-import { Token } from '../../common/LS';
 import { oldMatchActions } from './oldMatches-slice';
 
 export const fetchOldMatchData = (Token) => {
@@ -33,7 +32,7 @@ export const fetchOldMatchData = (Token) => {
   };
 };
 
-export const updateMatchResult = (matchId,resultStatus,winnerTeamId) => {
+export const updateMatchResult = (matchId,resultStatus,winnerTeamId,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {

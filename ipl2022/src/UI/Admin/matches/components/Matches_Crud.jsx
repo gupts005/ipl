@@ -19,6 +19,7 @@ import { matchActions } from '../../../../API/matches/matches-slice';
 import { deleteMatchData, sendMatchData, sendUpdatedMatchData } from '../../../../API/matches/matches-actions';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import AuthContext from '../../../../API/auth-context';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -45,6 +46,7 @@ const validationSchema = yup.object({
 
 export default function MatchesCrud(props) {
 
+  const authCtx = React.useContext(AuthContext);
   const dispatch = useDispatch();
 
   const tournamentData = useSelector((state) => state.tournament.items);
@@ -128,7 +130,7 @@ export default function MatchesCrud(props) {
           team2: selected.team2Id,
           tournamentId: selected.tournamentId,
           venueId: selected.venueId
-        }));
+        },authCtx.Header));
         resetForm();
         props.handleClose();
       }
@@ -161,7 +163,7 @@ export default function MatchesCrud(props) {
           team2: selected.team2Id,
           tournamentId: selected.tournamentId,
           venueId: selected.venueId
-        }));
+        },authCtx.Header));
         resetForm();
         props.handleClose();
       }
@@ -170,7 +172,7 @@ export default function MatchesCrud(props) {
 
   const deleteMatchHandler = () => {
     dispatch(matchActions.deleteMatch(props.delete.matchId));
-    dispatch(deleteMatchData(props.delete.matchId));
+    dispatch(deleteMatchData(props.delete.matchId,authCtx.Header));
     props.handleClose();
   };
 

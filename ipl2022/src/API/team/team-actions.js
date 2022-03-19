@@ -1,7 +1,6 @@
 
 import axios from 'axios';
 import { teamBaseURL } from '../../common/http-urls';
-import { Token } from '../../common/LS';
 import { teamActions } from './team-slice';
 
 export const fetchTeamData = (Token) => {
@@ -33,7 +32,7 @@ export const fetchTeamData = (Token) => {
   };
 };
 
-export const sendTeamData = (team) => {
+export const sendTeamData = (team,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {
@@ -58,7 +57,7 @@ export const sendTeamData = (team) => {
   };
 };
 
-export const sendUpdatedTeamData = (teamId,team) => {
+export const sendUpdatedTeamData = (teamId,team,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {
@@ -84,7 +83,7 @@ export const sendUpdatedTeamData = (teamId,team) => {
   };
 };
 
-export const deleteTeamData = (teamId) => {
+export const deleteTeamData = (teamId,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {

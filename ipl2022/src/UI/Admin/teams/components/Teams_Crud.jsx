@@ -16,6 +16,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { teamActions } from '../../../../API/team/team-slice';
 import { deleteTeamData, sendTeamData, sendUpdatedTeamData } from '../../../../API/team/team-actions';
+import AuthContext from '../../../../API/auth-context';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -36,6 +37,7 @@ const validationSchema = yup.object({
 
 export default function TeamsCrud(props) {
 
+  const authCtx = React.useContext(AuthContext);
   const dispatch = useDispatch();
 
   const [selected, setSelected] = React.useState({
@@ -71,7 +73,7 @@ export default function TeamsCrud(props) {
         formData.append("name", selected.name);
         formData.append("shortName", selected.shortName);
         formData.append("teamLogo", selected.teamLogo);
-        dispatch(sendTeamData(formData));
+        dispatch(sendTeamData(formData,authCtx.Header));
         resetForm();
         props.handleClose();
       }
@@ -87,7 +89,7 @@ export default function TeamsCrud(props) {
         formData.append("name", selected.name);
         formData.append("shortName", selected.shortName);
         formData.append("teamLogo", selected.teamLogo);
-        dispatch(sendUpdatedTeamData(formik.values.teamId,formData));
+        dispatch(sendUpdatedTeamData(formik.values.teamId,formData,authCtx.Header));
         resetForm();
         props.handleClose();
       }
@@ -96,7 +98,7 @@ export default function TeamsCrud(props) {
 
   const deleteTeamHandler = () => {
     dispatch(teamActions.deleteUser(props.delete.teamId));
-    dispatch(deleteTeamData(props.delete.teamId));
+    dispatch(deleteTeamData(props.delete.teamId,authCtx.Header));
     props.handleClose();
   };
 

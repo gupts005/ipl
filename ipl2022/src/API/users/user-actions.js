@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import { usersBaseURL } from '../../common/http-urls';
-import { Token } from '../../common/LS';
+import { userByIdActions } from '../user-by-id/userById-slice';
 import { userActions } from './user-slice';
 
 export const fetchUsersData = (Token) => {
@@ -33,7 +33,7 @@ export const fetchUsersData = (Token) => {
   };
 };
 
-export const sendUserData = (user) => {
+export const sendUserData = (user,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {
@@ -58,7 +58,7 @@ export const sendUserData = (user) => {
   };
 };
 
-export const sendUpdatedUserData = (userId,user) => {
+export const sendUpdatedUserData = (userId,user,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {
@@ -76,15 +76,19 @@ export const sendUpdatedUserData = (userId,user) => {
     };
 
     try {
-      await sendRequest();
-      
+      const resp = await sendRequest();
+      dispatch(
+        userByIdActions.updateUser({
+          items : resp || []
+        })
+      );
     } catch (error) {
       console.log(error);
     }
   };
 };
 
-export const deleteUserData = (userId) => {
+export const deleteUserData = (userId,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {
@@ -110,7 +114,7 @@ export const deleteUserData = (userId) => {
   };
 };
 
-export const updateUserStatus = (userId,status) => {
+export const updateUserStatus = (userId,status,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {

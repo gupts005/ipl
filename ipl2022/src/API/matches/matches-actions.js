@@ -1,7 +1,6 @@
 
 import axios from 'axios';
 import { matchBaseURL } from '../../common/http-urls';
-import { Token } from '../../common/LS';
 import { matchActions } from './matches-slice';
 
 export const fetchMatchData = (Token) => {
@@ -34,7 +33,7 @@ export const fetchMatchData = (Token) => {
   };
 };
 
-export const sendMatchData = (match) => {
+export const sendMatchData = (match,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {
@@ -59,7 +58,7 @@ export const sendMatchData = (match) => {
   };
 };
 
-export const sendUpdatedMatchData = (match) => {
+export const sendUpdatedMatchData = (match,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {
@@ -85,7 +84,7 @@ export const sendUpdatedMatchData = (match) => {
   };
 };
 
-export const deleteMatchData = (matchId) => {
+export const deleteMatchData = (matchId,Token) => {
   return async (dispatch) => {
     
     const sendRequest = async () => {

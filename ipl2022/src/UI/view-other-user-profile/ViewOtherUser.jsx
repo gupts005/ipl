@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import classes from '../user-profile/UserProfile.module.scss';
 import Fab from '@mui/material/Fab';
 import axios from 'axios';
-import { Token } from '../../common/LS';
 import { usersBaseURL } from '../../common/http-urls';
 import { ManageAccounts } from '@mui/icons-material';
+import AuthContext from '../../API/auth-context';
 
 const ViewOtherUser = () => {
 
+  const authCtx = useContext(AuthContext);
   const location = useLocation();
   const [state, setState] = useState(location.state);
   const [userWinningLossingPoints, setUserWinningLossingPoints] = useState();
@@ -20,7 +21,7 @@ const ViewOtherUser = () => {
   }, [state.userId]);
 
   const getUserWinningLossingPoints = (userId) => {
-    axios.get(usersBaseURL + `/${userId}/winning-losing-points`, Token)
+    axios.get(usersBaseURL + `/${userId}/winning-losing-points`, authCtx.Header)
       .then((response) => {
         setUserWinningLossingPoints(response.data);
       })

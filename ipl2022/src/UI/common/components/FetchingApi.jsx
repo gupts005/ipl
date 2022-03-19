@@ -13,6 +13,7 @@ import { fetchTournamentData } from '../../../API/tournament/tournament-actions'
 import { fetchupcomingMatchesByUserId } from '../../../API/upcoming-matches-by-userid/upcomingMatchesByUserId-actions';
 import { fetchUpcomingMatchData } from '../../../API/upcoming-matches/upcomingMatches-actions';
 import { fetchUserById } from '../../../API/user-by-id/userById-actions';
+import { fetchUserWLP } from '../../../API/users-winning-lossing-points/WL-actions';
 import { fetchUsersData } from '../../../API/users/user-actions';
 import { fetchVenueData } from '../../../API/venue/venue-actions';
 
@@ -44,7 +45,8 @@ const FetchingApi = (props) => {
       dispatch(fetchupcomingMatchesByUserId(userData.userId,Token)),
       dispatch(fetchallMatchResult(userData.userId,Token)),
       dispatch(fetchliveMatch(userData.userId,Token)),
-      dispatch(fetchChatData())
+      dispatch(fetchChatData(Token)),
+      dispatch(fetchUserWLP(userData.userId,Token))
     ]).then((data) => {
       // console.log(data);
     }).catch((error) => {

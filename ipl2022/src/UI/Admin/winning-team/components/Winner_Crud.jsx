@@ -16,6 +16,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { oldMatchActions } from '../../../../API/old-matches/oldMatches-slice';
 import { updateMatchResult } from '../../../../API/old-matches/oldMatches-actions';
+import AuthContext from '../../../../API/auth-context';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -36,6 +37,7 @@ const validationSchema = yup.object({
 
 export default function WinnerCrud(props) {
 
+  const authCtx = React.useContext(AuthContext);
   const dispatch = useDispatch();
 
   const [selected, setSelected] = React.useState({
@@ -67,7 +69,7 @@ export default function WinnerCrud(props) {
     onSubmit: (selected, { resetForm }) => {
       if (props.update !== '') {
         dispatch(oldMatchActions.updateMatchResult(formik.values.matchId));
-        dispatch(updateMatchResult(formik.values.matchId,selected.resultStatus,selected.winnerTeamId));
+        dispatch(updateMatchResult(formik.values.matchId,selected.resultStatus,selected.winnerTeamId,authCtx.Header));
         resetForm();
         props.handleClose();
       }

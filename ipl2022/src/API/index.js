@@ -16,6 +16,7 @@ import liveMatch from './live-match-by-userid/liveMatch-slice';
 import authentication from './authentication/authentication-slice';
 import chatSlice from './chat/chat-slice';
 import notificationSlice from './notification/notification-slice';
+import userWLP from './users-winning-lossing-points/WL-slice';
 
 const store = configureStore({
   reducer: {
@@ -35,7 +36,8 @@ const store = configureStore({
     liveMatch: liveMatch.reducer,
     authentication: authentication.reducer,
     chat: chatSlice.reducer,
-    notification: notificationSlice.reducer
+    notification: notificationSlice.reducer,
+    userWLP: userWLP.reducer
   },
 });
 

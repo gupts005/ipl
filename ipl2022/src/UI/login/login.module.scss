@@ -36,7 +36,7 @@
         width: 100%;
         height: 50%;
         overflow: hidden;
-        border-radius: 12px 12px 0 0 ;
+        border-radius: 12px 12px 0 0;
       }
 
       img {
@@ -59,7 +59,7 @@
       @include mobile {
         width: 100%;
         height: 100%;
-      border-radius: 0 0 12px 12px;
+        border-radius: 0 0 12px 12px;
       }
 
       .child_right_inner {
@@ -120,6 +120,24 @@
               display: flex;
               flex-direction: column;
               justify-content: center;
+
+              .input_field_inner {
+                display: flex;
+                justify-content: center;
+                flex-direction: row;
+
+                .input_field_inner_1 {
+                  display: flex;
+                  justify-content: flex-end;
+                  position: absolute;
+                  padding-left: 20%;
+                  padding-top: 17px;
+
+                  @include mobile {
+                    padding-left: 50%;
+                  }
+                }
+              }
 
               input {
                 width: 80%;
