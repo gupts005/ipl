@@ -58,12 +58,14 @@ const MyMatches = (props) => {
   };
 
   const gotoLiveMatches = (item) => {
-    const selectedData = upcomingMatchData.find(d => d.matchId === item.matchId);
+    const selectedData = liveMatches.find(d => d.matchId === item.matchId);
     navigate(`/live-match/${item.matchId}`,{state:selectedData});
   };
 
   const gotoResult = (item) => {
-    const selectedData = upcomingMatchData.find(d => d.matchId === item.matchId);
+    const selectedData = allMatchResult.find(d => d.matchId === item.matchId);
+    console.log(selectedData);
+    console.log(item);
     navigate(`/match-result/${item.matchId}`,{state:selectedData});
   };
 
@@ -178,7 +180,8 @@ const MyMatches = (props) => {
         <TabPanel value={value} index={2}>
           <div className={classes.match_list} >
             {allMatchResult.map((item) => (
-              <div className={classes.card} key={item.matchId} onClick={()=>gotoResult(item)}>
+              <div  key={item.matchId}>
+              <div className={classes.card} onClick={()=>gotoResult(item)}>
                 <div
                   className={classes.left}
                   style={{
@@ -218,6 +221,7 @@ const MyMatches = (props) => {
                     </h3>
                   </div>
                 </div>
+              </div>
               </div>
             ))}
           </div>

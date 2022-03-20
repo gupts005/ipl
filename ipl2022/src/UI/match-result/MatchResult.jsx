@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import classes from './MatchResult.module.scss';
 import Box from '@mui/material/Box';
@@ -10,21 +10,18 @@ import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import BetTable from './components/BetTable';
 import ViewBet from './components/ViewBet';
-
-const userData = JSON.parse(localStorage.getItem('loginState'));
-const Token = {
-  headers: { Authorization: `Bearer ${userData?.token}` }
-};
+import AuthContext from '../../API/auth-context';
 
 const MatchResult = (props) => {
 
   const location = useLocation();
+  const authCtx = useContext(AuthContext);
   const [matchData, setMatchData] = useState(location.state);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllContestByMatchId(matchData.matchId));
+    dispatch(fetchAllContestByMatchId(matchData.matchId,authCtx.Header));
   }, [matchData.matchId, dispatch]);
 
   const allContestData = useSelector((state) => state.bot.items);
@@ -37,12 +34,12 @@ const MatchResult = (props) => {
   });
 
   useEffect(() => {
-    getContestByUserMatchId(userData.userId, matchData.matchId);
+    getContestByUserMatchId(authCtx.userData.userId, matchData.matchId);
   }, [matchData.matchId]);
 
   const getContestByUserMatchId = (userId, matchId) => {
     // setState(true);
-    axios.get(usersBaseURL + `/${userId}/contest/${matchId}`, Token)
+    axios.get(usersBaseURL + `/${userId}/contest/${matchId}`, authCtx.Header)
       .then((response) => {
         setuserbotData(response.data);
         // setState(false);
@@ -86,7 +83,7 @@ const MatchResult = (props) => {
                 teamData={teamData}
                 userByIdData={userByIdData}
                 userbotData={userbotData}
-                userData={userData}
+                userData={authCtx.userData}
                 onClick={UpdateStateData}
               />
 
