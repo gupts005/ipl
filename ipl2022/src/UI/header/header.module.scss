@@ -3,7 +3,8 @@
 .topbar {
   width: 100%;
   height: 70px;
-  background-color: #551a8b;
+  // background-color: #551a8b;
+  background: linear-gradient(92.04deg,#18184a 24.18%,#19398a 50.95%,#18184a 110.32%);
   color: white;
   position: fixed;
   top: 0;
@@ -139,20 +140,20 @@
   }
 
   &.active {
-    background-color: $mainColor;
+    background: $mainColor;
     color: white;
 
     .hamburger {
       span {
         &:first-child {
-          background-color: white;
+          background-color: rgb(35, 122, 49);
           transform: rotate(45deg);
         }
         &:nth-child(2) {
           opacity: 0;
         }
         &:last-child {
-          background-color: white;
+          background-color: rgb(201, 39, 39);
           transform: rotate(-45deg);
         }
       }

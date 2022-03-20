@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import classes from './LiveMatches.module.scss';
 import Box from '@mui/material/Box';
@@ -10,6 +10,7 @@ import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import BetTable from './components/BetTable';
 import ViewBet from './components/ViewBet';
+import AuthContext from '../../API/auth-context';
 
 const userData = JSON.parse(localStorage.getItem('loginState'));
 const Token = {
@@ -19,12 +20,13 @@ const Token = {
 const LiveMatch = () => {
 
   const location = useLocation();
+  const authCtx = useContext(AuthContext);
   const [matchData, setMatchData] = useState(location.state);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllContestByMatchId(matchData.matchId));
+    dispatch(fetchAllContestByMatchId(matchData.matchId,authCtx.Header));
   }, [matchData.matchId, dispatch]);
 
   const allContestData = useSelector((state) => state.bot.items);

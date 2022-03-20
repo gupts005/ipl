@@ -13,8 +13,19 @@ const userByIdSlice = createSlice({
     },
     updateUser(state, action) {
       const newItem = action.payload.items;
+      let oldItem = state.items;
+      oldItem.firstName = newItem.firstName;
+      oldItem.lastName = newItem.lastName;
+      oldItem.email = newItem.email;
+      oldItem.mobileNumber = newItem.mobileNumber;
+      if (newItem.profilePicture !== 'https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/null?alt=media') {
+        oldItem.profilePicture = newItem.profilePicture;
+      }
+      oldItem.genderId = newItem.genderId;
+      const combinedData = {...oldItem};
+      console.log(combinedData,'combinedData  combinedData');
       state.changed = true;
-      state.items = newItem;
+      state.items = combinedData;
     },
   },
 });

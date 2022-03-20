@@ -77,42 +77,48 @@ export const BorderTop = {
 };
 
 export const TeamShortColor = {
-  CSK: '#ff0', //csk
-  DC: '#2561ae', //dc
-  KKR: '#7300ab', //kkr
-  MI: '#004f91', //mi
-  PBKS: '#ed1f27', //pk
-  RR: 'RGB(37 ,74 ,165)', //rr
-  RCB: '#d5152c', //rcb
-  SRH: '#f7a721', //srh
+  CSK: "#ff0", //csk
+  DC: "#2561ae", //dc
+  GT: "#00416a", //gt
+  KKR: "#7300ab", //kkr
+  LSG: "#ace5ee", //lsg
+  MI: "#004f91", //mi
+  PBKS: "#ed1f27", //pbks
+  RR: "RGB(37 ,74 ,165)", //rr
+  RCB: "#d5152c", //rcb
+  SRH: "#f7a721", //srh
   //in case if the ids of the above teams changes, default colors will be used
   t1: 'pink', //
   t2: 'silver' //
 };
 
 export const TeamShortFontColor = {
-  CSK: 'black', //csk
-  DC: '#fff', //dc
-  KKR: '#fff', //kkr
-  MI: '#fff', //mi
-  PBKS: '#fff', //pk
-  RR: 'white', //rr
-  RCB: '#fff', //rcb
-  SRH: 'black', //srh
+  CSK: "black", //csk
+  DC: "#fff", //dc
+  GT: "#fff", //gt
+  KKR: "#fff", //kkr
+  LSG: "black", //lsg
+  MI: "#fff", //mi
+  PBKS: "#fff", //pk
+  RR: "white", //rr
+  RCB: "#fff", //rcb
+  SRH: "black", //srh
   //in case if the ids of the above teams changes, default colors will be used
   t1: 'black', //
   t2: 'black' //
 }
 
 export const BorderShortTop = {
-  CSK: '5px solid #ef9b0f', //csk
-  DC: '5px solid #4B9CD3', //dc
-  KKR: '5px solid #430064', //kkr
-  MI: '5px solid blue', //mi
-  PBKS: '5px solid #af002a', //pk
-  RR: '5px solid #1877F2', //rr
-  RCB: '5px solid #800000', //rcb
-  SRH: '5px solid #F05E23', //srh
+  CSK: "5px solid #ef9b0f", //csk
+  DC: "5px solid #4B9CD3", //dc
+  GT: "5px solid #1d2951", //gt
+  KKR: "5px solid #430064", //kkr
+  LSG: "5px solid #9bc4e2", //lsg
+  MI: "5px solid blue", //mi
+  PBKS: "5px solid #af002a", //pk
+  RR: "5px solid #1877F2", //rr
+  RCB: "5px solid #800000", //rcb
+  SRH: "5px solid #F05E23", //srh
   //in case if the ids of the above teams changes, default colors will be used
   t1: 'pink', //
   t2: 'silver' //

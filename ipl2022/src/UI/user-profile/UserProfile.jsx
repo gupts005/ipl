@@ -13,8 +13,8 @@ import { IconButton } from '@mui/material';
 
 const UserProfile = (props) => {
 
-  const authCtx = useContext(AuthContext);
-  const dispatch = useDispatch();
+  // const authCtx = useContext(AuthContext);
+  // const dispatch = useDispatch();
   const userByIdData = useSelector((state) => state.userById.items);
   const userWLP = useSelector((state) => state.userWLP.items);
   const [userWinningLossingPoints, setUserWinningLossingPoints] = useState(userWLP);
@@ -32,12 +32,12 @@ const UserProfile = (props) => {
             <img src={userByIdData.profilePicture} alt='please upload a pic' />
             <div>
               {/* <i className={'fas fa-trash-alt ' + classes.remove} title='Remove Profile Picture' ></i> */}
-              <IconButton>
+              <IconButton onClick={()=> { setSelectedData(false); setCrudModal(true);}}>
                 <DeleteForeverIcon sx={{ color: 'red' }}/>
               </IconButton>
               </div>
-            <h4> </h4>
-            <p> </p>
+            <h4> {userByIdData.firstName} {userByIdData.lastName} </h4>
+            <p> @{userByIdData.username} </p>
           </div>
           <div className={classes.right}>
             <div className={classes.info}>
@@ -84,7 +84,7 @@ const UserProfile = (props) => {
             </div>
           </div>
         </div>
-        <UpdateProfile update={selectedData} open={openCrudModal} handleClose={() => setCrudModal(false)} />
+        <UpdateProfile delete={userByIdData} update={selectedData} open={openCrudModal} handleClose={() => setCrudModal(false)} />
         <UpdatePassword open={openPasswordModal} handleClose={() => setPasswordModal(false)} />
       </div>
     </div>
