@@ -1,9 +1,10 @@
 import axios from "axios";
-import { contestBaseURL, matchBaseURL } from "../../common/http-urls";
-import { notificationActions } from '../notification/notification-slice';
+import { getErrorMessage } from "../../common/error-function";
+import { contestBaseURL, matchBaseURL, usersBaseURL } from "../../common/http-urls";
+import { notificationActions } from "../notification/notification-slice";
 import { botActions } from "./bot-slice";
 
-export const fetchAllContestByMatchId = (matchId,token1) => {
+export const fetchAllContestByMatchId = (matchId, token1) => {
   return async (dispatch) => {
     const fetchData = async () => {
       const response = await axios.get(
@@ -34,13 +35,51 @@ export const fetchAllContestByMatchId = (matchId,token1) => {
   };
 };
 
-export const sendBetData = (betData,Token) => {
+export const fetchUserContestByMatchId = (userId, matchId, token1) => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      const response = await axios.get(
+        usersBaseURL + `/${userId}/contest/${matchId}`,
+        token1
+      );
+
+      if (response.status !== 200) {
+        throw new Error(response);
+      }
+
+      const data = await response.data;
+      // console.log(data,' bot file');
+
+      return data;
+    };
+
+    try {
+      const botData = await fetchData();
+      // dispatch(
+      //   botActions.replaceBot({
+      //     items: botData || [],
+      //   })
+      // );
+    } catch (error) {
+      const processedError = getErrorMessage(error);
+      dispatch(
+        notificationActions.showNotification({
+          status: "error",
+          title: "Error!",
+          message: processedError,
+        })
+      );
+    }
+  };
+};
+
+export const sendBetData = (betData, Token) => {
   return async (dispatch) => {
     dispatch(
       notificationActions.showNotification({
         status: "pending",
         title: "Sending...",
-        message: "Sending cart data!",
+        message: "Sending Bet data!",
       })
     );
 
@@ -48,7 +87,7 @@ export const sendBetData = (betData,Token) => {
       const response = await axios.post(contestBaseURL, betData, Token);
 
       if (response.status !== 201) {
-        throw new Error("Could not send betData data!");
+        throw new Error(response);
       }
 
       const data = await response.data;
@@ -64,15 +103,16 @@ export const sendBetData = (betData,Token) => {
         notificationActions.showNotification({
           status: "success",
           title: "Success!",
-          message: "Sent cart data successfully!",
+          message: "Bet Placed Successfully!",
         })
       );
     } catch (error) {
+      const processedError = getErrorMessage(error);
       dispatch(
         notificationActions.showNotification({
           status: "error",
           title: "Error!",
-          message: "Sending bet data failed!",
+          message: processedError,
         })
       );
       // console.log(error);
@@ -80,13 +120,13 @@ export const sendBetData = (betData,Token) => {
   };
 };
 
-export const sendUpdatedBetData = (betData,Token) => {
+export const sendUpdatedBetData = (betData, Token) => {
   return async (dispatch) => {
     dispatch(
       notificationActions.showNotification({
         status: "pending",
         title: "Sending...",
-        message: "Sending cart data!",
+        message: "Updating Bet data!",
       })
     );
     const sendRequest = async () => {
@@ -98,7 +138,7 @@ export const sendUpdatedBetData = (betData,Token) => {
       // console.log(response);
 
       if (response.status !== 200) {
-        throw new Error("Could not update betData data!");
+        throw new Error(response);
       }
 
       const data = await response.data;
@@ -113,15 +153,16 @@ export const sendUpdatedBetData = (betData,Token) => {
         notificationActions.showNotification({
           status: "success",
           title: "Success!",
-          message: "Sent cart data successfully!",
+          message: "Bet Data Updated Successfully!",
         })
       );
     } catch (error) {
+      const processedError = getErrorMessage(error);
       dispatch(
         notificationActions.showNotification({
           status: "error",
           title: "Error!",
-          message: "Sending bet data failed!",
+          message: processedError,
         })
       );
       // console.log(error);

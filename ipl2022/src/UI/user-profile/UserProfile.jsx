@@ -10,6 +10,7 @@ import UpdatePassword from './components/UpdatePassword';
 import AuthContext from '../../API/auth-context';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { IconButton } from '@mui/material';
+import { userProfile } from '../common/constants/data';
 
 const UserProfile = (props) => {
 
@@ -25,7 +26,7 @@ const UserProfile = (props) => {
 
   return (
     <div className={classes.parent}>
-      <div className={classes.child}>
+      <div className={classes.child} style={{backgroundImage: 'url(' + userProfile + ')'}}>
 
         <div className={classes.wrapper}>
           <div className={classes.left}>

@@ -167,7 +167,7 @@ const Login = (props) => {
                 // value: "#343148",
               },
             },
-            fpsLimit: 30,
+            fpsLimit: 20,
             interactivity: {
               events: {
                 onClick: {
@@ -215,7 +215,7 @@ const Login = (props) => {
                 enable: true,
                 outMode: "bounce",
                 random: false,
-                speed: 3,
+                speed: 1,
                 straight: false,
               },
               number: {
@@ -251,8 +251,7 @@ const Login = (props) => {
             <div className={classes.child_right_inner}>
               <div className={classes.child_right_1}>
                 <p>
-                  Welcome &nbsp; <i className="fas fa-strikethrough"></i>
-                  <i>portsGeek, <span ref={textRef}></span> </i>
+                  Welcome BBDiers, <span ref={textRef}></span>
                 </p>
               </div>
               <div className={classes.child_right_2}>

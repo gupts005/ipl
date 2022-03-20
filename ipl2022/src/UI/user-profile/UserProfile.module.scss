@@ -17,7 +17,6 @@
     min-height: calc(100vh - 70px);
     top: 70px;
     position: relative;
-    background-image: url("https://wallpaperaccess.com/full/1170820.jpg");
     overflow-x: scroll;
 
     .wrapper {
@@ -60,14 +59,14 @@
         img {
           margin-bottom: 10px;
           border-radius: 5px;
-          height: 150px;
+          height: 100%;
           width: 90%;
         }
         h4 {
           margin-bottom: 10px;
 
           @include mobile {
-            margin-bottom: 0;
+            // margin-bottom: 0;
           }
         }
         p {
@@ -186,7 +185,7 @@
     }
 
     .wrapper .left p {
-      font-size: 12px;
+      font-size: 16px;
     }
 
     .wrapper .right {

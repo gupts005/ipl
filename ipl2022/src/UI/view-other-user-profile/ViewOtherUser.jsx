@@ -6,6 +6,7 @@ import axios from 'axios';
 import { usersBaseURL } from '../../common/http-urls';
 import { ManageAccounts } from '@mui/icons-material';
 import AuthContext from '../../API/auth-context';
+import { otherUser } from '../common/constants/data';
 
 const ViewOtherUser = () => {
 
@@ -36,14 +37,14 @@ const ViewOtherUser = () => {
     <React.Fragment>
 
       <div className={classes.parent}>
-        <div className={classes.child}>
+        <div className={classes.child} style={{backgroundImage: 'url(' + otherUser + ')'}}>
 
           <div className={classes.wrapper}>
             <div className={classes.left}>
-              <img src={'https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F20%2F2020%2F11%2F13%2Fdwayne-johnson.jpg'} />
+              <img src={state.profilePicture} />
               {/* <div><i className={'fas fa-trash-alt ' + classes.remove} title='Remove Profile Picture' ></i></div> */}
-              <h4> </h4>
-              <p> </p>
+              <h4> {state.firstName} {state.lastName} </h4>
+              <p> @{state.userName} </p>
             </div>
             <div className={classes.right}>
               {/* <div className={classes.info}>

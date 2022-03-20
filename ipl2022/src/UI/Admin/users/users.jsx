@@ -78,7 +78,7 @@ const Users = () => {
         status: !item.status
       })
     );
-    dispatch(updateUserStatus(item.userId,!item.status));
+    dispatch(updateUserStatus(item.userId,!item.status,authCtx.Header));
   }
 
   // Avoid a layout jump when reaching the last page with empty userData.
