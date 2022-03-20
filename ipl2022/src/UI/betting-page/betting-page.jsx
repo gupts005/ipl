@@ -4,13 +4,14 @@ import classes from './betting-page.module.scss';
 import Box from '@mui/material/Box';
 import { LinearProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllContestByMatchId } from '../../API/bot/bot-actions';
+import { fetchAllContestByMatchId, fetchUserContestByMatchId } from '../../API/bot/bot-actions';
 import { usersBaseURL } from '../../common/http-urls';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress';
 import BetTable from './components/BetTable';
 import PlaceBet from './components/PlaceBet';
 import AuthContext from '../../API/auth-context';
+import { notificationActions } from '../../API/notification/notification-slice';
 
 const BettingPage = (props) => {
 
@@ -40,18 +41,8 @@ const BettingPage = (props) => {
   
   const getContestByUserMatchId = (userId, matchId) => {
     // setState(true);
-    axios.get(usersBaseURL + `/${userId}/contest/${matchId}`, authCtx.Header)
-      .then((response) => {
-        setuserbotData(response.data);
-        // setState(false);
-      })
-      .catch((error) => {
-        // alert(error);
-        // setState(false);
-      })
-      .finally(() => {
-        // setState(false);
-      })
+    dispatch(fetchUserContestByMatchId(userId, matchId, authCtx.Header));
+    
   }
 
   useEffect(() => {

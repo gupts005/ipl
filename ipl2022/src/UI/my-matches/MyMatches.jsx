@@ -49,6 +49,7 @@ const MyMatches = (props) => {
   const liveMatches = useSelector((state) => state.liveMatch.items);
   const allMatchResult = useSelector((state) => state.allMatchResult.items);
   const [value, setValue] = React.useState(0);
+  console.log(liveMatches);
   
   const upcomingMatchData = useSelector((state) => state.upcomingMatches.items);
 
@@ -65,7 +66,6 @@ const MyMatches = (props) => {
   const gotoResult = (item) => {
     const selectedData = allMatchResult.find(d => d.matchId === item.matchId);
     console.log(selectedData);
-    console.log(item);
     navigate(`/match-result/${item.matchId}`,{state:selectedData});
   };
 
@@ -154,7 +154,7 @@ const MyMatches = (props) => {
                     <h3
                       className={classes.team_name}
                       style={{ color: item.team1Short ? TeamShortFontColor[item.team1Short] : TeamShortFontColor.t1 }}>
-                      {item.team1}
+                      {item.team1Short}
                     </h3>
                   </div>
                   <div className={classes.details}>
@@ -168,7 +168,7 @@ const MyMatches = (props) => {
                       className={classes.team_name}
                       style={{ color: item.team2Short ? TeamShortFontColor[item.team2Short] : TeamShortFontColor.t2 }}
                     >
-                      {item.team2}
+                      {item.team2Short}
                     </h3>
                   </div>
                 </div>

@@ -1,65 +1,68 @@
+import axios from "axios";
+import { getErrorMessage } from '../../common/error-function';
+import { authBaseURL, usersBaseURL } from "../../common/http-urls";
+import { notificationActions } from "../notification/notification-slice";
+import { authenticationActions } from "./authentication-slice";
 
-import axios from 'axios';
-import { authBaseURL, usersBaseURL } from '../../common/http-urls';
-import { notificationActions } from '../notification/notification-slice';
-import { authenticationActions } from './authentication-slice';
-
-export const authentication = (loginData) => {
-
+export const authentication = (creds) => {
   return async (dispatch) => {
     const fetchData = async () => {
       dispatch(
         notificationActions.showNotification({
           status: "pending",
           title: "Sending...",
-          message: "Sending cart data!",
+          message: "Verifying your credentials!",
         })
       );
-  
-      const response = await axios.post(authBaseURL, loginData);
+
+      const response = await axios.post(authBaseURL, creds);
 
       if (response.status !== 200) {
-        throw new Error('Could not fetch user data!');
+        throw new Error(response);
         // return response.data.message;
       }
 
-      const data = await response.data;
-      // console.log(data,' login file');
+      // const data = await response.data;
+      // console.log(response,' login file');
 
-      return data;
+      return response;
     };
 
     try {
-      const loginData = await fetchData();
-      
+      const data = await fetchData();
+      const loginData = await data.data;
+
       dispatch(
         notificationActions.showNotification({
           status: "success",
           title: "Success!",
-          message: "Sent cart data successfully!",
+          message: "Successfully Logged In!",
         })
       );
 
-      dispatch(
-        authenticationActions.replaceAuth({
-          items : loginData || [],
-          changed: true
-        })
-      );
+      if (data.status === 200) {
+        dispatch(
+          authenticationActions.replaceAuth({
+            items: loginData || [],
+            changed: true,
+          })
+        );
+      }
     } catch (error) {
-      
+      const processedError = getErrorMessage(error);
+      // console.log(error);
       dispatch(
         notificationActions.showNotification({
           status: "error",
           title: "Error!",
-          message: "Sending bet data failed!",
+          message: processedError
         })
       );
 
       dispatch(
         authenticationActions.replaceAuth({
-          items : error.response.data.message || [],
-          changed: true
+          items: error.response.data.message || [],
+          changed: true,
         })
       );
     }

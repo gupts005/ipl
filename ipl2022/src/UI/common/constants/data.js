@@ -1,4 +1,3 @@
-export const BackGroundImage = "https://wallpaperaccess.com/full/1088620.jpg";
 
 export const HeaderData = [
   {
@@ -189,3 +188,13 @@ export const Matches = [
     startDatetime: "2021-09-20T11:05:55.000+00:00",
   }
 ];
+
+export const teamFlags = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/team_flags.jpg?alt=media';
+export const ipl = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/ipl.jpg?alt=media';
+export const registration = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/register.jpg?alt=media';
+export const allteams = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/allteams.jpg?alt=media';
+export const chennaiWin = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/chennaiWon2021.jpg?alt=media';
+export const trophy = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/trophy.jpg?alt=media';
+export const BackGroundImage = "https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/stadium.jpg?alt=media";
+export const userProfile = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/profile-section.jpg?alt=media';
+export const otherUser = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/otherUser.jpg?alt=media';
