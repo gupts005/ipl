@@ -24,7 +24,7 @@ const PlaceBet = (props) => {
     contestPoints: '',
     teamId: ''
   });
-  // console.log(userbotData);
+  // console.log(props);
   useEffect(() => {
     setuserbotData(props.userbotData);
   }, [props.userbotData]);

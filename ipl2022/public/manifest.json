@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/ipllogo.jpg?alt=media",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/ipllogo.jpg?alt=media",
       "type": "image/png",
       "sizes": "512x512"
     }
