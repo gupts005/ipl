@@ -167,7 +167,7 @@ const Login = (props) => {
                 // value: "#343148",
               },
             },
-            fpsLimit: 20,
+            fpsLimit: 30,
             interactivity: {
               events: {
                 onClick: {

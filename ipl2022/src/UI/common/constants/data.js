@@ -198,3 +198,4 @@ export const trophy = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.a
 export const BackGroundImage = "https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/stadium.jpg?alt=media";
 export const userProfile = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/profile-section.jpg?alt=media';
 export const otherUser = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/otherUser.jpg?alt=media';
+export const iplLogo = 'https://firebasestorage.googleapis.com/v0/b/react-128c5.appspot.com/o/ipllogo.jpg?alt=media';

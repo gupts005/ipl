@@ -41,7 +41,7 @@ const removeUser = (socketId) => {
 };
 
 io.on('connection', (socket) => {
-  console.log('user connected');
+  // console.log('user connected');
   
   socket.on('addUser', (userData) => {
     addUser(userData,socket.id);
@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
 
   //when disconnect
   socket.on("disconnect", () => {
-    console.log("a user disconnected!");
+    // console.log("a user disconnected!");
     removeUser(socket.id);
     io.emit("getUsers", users);
   });
