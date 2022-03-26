@@ -42,7 +42,7 @@ const BetTable = (props) => {
   const [dense, setDense] = React.useState(false);
   const [selected, setSelected] = useState([]);
 
-  console.log(props,' bet tableeeeeeeee');
+  // console.log(props,' bet tableeeeeeeee');
   useEffect(() => {
     setSelected(props.allContestData);
   }, [props]);

@@ -12,6 +12,7 @@ import BetTable from './components/BetTable';
 import PlaceBet from './components/PlaceBet';
 import AuthContext from '../../API/auth-context';
 import { notificationActions } from '../../API/notification/notification-slice';
+import { getErrorMessage } from '../../common/error-function';
 
 const BettingPage = (props) => {
 
@@ -23,26 +24,45 @@ const BettingPage = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchAllContestByMatchId(matchData.matchId,authCtx.Header));
+    dispatch(fetchAllContestByMatchId(matchData.matchId, authCtx.Header));
   }, [matchData.matchId, dispatch]);
 
   const allContestData = useSelector((state) => state.bot.items);
+  // console.log(allContestData);
   const teamData = useSelector((state) => state.team.items);
   const userByIdData = useSelector((state) => state.userById.items);
   const [state, setState] = useState(true);
-  const [userbotData, setuserbotData] = useState({
-    contestPoints: '',
-    teamId: ''
-  });
+  const [userbotData, setuserbotData] = useState();
 
   useEffect(() => {
     getContestByUserMatchId(authCtx.userData.userId, matchData.matchId);
   }, [matchData.matchId]);
-  
-  const getContestByUserMatchId = (userId, matchId) => {
-    // setState(true);
-    dispatch(fetchUserContestByMatchId(userId, matchId, authCtx.Header));
+
+  const getContestByUserMatchId = async (userId, matchId) => {
+
+    const response = await axios.get(
+      usersBaseURL + `/${userId}/contest/${matchId}`,
+      authCtx.Header
+    );
+
+    if (response.status !== 200) {
+
+      // dispatch(
+      //   notificationActions.showNotification({
+      //     status: "error",
+      //     title: "Error!",
+      //     message: processedError,
+      //   })
+      // );
+      // throw new Error(response);
+    }
+
+    const data = await response.data;
+
     
+
+    console.log(response);
+    setuserbotData(data);
   }
 
   useEffect(() => {
@@ -65,7 +85,7 @@ const BettingPage = (props) => {
 
           {!state &&
             <>
-            
+
               <PlaceBet
                 allContestData={allContestData}
                 matchData={matchData}

@@ -20,14 +20,8 @@ const PlaceBet = (props) => {
   
   const authCtx = useContext(AuthContext);
   const dispatch = useDispatch();
-  const [userbotData, setuserbotData] = useState({
-    contestPoints: '',
-    teamId: ''
-  });
-  // console.log(props);
-  useEffect(() => {
-    setuserbotData(props.userbotData);
-  }, [props.userbotData]);
+  const [userbotData, setuserbotData] = useState(props.userbotData);
+  console.log(props);
 
   let selectedTeam = props.teamData.find(team => team?.teamId === props.userbotData?.teamId);
   const [selectedTeamState, setselectedTeamState] = useState();
@@ -36,8 +30,8 @@ const PlaceBet = (props) => {
 
   const formik = useFormik({
     initialValues: {
-      contestPoints: userbotData.contestPoints,
-      teamId: userbotData.teamId
+      contestPoints: userbotData?.contestPoints,
+      teamId: userbotData?.teamId
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -155,7 +149,7 @@ const PlaceBet = (props) => {
               }
               <div className={classes.form_content}>
                 <p>
-                  Selected Team : {userbotData.contestPoints === '' ? selectedTeamState || 'Select team to place bet' : selectedTeamState || selectedTeam?.name}
+                  Selected Team : {userbotData?.contestPoints === undefined ? selectedTeamState || 'Select team to place bet' : selectedTeamState || selectedTeam?.name}
                 </p>
                 <TextField
                   className={classes.textField}
@@ -169,7 +163,7 @@ const PlaceBet = (props) => {
                   helperText={formik.touched.contestPoints && formik.errors.contestPoints}
                 />
                 <AnimatedButton
-                  text={userbotData.contestPoints !== '' ? 'Update Bet' : 'Place Bet'} />
+                  text={userbotData?.contestPoints !== undefined ? 'Update Bet' : 'Place Bet'} />
               </div>
 
             </form>
