@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 const Notification = (props) => {
 
   const notification = useSelector((state) => state.notification.notification);
-  console.log(notification);
+  // console.log(notification);
 
   useEffect(() => {
 
