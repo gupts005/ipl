@@ -70,7 +70,7 @@ const BetTable = (props) => {
   return (
     <ParentDiv>
       <Box sx={{ width: '100%', paddingTop: '10px' }}>
-        <Paper sx={{ width: '100%', mb: 2 }}>
+        <Paper sx={{ width: '100%', mb: 2, background: 'linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);' }}>
           <Toolbar>
             <Typography
               sx={{ flex: '1 1 auto' }}
@@ -161,7 +161,7 @@ const BetTable = (props) => {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={[5, 10]}
             component="div"
             count={selected.length}
             rowsPerPage={rowsPerPage}

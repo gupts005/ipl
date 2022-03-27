@@ -37,9 +37,9 @@ const PlaceBet = (props) => {
     validationSchema: validationSchema,
     onSubmit: (selectedFormData) => {
       // console.log(selectedFormData);
-      const f = props.teamData.find(item => item.teamId == formik.values.teamId);
+      const f = props.teamData.find(item => item.teamId == selectedFormData.teamId);
       // console.log(f, ' f');
-      if (userbotData.contestPoints === '' && userbotData.teamId === '') {
+      if (userbotData?.contestPoints === undefined && userbotData?.teamId === undefined) {
         dispatch(botActions.addBet({
           firstName: props.userByIdData.firstName,
           lastName: props.userByIdData.lastName,
@@ -59,7 +59,7 @@ const PlaceBet = (props) => {
           teamId: selectedFormData.teamId
         },authCtx.Header));
       }
-      if (userbotData.contestPoints !== '' && userbotData.teamId !== '') {
+      if (userbotData?.contestPoints !== undefined && userbotData?.teamId !== undefined) {
         dispatch(botActions.updateBet({
           contestId: userContestDataForUpdate.contestId,
           firstName: props.userByIdData.firstName,
@@ -113,7 +113,7 @@ const PlaceBet = (props) => {
             <form onSubmit={formik.handleSubmit}>
 
               <div className={classes.form_heading}>
-                <p>Select a Team</p>
+                <p> {props.matchData.team1Short} vs {props.matchData.team2Short} </p>
               </div>
 
               <div className={classes.radio_group}>
