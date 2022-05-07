@@ -4,7 +4,7 @@ import { authBaseURL, usersBaseURL } from "../../common/http-urls";
 import { notificationActions } from "../notification/notification-slice";
 import { authenticationActions } from "./authentication-slice";
 
-export const authentication = (creds) => {
+export const authentication = (creds) => { 
   return async (dispatch) => {
     const fetchData = async () => {
       dispatch(
