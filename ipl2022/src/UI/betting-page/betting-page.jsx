@@ -28,7 +28,6 @@ const BettingPage = (props) => {
   }, [matchData.matchId, dispatch]);
 
   const allContestData = useSelector((state) => state.bot.items);
-  // console.log(allContestData);
   const teamData = useSelector((state) => state.team.items);
   const userByIdData = useSelector((state) => state.userById.items);
   const [state, setState] = useState(true);
@@ -44,24 +43,20 @@ const BettingPage = (props) => {
       usersBaseURL + `/${userId}/contest/${matchId}`,
       authCtx.Header
     );
-
+console.log(response,'responseresponse');
     if (response.status !== 200) {
 
-      // dispatch(
-      //   notificationActions.showNotification({
-      //     status: "error",
-      //     title: "Error!",
-      //     message: processedError,
-      //   })
-      // );
+      dispatch(
+        notificationActions.showNotification({
+          status: "error",
+          title: "Error!",
+          message: 'ssssssssssssssssss',
+        })
+      );
       // throw new Error(response);
     }
 
     const data = await response.data;
-
-    
-
-    console.log(response);
     setuserbotData(data);
   }
 

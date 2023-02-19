@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import classes from './place-bet.module.scss';
 import { sendBetData, sendUpdatedBetData } from '../../../API/bot/bot-actions';
 import Box from '@mui/material/Box';
-import { Paper } from '@mui/material';
+import { FormControlLabel, Paper, Radio, Switch } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import AnimatedButton from '../../common/components/AnimatedButton/AnimatedButton';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +17,7 @@ const validationSchema = yup.object({
 });
 
 const PlaceBet = (props) => {
-  
+
   const authCtx = useContext(AuthContext);
   const dispatch = useDispatch();
   const [userbotData, setuserbotData] = useState(props.userbotData);
@@ -25,6 +25,7 @@ const PlaceBet = (props) => {
 
   let selectedTeam = props.teamData.find(team => team?.teamId === props.userbotData?.teamId);
   const [selectedTeamState, setselectedTeamState] = useState();
+  const [oldBrowser, setOldBrowser] = useState(false);
   // console.log(selectedTeam, 'selectedTeamState');
   const userContestDataForUpdate = props.allContestData.find(item => item.username === props.userData.username);
 
@@ -57,7 +58,7 @@ const PlaceBet = (props) => {
           matchId: props.matchData.matchId,
           contestPoints: selectedFormData.contestPoints,
           teamId: selectedFormData.teamId
-        },authCtx.Header));
+        }, authCtx.Header));
       }
       if (userbotData?.contestPoints !== undefined && userbotData?.teamId !== undefined) {
         dispatch(botActions.updateBet({
@@ -77,14 +78,16 @@ const PlaceBet = (props) => {
           matchId: props.matchData.matchId,
           contestPoints: selectedFormData.contestPoints,
           teamId: selectedFormData.teamId
-        },authCtx.Header));
+        }, authCtx.Header));
       }
     }
   });
 
   const displayTeamName = (tt) => {
     const t = props.teamData.find((t) => t.teamId === tt);
-    setselectedTeamState(t?.name);
+    if (!!t) {
+      setselectedTeamState(t?.name);
+    }
   };
 
   return (
@@ -110,40 +113,72 @@ const PlaceBet = (props) => {
             }}
             elevation={3} >
 
+            <div className={classes.above_paper}>
+              <FormControlLabel
+                control={<Switch defaultChecked color="warning" />}
+                label={oldBrowser ? 'Switch to normal' : "Not Working? Switch to Radio Button"}
+                onChange={() => setOldBrowser(!oldBrowser)}
+              />
+            </div>
+
             <form onSubmit={formik.handleSubmit}>
 
               <div className={classes.form_heading}>
                 <p> {props.matchData.team1Short} vs {props.matchData.team2Short} </p>
               </div>
 
-              <div className={classes.radio_group}>
-                <div className={classes.left_radio}>
-                  <label>
-                    <input
-                      type="radio"
-                      onChange={formik.handleChange}
-                      onClick={() => displayTeamName(props.matchData.team1Id)}
-                      name="teamId"
-                      value={props.matchData.team1Id}
-                      defaultChecked={selectedTeam?.teamId === props.matchData.team1Id ? true : false}
-                    />
+
+              {oldBrowser ? (
+                <div className={classes.radio_group}>
+                  <div className={classes.normal_radio_left}>
                     <img src={props.matchData.team1Logo} />
-                  </label>
-                </div>
-                <div className={classes.right_radio}>
-                  <label>
-                    <input
-                      type="radio"
-                      onChange={formik.handleChange}
-                      onClick={() => displayTeamName(props.matchData.team2Id)}
-                      name='teamId'
-                      value={props.matchData.team2Id}
-                      defaultChecked={selectedTeam?.teamId === props.matchData.team2Id ? true : false}
+                    <Radio
+                      checked={selectedTeam?.teamId === props.matchData.team1Id ? true : false}
+                      onChange={() =>  displayTeamName(props.matchData.team1Id)}
+                      value={props.matchData.team1Id}
+                      color="success"
                     />
+                  </div>
+                  <div className={classes.normal_radio_right}>
                     <img src={props.matchData.team2Logo} />
-                  </label>
+                    <Radio
+                      checked={selectedTeam?.teamId === props.matchData.team2Id ? true : false}
+                      onChange={() => displayTeamName(props.matchData.team2Id)}
+                      value={props.matchData.team2Id}
+                      color="success"
+                    />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className={classes.radio_group}>
+                  <div className={classes.left_radio}>
+                    <label>
+                      <input
+                        type="radio"
+                        onChange={formik.handleChange}
+                        onClick={() => displayTeamName(props.matchData.team1Id)}
+                        name="teamId"
+                        value={props.matchData.team1Id}
+                        defaultChecked={selectedTeam?.teamId === props.matchData.team1Id ? true : false}
+                      />
+                      <img src={props.matchData.team1Logo} />
+                    </label>
+                  </div>
+                  <div className={classes.right_radio}>
+                    <label>
+                      <input
+                        type="radio"
+                        onChange={formik.handleChange}
+                        onClick={() => displayTeamName(props.matchData.team2Id)}
+                        name='teamId'
+                        value={props.matchData.team2Id}
+                        defaultChecked={selectedTeam?.teamId === props.matchData.team2Id ? true : false}
+                      />
+                      <img src={props.matchData.team2Logo} />
+                    </label>
+                  </div>
+                </div>
+              )}
               {formik.touched.teamId && Boolean(formik.errors.teamId) &&
                 <span className={classes.formError}>{formik.errors.teamId}</span>
               }
@@ -167,7 +202,6 @@ const PlaceBet = (props) => {
               </div>
 
             </form>
-
           </Paper>
         </Box>
       </div>

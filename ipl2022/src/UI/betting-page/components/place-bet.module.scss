@@ -33,6 +33,7 @@
   .form_heading {
     font-size: 1.1rem;
     color: #fff;
+    font-weight: 500;
   }
 
   .radio_group {
@@ -41,6 +42,32 @@
     align-content: center;
     justify-content: center;
     align-items: center;
+
+    .normal_radio_left{
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+
+      img {
+        height: 80%;
+        width: 80%;
+        border-radius: 50%;
+      }
+    }
+
+    .normal_radio_right{
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+
+      img {
+        height: 80%;
+        width: 80%;
+        border-radius: 50%;
+      }
+    }
 
     .left_radio {
       padding: 10px;
@@ -91,4 +118,15 @@
       display: flex;
     }
   }
+}
+
+.above_paper{
+  background: #6c0f6c;
+  width: 100%;
+  color: rgb(223, 211, 211);
+  padding: 0 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
 }

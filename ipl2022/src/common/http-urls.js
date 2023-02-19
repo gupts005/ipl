@@ -1,7 +1,7 @@
 // export const NodeJSURL = 'ws://localhost:8081';
 export const NodeJSURL = 'wss://bbdipl.herokuapp.com';
-// export const baseURL = 'http://localhost:8080';
-export const baseURL = 'https://sportsgeekapi.herokuapp.com';
+export const baseURL = 'http://localhost:8080';
+// export const baseURL = 'https://sportsgeekapi.herokuapp.com';
 // export const baseURL = 'https://sportsgeek-api-qa.herokuapp.com' //qa
 export const usersBaseURL = baseURL +'/users';
 export const authBaseURL = baseURL +'/users/authenticate';
